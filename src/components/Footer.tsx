@@ -6,6 +6,7 @@ export default function Footer() {
             <p className="font-light">&copy; Trinoastudio Spa</p>
             <p className="font-light">P.IVA 12345678910 Cod. Fisc 0101010101010 | Sede Legale: via Puglie 11 - 20101 Chiveo (VR)</p>
             <p className="font-light">Email info@trinoastudio.it</p>
+            <p className="font-light">Privacy Policy | Cookies Policy</p>
         </section>
     )
 }

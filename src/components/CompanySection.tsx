@@ -41,7 +41,7 @@ export default function CompanySection() {
       >
         <div className="relative overflow-hidden shadow-sm min-h-72 md:h-full mx-5 mt-2">
           <Image
-            src="/Tre-architetti.png"
+            src="/Guarda-orizzonte.png"
             alt="Studio con tre architetti"
             fill
             className="object-cover"
@@ -77,7 +77,7 @@ export default function CompanySection() {
 
         <div className="relative overflow-hidden shadow-sm min-h-72 md:h-full mx-5 mt-2">
           <Image
-            src="/Tre-architetti.png"
+            src="/Stretta-di-mano.png"
             alt="Studio con tre architetti"
             fill
             className="object-cover"
