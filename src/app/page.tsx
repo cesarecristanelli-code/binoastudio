@@ -4,10 +4,10 @@ import {
   RocketLaunchIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import Card from "./components/Card";
-import { CardType } from "./types/card.types";
-import CompanySection from "./components/CompanySection";
-import Footer from "./components/Footer";
+import Card from "../components/Card";
+import { CardType } from "../types/card.types";
+import CompanySection from "../components/CompanySection";
+import Footer from "../components/Footer";
 
 export default function Home() {
   const cards: CardType[] = [
