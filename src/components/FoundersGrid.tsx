@@ -9,8 +9,8 @@ export default function FoundesrGrid() {
   const founders: CardType[] = [
     {
       id: 1,
-      title: "Andrea Cristanelli",
-      imagePath: "/simil-andrea.png",
+      title: "Pietro",
+      imagePath: "/simil-tyron.png",
       styles: {
         hasShadow: false,
         titleCenter: true,
@@ -19,8 +19,8 @@ export default function FoundesrGrid() {
     },
     {
       id: 2,
-      title: "Claudio",
-      imagePath: "/simil-claudio.png",
+      title: "Andrea",
+      imagePath: "/simil-andrea.png",
       styles: {
         hasShadow: false,
         titleCenter: true,
@@ -29,8 +29,8 @@ export default function FoundesrGrid() {
     },
     {
       id: 3,
-      title: "Tyron de Deau",
-      imagePath: "/simil-tyron.png",
+      title: "Claudio",
+      imagePath: "/simil-claudio.png",
       styles: {
         hasShadow: false,
         titleCenter: true,
