@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import { CardType } from "../types/card.types";
-import Card from "./Card";
+import { CardType } from "../../types/card.types";
+import Card from "../Card";
 import FounderCV from "./FounderCV";
 import { AnimatePresence, motion } from "framer-motion";
 

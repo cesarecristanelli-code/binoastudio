@@ -16,7 +16,8 @@
 }
 
 @theme {
-  --font-archivo: "Archivo", sans-serif;
+  /* --font-archivo: "Archivo", sans-serif; */
+  --font-arvo: "Arvo", sans-serif;
 }
 
 

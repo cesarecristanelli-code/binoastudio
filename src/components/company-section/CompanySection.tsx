@@ -1,4 +1,4 @@
-import Card from "./Card";
+import Card from "../Card";
 import Image from "next/image";
 import FoundesrGrid from "./FoundersGrid";
 
