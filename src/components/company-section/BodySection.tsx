@@ -16,10 +16,10 @@ export default function Section({
 }: SectionProps) {
   return (
     <section
-      className={`flex flex-col ${reverse ? "md:flex-row-reverse" : "md:flex-row"} items-center py-12 gap-8 min-h-[60vh]`}
+      className={`flex flex-col ${reverse ? "md:flex-row-reverse" : "md:flex-row"} items-center py-8 md:py-12 gap-0 md:gap-8 min-h-[60vh]`}
     >
       {/* Immagine */}
-      <div className="w-full md:w-1/2 h-100 relative overflow-hidden rounded-md">
+      <div className="w-full md:w-1/2 aspect-4/3 md:h-112.5 relative overflow-hidden rounded-md">
         <Image
           src={imageURL}
           alt={title}
@@ -29,8 +29,19 @@ export default function Section({
       </div>
 
       {/* Testo */}
-      <div className="w-full md:w-1/2 px-8 flex flex-col justify-center">
-        <h3 className="text-3xl font-serif mb-4 uppercase tracking-widest">
+      <div
+        className={`
+            w-[90%] md:w-1/2 
+            -mt-16 md:mt-0 
+            mx-auto md:mx-0
+          bg-white md:bg-transparent 
+            p-6 md:p-8 
+            relative z-10 
+            shadow-lg md:shadow-none
+            rounded-xl md:rounded-none
+        `}
+      >
+        <h3 className="text-3xl font-arvo mb-4 uppercase tracking-[0.2em] md:text-gray-100">
           {title}
         </h3>
         <p className="text-gray-700 leading-relaxed max-w-md">{children}</p>

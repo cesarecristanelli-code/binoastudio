@@ -7,7 +7,7 @@
   --background: rgb(218, 211, 201); /* Light Greige */
   /* rgb(203, 191, 177) Warm Greige */
   /* rgb(183, 171, 159) Cool Greige */
-  --foreground: #ededed;
+  --foreground: #dcdcdc;
 }
 
 @theme inline {

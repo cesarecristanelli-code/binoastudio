@@ -13,14 +13,11 @@ export default function Home() {
       </div> */}
       <div className="m-10">
         <Section title="Trinòa" imageURL="/Tre-architetti.png" reverse={false}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam
-          sunt error, libero inventore neque corporis nulla non quam praesentium
-          beatae dolor laborum accusamus in porro officiis corrupti qui
-          veritatis officia pariatur delectus tenetur. Nesciunt aut dolore
-          doloribus numquam sapiente veritatis libero alias modi aliquam culpa,
-          quidem, nisi assumenda fugit velit? Beatae numquam, quas ipsa qui quia
-          pariatur eum corporis omnis, alias veritatis ipsum dolorum natus
-          consectetur impedit voluptatum ab adipisci.
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
+          facere harum animi tenetur enim doloremque in minus ullam quidem
+          soluta odit molestiae quibusdam modi dolore dolorem, voluptate
+          voluptatem. Doloribus recusandae neque qui nulla officiis ducimus,
+          vitae officia culpa provident harum?
         </Section>
       </div>
       <Footer />
