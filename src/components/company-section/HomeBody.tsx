@@ -4,7 +4,7 @@ import FoundesrGrid from "./FoundersGrid";
 
 
 
-export default function CompanySection() {
+export default function HomeBody() {
   return (
     <div className="max-w-7xl mx-auto space-y-40 bg-white pb-28">
       {/* Sezione CHI SIAMO */}

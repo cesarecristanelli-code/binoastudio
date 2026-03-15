@@ -3,7 +3,10 @@
 :root {
   /* --background: #ffffff;
   --foreground: #171717; */
-  --background: #f5f5f4;
+  /* --background: #f5f5f4; */
+  --background: rgb(218, 211, 201); /* Light Greige */
+  /* rgb(203, 191, 177) Warm Greige */
+  /* rgb(183, 171, 159) Cool Greige */
   --foreground: #ededed;
 }
 

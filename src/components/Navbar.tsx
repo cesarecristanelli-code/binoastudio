@@ -190,6 +190,19 @@ export default function Navbar() {
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
       >
+        <div className="flex flex-col items-center gap-4">
+          <span className="text-sm uppercase tracking-widest text-gray-400 font-bold">Chi Siamo</span>
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-4">
+            {dropdownLinks.map((link) => (
+              <Link key={link.href} href={link.href} onClick={() => setIsOpen(false)} className="text-xl font-medium text-black">
+                {link.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <div className="w-12 h-px bg-gray-200 my-4" />
+        
         {navLinks.map((link) => (
           <Link
             key={link.href}
