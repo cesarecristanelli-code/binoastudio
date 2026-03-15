@@ -1,18 +1,32 @@
 "use client";
 
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+interface NavlinkType {
+  name: string;
+  href: string;
+}
+
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
-  const navLinks = [
+  const navLinks: NavlinkType[] = [
     { name: "Vendita", href: "/vendita" },
     { name: "Consulenza", href: "/consulenza" },
     { name: "Progettazione", href: "/progettazione" },
+  ];
+
+  const dropdownLinks: NavlinkType[] = [
+    { name: "Trinòa", href: "#trinoa" },
+    { name: "Motto", href: "#motto" },
+    { name: "Vision", href: "#vision" },
+    { name: "Mission", href: "#mission" },
   ];
 
   const pathname = usePathname();
@@ -47,7 +61,7 @@ export default function Navbar() {
       ? "bg-white shadow-md border-b border-gray-100" //se si è nella Home e si ha scrollato più di 50px
       : "bg-transparent" // se si è nella Home e NON si ha scrollato più di 50px
     : "bg-white shadow-md border-b border-gray-100"; //se non si è nella Home
-  const isTransparent = isHomePage && !isScrolled && !isOpen
+  const isTransparent = isHomePage && !isScrolled && !isOpen;
   const textColor = isTransparent ? "text-white" : "text-black";
   const linkHoverColor =
     isHomePage && !isScrolled ? "hover:text-blue-300" : "hover:text-blue-600";
@@ -76,6 +90,35 @@ export default function Navbar() {
 
         {/* Menu a destra (nascosto su Mobile) */}
         <div className="hidden md:flex items-center gap-9">
+          {/* 'Chi siamo' dropdown */}
+          <div
+            className="relative group py-2"
+            onMouseOver={() => setIsDropdownOpen(true)}
+            onMouseLeave={() => setIsDropdownOpen(false)}
+          >
+            <button
+              className={`flex items-center text-sm gap-1 font-medium tracking-wide transition-colors ${textColor} hover:opacity-70`}
+            >
+              Chi siamo
+              <ChevronDownIcon
+                className={`w-4 h-4 transition-transform duration-200 ${isDropdownOpen && "rotate-180"}`}
+              />
+            </button>
+            <div
+              className={`absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 transition-all duration-200 origin-top-left ${isDropdownOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
+            >
+              {dropdownLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="block px-5 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
           {navLinks.map((link) => (
             <Link
               key={link.href}

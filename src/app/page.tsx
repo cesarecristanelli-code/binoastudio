@@ -1,4 +1,3 @@
-import Image from "next/image";
 import CompanySection from "../components/company-section/CompanySection";
 import Footer from "../components/Footer";
 import Hero from "@/components/hero-section/Hero";
