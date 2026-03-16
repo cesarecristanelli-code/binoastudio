@@ -1,6 +1,6 @@
 import Footer from "../components/Footer";
 import Hero from "@/components/hero-section/Hero";
-import Section from "@/components/company-section/BodySection";
+import HomeBody from "@/components/company-section/HomeBody";
 
 export default function Home() {
   return (
@@ -12,24 +12,7 @@ export default function Home() {
         <CompanySection></CompanySection>
       </div> */}
       
-      <div className="m-10">
-        <Section title="Trinòa" imageURL="/Tre-architetti.png" reverse={false}>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
-          facere harum animi tenetur enim doloremque in minus ullam quidem
-          soluta odit molestiae quibusdam modi dolore dolorem, voluptate
-          voluptatem. Doloribus recusandae neque qui nulla officiis ducimus,
-          vitae officia culpa provident harum?
-        </Section>
-      </div>
-      <div className="m-10">
-        <Section title="Trinòa" imageURL="/Tre-architetti.png" reverse={true}>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
-          facere harum animi tenetur enim doloremque in minus ullam quidem
-          soluta odit molestiae quibusdam modi dolore dolorem, voluptate
-          voluptatem. Doloribus recusandae neque qui nulla officiis ducimus,
-          vitae officia culpa provident harum?
-        </Section>
-      </div>
+      <HomeBody />
       <Footer />
     </main>
   );

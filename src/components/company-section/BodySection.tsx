@@ -18,10 +18,10 @@ export default function Section({
 }: SectionProps) {
   return (
     <section
-      className={`flex flex-col ${reverse ? "md:flex-row-reverse" : "md:flex-row"} items-center py-8 md:py-12 gap-0 md:gap-8 min-h-[60vh]`}
+      className={`flex flex-col ${reverse ? "md:flex-row-reverse xl:-me-17" : "md:flex-row xl:-ms-17"} items-center py-8 md:py-12 gap-0 md:gap-8 min-h-[60vh]`}
     >
       {/* Immagine */}
-      <div className="w-full md:w-1/2 aspect-4/3 md:h-112.5 relative overflow-hidden rounded-md">
+      <div className="w-full md:w-1/2 aspect-4/3 md:h-100 relative overflow-hidden rounded-[36px]">
         <Image
           src={imageURL}
           alt={title}
@@ -49,10 +49,10 @@ export default function Section({
             rounded-xl md:rounded-none
         `}
         >
-          <h3 className="text-3xl font-arvo mb-4 uppercase tracking-[0.2em] md:text-gray-100">
+          <h3 className="text-3xl md:text-4xl mb-4 uppercase tracking-wider text-[#5C5854]">
             {title}
           </h3>
-          <p className="text-gray-700 leading-relaxed max-w-md">{children}</p>
+          <p className="text-[#332F2C] leading-relaxed max-w-md">{children}</p>
         </motion.div>
       
     </section>

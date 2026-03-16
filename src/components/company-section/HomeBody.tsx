@@ -1,89 +1,22 @@
-import Card from "../Card";
-import Image from "next/image";
-import FoundesrGrid from "./FoundersGrid";
-
-
+import Section from "./BodySection";
+import Title from "./BodyTitle";
 
 export default function HomeBody() {
   return (
-    <div className="max-w-7xl mx-auto space-y-40 bg-white pb-28">
-      {/* Sezione CHI SIAMO */}
-      <section
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 scroll-mt-32"
-        id="1"
-      >
-        {/* Titolo e descrizione */}
-        <Card title="Chi siamo" styles={{ hasShadow: false, animate: false }}>
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Numquam
-            dignissimos tempore ducimus possimus quae dolores dolorum quisquam
-            hic ut nobis deserunt minus blanditiis fuga incidunt placeat, iste
-            culpa? Error, illo? Qui animi officia sed enim minus, ut quam fugit
-            perferendis quis pariatur! Suscipit quis, quidem soluta quibusdam
-            iste architecto error!
-          </p>
-        </Card>
-
-        <div className="relative overflow-hidden shadow-sm min-h-72 md:h-full mx-5 mt-2">
-          <Image
-            src="/Tre-architetti.png"
-            alt="Studio con tre architetti"
-            fill
-            className="object-cover"
-          />
-        </div>
-        <FoundesrGrid />
-      </section>
-
-      <section
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 scroll-mt-32"
-        id="2"
-      >
-        <div className="relative overflow-hidden shadow-sm min-h-72 md:h-full mx-5 mt-2">
-          <Image
-            src="/Guarda-orizzonte.png"
-            alt="Studio con tre architetti"
-            fill
-            className="object-cover"
-          />
-        </div>
-
-        <Card title="Vision" styles={{ hasShadow: false, animate: false }}>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo est
-            suscipit cupiditate maiores ratione voluptatem sint deserunt maxime
-            repellat, dolorem exercitationem enim sed optio eius autem, quaerat
-            consectetur, voluptatibus asperiores hic nobis earum natus nisi! Hic
-            quo sapiente aut autem, deleniti a, sed, officiis molestias incidunt
-            dicta rem eveniet corrupti?
-          </p>
-        </Card>
-      </section>
-
-      <section
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 scroll-mt-32"
-        id="3"
-      >
-        <Card title="Mission" styles={{ hasShadow: false, animate: false }}>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo est
-            suscipit cupiditate maiores ratione voluptatem sint deserunt maxime
-            repellat, dolorem exercitationem enim sed optio eius autem, quaerat
-            consectetur, voluptatibus asperiores hic nobis earum natus nisi! Hic
-            quo sapiente aut autem, deleniti a, sed, officiis molestias incidunt
-            dicta rem eveniet corrupti?
-          </p>
-        </Card>
-
-        <div className="relative overflow-hidden shadow-sm min-h-72 md:h-full mx-5 mt-2">
-          <Image
-            src="/Stretta-di-mano.png"
-            alt="Studio con tre architetti"
-            fill
-            className="object-cover"
-          />
-        </div>
-      </section>
+    <div
+      className="max-w-7xl mx-auto space-y-40 py-28 mt-20 rounded-2xl shadow-2xl"
+      style={{ backgroundColor: "rgb(218, 211, 201)" }}
+    >
+      <Title />
+      <div className="my-24">
+        <Section title="Trinòa" imageURL="/Tre-architetti.png" reverse={false}>
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
+          facere harum animi tenetur enim doloremque in minus ullam quidem
+          soluta odit molestiae quibusdam modi dolore dolorem, voluptate
+          voluptatem. Doloribus recusandae neque qui nulla officiis ducimus,
+          vitae officia culpa provident harum?
+        </Section>
+      </div>
     </div>
   );
 }
