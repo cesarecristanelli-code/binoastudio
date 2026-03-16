@@ -1,5 +1,7 @@
+"use client";
 import { ReactNode } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 interface SectionProps {
   title: string;
@@ -29,8 +31,14 @@ export default function Section({
       </div>
 
       {/* Testo */}
-      <div
-        className={`
+      
+        <motion.div
+          initial={{ y: reverse ? -50 : 50, opacity: 0 }}
+          whileInView={{y: 0, opacity: 1}}
+          viewport={{once: true, amount: 0.4, margin: "-50px"}}
+          transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className={`
+            opacity-0
             w-[90%] md:w-1/2 
             -mt-16 md:mt-0 
             mx-auto md:mx-0
@@ -40,12 +48,13 @@ export default function Section({
             shadow-lg md:shadow-none
             rounded-xl md:rounded-none
         `}
-      >
-        <h3 className="text-3xl font-arvo mb-4 uppercase tracking-[0.2em] md:text-gray-100">
-          {title}
-        </h3>
-        <p className="text-gray-700 leading-relaxed max-w-md">{children}</p>
-      </div>
+        >
+          <h3 className="text-3xl font-arvo mb-4 uppercase tracking-[0.2em] md:text-gray-100">
+            {title}
+          </h3>
+          <p className="text-gray-700 leading-relaxed max-w-md">{children}</p>
+        </motion.div>
+      
     </section>
   );
 }

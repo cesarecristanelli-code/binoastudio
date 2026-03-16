@@ -11,8 +11,18 @@ export default function Home() {
       {/* <div className="bg-white rounded-xl w-full md:w-[95%] md:mx-auto mb-20 pt-52 relative z-10 min-h-80">
         <CompanySection></CompanySection>
       </div> */}
+      
       <div className="m-10">
         <Section title="Trinòa" imageURL="/Tre-architetti.png" reverse={false}>
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
+          facere harum animi tenetur enim doloremque in minus ullam quidem
+          soluta odit molestiae quibusdam modi dolore dolorem, voluptate
+          voluptatem. Doloribus recusandae neque qui nulla officiis ducimus,
+          vitae officia culpa provident harum?
+        </Section>
+      </div>
+      <div className="m-10">
+        <Section title="Trinòa" imageURL="/Tre-architetti.png" reverse={true}>
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
           facere harum animi tenetur enim doloremque in minus ullam quidem
           soluta odit molestiae quibusdam modi dolore dolorem, voluptate
