@@ -11,7 +11,7 @@ rgb(183, 171, 159)  Cool Greige
   /* --background: #ffffff;
   --foreground: #171717; */
   --background: rgb(250, 248, 245);
-  --foreground: #2D2926;
+  --foreground: #2D2926;  
 }
 
 @theme inline {

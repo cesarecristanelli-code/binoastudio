@@ -21,7 +21,7 @@ export default function Section({
       className={`flex flex-col ${reverse ? "md:flex-row-reverse xl:-me-17" : "md:flex-row xl:-ms-17"} items-center py-8 md:py-12 gap-0 md:gap-8 min-h-[60vh]`}
     >
       {/* Immagine */}
-      <div className="w-full md:w-1/2 aspect-4/3 md:h-100 relative overflow-hidden rounded-[36px]">
+      <div className="w-full md:w-1/2 aspect-4/3 md:h-100 relative overflow-hidden md:rounded-[36px]">
         <Image
           src={imageURL}
           alt={title}
