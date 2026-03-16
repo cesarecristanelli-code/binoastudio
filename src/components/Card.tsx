@@ -21,7 +21,7 @@ export default function Card({
 
   return (
     <div
-      className={`rounded-2xl flex flex-col gap-3 p-5 h-full bg-white ${hasShadow && "shadow-xl"} ${hasBorder && `border-t-3 ${iconColor}`} ${animate && "transition-all duration-300 hover:-translate-y-1.5"} w-full`}
+      className={`rounded-2xl flex flex-col gap-3 p-5 h-full ${hasShadow && "shadow-xl"} ${hasBorder && `border-t-3 ${iconColor}`} ${animate && "transition-all duration-300 hover:-translate-y-1.5"} w-full`}
     >
       {/* Icona */}
       {icon && (

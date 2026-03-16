@@ -1,5 +1,7 @@
 import Section from "./BodySection";
 import Title from "./BodyTitle";
+import FoundersGrid from "./FoundersGrid";
+import Image from "next/image";
 
 export default function HomeBody() {
   return (
@@ -16,6 +18,32 @@ export default function HomeBody() {
           voluptatem. Doloribus recusandae neque qui nulla officiis ducimus,
           vitae officia culpa provident harum?
         </Section>
+      </div>
+      <FoundersGrid />
+
+
+      {/* Idea per la nuova Card */}
+      <div
+        className="mx-auto my-20 grid grid-cols-3 gap-2 rounded-2xl max-h-60 max-w-md border-2 p-3 pe-0"
+        style={{ backgroundColor: "rgb(242, 238, 232)", borderColor: "rgb(230, 224, 215)" }}
+      >
+        <div className=" overflow-hidden relative rounded-s-2xl rounded-e-lg">
+          <Image
+            src="/simil-andrea.png"
+            alt="ciao"
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div className="p-3 col-span-2">
+          <h3 className="font-arvo text-[#5C5854] tracking-wider pb-5">
+            Andrea
+          </h3>
+          <p className="leading-relaxed text-[#332F2C]">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque,
+            molestiae.
+          </p>
+        </div>
       </div>
     </div>
   );

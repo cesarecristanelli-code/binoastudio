@@ -5,7 +5,7 @@ import Card from "../Card";
 import FounderCV from "./FounderCV";
 import { AnimatePresence, motion } from "framer-motion";
 
-export default function FoundesrGrid() {
+export default function FoundersGrid() {
   const founders: CardType[] = [
     {
       id: 1,
