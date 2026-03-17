@@ -49,7 +49,7 @@ export default function FoundersGrid() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 100, opacity: 0 }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="pt-10 grid md:grid-cols-3 gap-2 h-full min-h-75"
+              className="pt-10 grid md:grid-cols-3 gap-5 h-full min-h-75 px-5"
             >
               {founders.map((f) => (
                 <Card

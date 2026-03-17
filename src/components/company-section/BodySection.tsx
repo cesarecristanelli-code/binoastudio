@@ -18,7 +18,7 @@ export default function Section({
 }: SectionProps) {
   return (
     <section
-      className={`flex flex-col ${reverse ? "md:flex-row-reverse xl:-me-17" : "md:flex-row xl:-ms-17"} items-center py-8 md:py-12 gap-0 md:gap-8 min-h-[60vh]`}
+      className={`flex flex-col ${reverse ? "md:flex-row-reverse xl:-me-17" : "md:flex-row xl:-ms-17"} items-center py-8 md:py-12 gap-0 md:gap- min-h-[60vh]`}
     >
       {/* Immagine */}
       <div className="w-full md:w-1/2 aspect-4/3 md:h-100 relative overflow-hidden md:rounded-[36px]">
@@ -41,12 +41,12 @@ export default function Section({
             opacity-0
             w-[90%] md:w-1/2 
             -mt-16 md:mt-0 
-            mx-auto md:mx-0
-          bg-white md:bg-transparent 
+            mx-auto md:me-16
+          bg-white md:bg-[rgb(242,240,236)]
             p-6 md:p-8 
             relative z-10 
             shadow-lg md:shadow-none
-            rounded-xl md:rounded-none
+            rounded-xl md:rounded-e-xl md:rounded-s-none
         `}
         >
           <h3 className="text-3xl md:text-4xl mb-4 uppercase tracking-wider text-[#5C5854]">

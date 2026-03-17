@@ -1,6 +1,8 @@
 import Section from "./BodySection";
 import Title from "./BodyTitle";
+import FounderCard from "./FounderCard";
 import FoundersGrid from "./FoundersGrid";
+import Image from "next/image";
 /* import Image from "next/image";
 import Card from "../Card2"; */
 
@@ -20,14 +22,15 @@ export default function HomeBody() {
           vitae officia culpa provident harum?
         </Section>
       </div>
-      <FoundersGrid />
+      {/* <FoundersGrid /> */}
 
-      {/* Corregi la questione del footer */}
-      {/* <Card title="Andrea" imageURL="/simil-andrea.tsx">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste nulla
-        reprehenderit voluptas! Accusantium pariatur perspiciatis officiis a
-        ratione omnis laudantium.
-      </Card> */}
+      <div className="m-10 p-10">
+        <FounderCard
+          name="Andrea"
+          imageUrl="/simil-andrea.png"
+          role="Fondatore"
+        />
+      </div>
     </div>
   );
 }
