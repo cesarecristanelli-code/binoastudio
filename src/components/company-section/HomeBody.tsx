@@ -1,8 +1,8 @@
 import Section from "./BodySection";
 import Title from "./BodyTitle";
 import FoundersGrid from "./FoundersGrid";
-import Image from "next/image";
-import Card from "../Card2";
+/* import Image from "next/image";
+import Card from "../Card2"; */
 
 export default function HomeBody() {
   return (
