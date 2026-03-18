@@ -1,4 +1,4 @@
-import { FounderCVProps } from "../types/cv.types";
+import { FounderCVProps } from "../../types/cv.types";
 
 
 /* Appena hai i CV:
@@ -18,7 +18,7 @@ export default function FounderCV({ founder, onClose }: FounderCVProps) {
       {/* Header con titolo e bottone per tornare */}
       <div className="flex justify-between mb-6">
         <h3 className="font-semibold text-2xl md:text-4xl text-gray-900">
-          {founder.title}
+          {founder.name}
         </h3>
 
         <button

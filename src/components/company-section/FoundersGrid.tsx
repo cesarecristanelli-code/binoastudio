@@ -1,36 +1,31 @@
 "use client";
-import { ReactNode, useState } from "react";
-/* import { CardType } from "../../types/card.types"; */
-import Card from "../Card2";
-import FounderCV from "./FounderCV";
-import { AnimatePresence, motion } from "framer-motion";
-import { CardStyle } from "../Card2";
+import { useState } from "react";
 
-interface CardType {
-  id: string | number;
-  title: string;
-  imagePath: string;
-  children?: string | ReactNode;
-  footer?: string | ReactNode;
-  style?: CardStyle;
-}
+import FounderCV from "./FounderCV";
+import FounderCard from "./FounderCard";
+import { FounderCardType } from "@/types/card.types";
+
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function FoundersGrid() {
-  const founders: CardType[] = [
+  const founders: FounderCardType[] = [
     {
       id: 1,
-      title: "Pietro",
+      name: "Pietro",
       imagePath: "/simil-tyron.png",
+      role: "Fondatore",
     },
     {
       id: 2,
-      title: "Andrea",
+      name: "Andrea",
       imagePath: "/simil-andrea.png",
+      role: "Fondatore",
     },
     {
       id: 3,
-      title: "Claudio",
+      name: "Claudio",
       imagePath: "/simil-claudio.png",
+      role: "Fondatore",
     },
   ];
 
@@ -49,29 +44,16 @@ export default function FoundersGrid() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 100, opacity: 0 }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="pt-10 grid md:grid-cols-3 gap-5 h-full min-h-75 px-5"
+              className="py-10 grid md:grid-cols-3 gap-5 h-full min-h-75 px-5"
             >
               {founders.map((f) => (
-                <Card
+                <FounderCard
                   key={f.id}
-                  title={f.title}
+                  name={f.name}
+                  role={f.role}
                   imagePath={f.imagePath}
-                  style={{
-                    cardClasses:
-                      "border-2 border-[#2D2926] bg-[rgb(242,238,232)] transition-transform duration-400 hover:-translate-y-2 hover:scale-102",
-                  }}
-                  footer={
-                    <div className="flex justify-center h-full w-full items-center">
-                      <button
-                        type="button"
-                        className="rounded-3xl bg-transparent border-2 border-[#2D2926]  text-[#2D2926] px-4 py-2 hover:opacity-70 cursor-pointer"
-                        onClick={() => setSelectedID(f.id as number)}
-                      >
-                        Vedi CV
-                      </button>
-                    </div>
-                  }
-                ></Card>
+                  onClick={() => setSelectedID(f.id as number)}
+                />
               ))}
             </motion.div>
           ) : (

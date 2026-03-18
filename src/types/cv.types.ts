@@ -1,6 +1,7 @@
-import { CardType } from "./card.types";
+import { FounderCardType } from "./card.types";
+
 
 export interface FounderCVProps {
-    founder: CardType,
+    founder: FounderCardType,
     onClose?: () => void,
 }

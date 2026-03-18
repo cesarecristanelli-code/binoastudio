@@ -1,6 +1,6 @@
 import Footer from "../components/Footer";
 import Hero from "@/components/hero-section/Hero";
-import HomeBody from "@/components/company-section/HomeBody";
+import ChiSiamo from "@/components/company-section/ChiSiamo";
 
 export default function Home() {
   return (
@@ -8,7 +8,7 @@ export default function Home() {
       {/* Hero Section */}
       <Hero title="we manage values" bgImage="/studio-immobiliare.png" />
 
-      <HomeBody />
+      <ChiSiamo />
 
       <Footer />
     </main>
