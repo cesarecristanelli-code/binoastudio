@@ -58,9 +58,9 @@ export default function Navbar() {
   const isHomePage = pathname === "/";
   const navbarBg = isHomePage
     ? isScrolled
-      ? "bg-white shadow-md border-b border-gray-100" //se si è nella Home e si ha scrollato più di 50px
+      ? "bg-[rgb(250,248,245)] shadow-md border-b border-gray-100" //se si è nella Home e si ha scrollato più di 50px
       : "bg-transparent" // se si è nella Home e NON si ha scrollato più di 50px
-    : "bg-white shadow-md border-b border-gray-100"; //se non si è nella Home
+    : "bg-[rgb(250,248,245)] shadow-md border-b border-gray-100"; //se non si è nella Home
   const isTransparent = isHomePage && !isScrolled && !isOpen;
   const textColor = isTransparent ? "text-white" : "text-black";
   const linkHoverColor =
@@ -129,7 +129,7 @@ export default function Navbar() {
             </Link>
           ))}
 
-          <Link href="/contattaci">
+          <Link href="#footer">
             <button
               className={`ml-4 text-xs font-semibold uppercase tracking-widest px-6 py-2.5 rounded-full transition-all duration-300 cursor-pointer ${
                 isHomePage && !isScrolled

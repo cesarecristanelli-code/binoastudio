@@ -8,7 +8,7 @@ interface HeroProps {
 
 export default function Hero({ title, bgImage }: HeroProps) {
   return (
-    <section className="relative w-full h-[80vh] flex items-center justify-center">
+    <section className="relative w-screen h-[80vh] flex items-center justify-center">
       <div className="absolute inset-0 z-0">
         <Image
           src={bgImage}

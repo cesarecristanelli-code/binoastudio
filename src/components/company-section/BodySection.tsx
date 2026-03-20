@@ -3,11 +3,18 @@ import { ReactNode } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
+export interface SectionStyle {
+  bodyColor?: string;
+  titleColor?: string;
+  textColor?: string;
+}
+
 interface SectionProps {
   title: string;
   children: string | ReactNode;
   imagePath: string;
   reverse: boolean;
+  style?: SectionStyle;
 }
 
 export default function Section({
@@ -15,7 +22,14 @@ export default function Section({
   children,
   imagePath,
   reverse,
+  style = {},
 }: SectionProps) {
+  const {
+    bodyColor = "rgb(242,240,236)",
+    titleColor = "#5C5854",
+    textColor = "#332F2C",
+  } = style;
+
   return (
     <section
       className={`flex flex-col ${reverse ? "md:flex-row-reverse xl:-me-17" : "md:flex-row xl:-ms-17"} items-center py-8 md:py-12 gap-0 md:gap- min-h-[60vh]`}
@@ -39,22 +53,27 @@ export default function Section({
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: true, amount: 0.4, margin: "-50px" }}
         transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+        style={{ backgroundColor: bodyColor }}
         className={`
             opacity-0
             w-[90%] md:w-1/2 
             -mt-16 md:mt-0 
             mx-auto ${reverse ? "xl:ms-16" : "xl:me-16"}
-          bg-white md:bg-[rgb(242,240,236)]
             p-6 md:p-8 
             relative z-10 
             shadow-lg md:shadow-none
             rounded-xl ${reverse ? "md:rounded-s-xl md:rounded-e-none" : "md:rounded-e-xl md:rounded-s-none"}
         `}
       >
-        <h3 className="text-3xl md:text-4xl mb-4 uppercase tracking-wider text-[#5C5854]">
+        <h3
+          style={{ color: titleColor }}
+          className={`text-3xl md:text-4xl mb-4 uppercase tracking-wider`}
+        >
           {title}
         </h3>
-        <p className="text-[#332F2C] leading-relaxed max-w-md">{children}</p>
+        <p className={`leading-relaxed max-w-md`} style={{ color: textColor }}>
+          {children}
+        </p>
       </motion.div>
     </section>
   );

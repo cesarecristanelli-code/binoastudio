@@ -43,6 +43,8 @@ rgb(183,171,159)  Cool Greige
 body {
   background: var(--background);
   color: var(--foreground);
+  overflow-x: hidden;
+  width: 100%;
   /* font-family: Arial, Helvetica, sans-serif; */
 }
 

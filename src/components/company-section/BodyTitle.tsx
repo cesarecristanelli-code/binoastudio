@@ -17,12 +17,14 @@ export default function Title({ number, title, titleColor }: TitleProps) {
       className="relative mb-52 ps-10 lg:ps-64"
     >
       <span
-        className={`absolute -top-10 left-10 lg:left-64 text-7xl md:text-9xl font-bold ${titleColor ? `text-[${titleColor}]/20` : "opacity-20"} select-none`}
+        className={`absolute -top-10 left-10 lg:left-64 text-7xl md:text-9xl font-bold opacity-20 select-none`}
+        style={{color: titleColor}}
       >
         {number}
       </span>
       <h2
-        className={`relative text-4xl md:text-6xl font-arvo font-normal ${titleColor && `text-[${titleColor}]`} tracking-[0.2em] uppercase`}
+        className={`relative text-4xl md:text-6xl font-arvo font-normal tracking-[0.2em] uppercase`}
+        style={{color: titleColor}}
       >
         {title}
       </h2>

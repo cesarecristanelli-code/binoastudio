@@ -66,7 +66,7 @@ const sections: BodySectionType[] = [
 export default function ChiSiamo() {
   return (
     <div
-      className="max-w-7xl mx-auto space-y-40 py-28 mt-20 rounded-2xl shadow-2xl"
+      className="max-w-7xl mx-auto space-y-40 py-28 mt-20 rounded-t-2xl shadow-2xl"
       style={{ backgroundColor: "rgb(218,211,201)" }}
     >
       <Title number="01" title="Chi siamo" />
