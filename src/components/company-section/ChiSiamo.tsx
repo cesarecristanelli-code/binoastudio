@@ -7,9 +7,9 @@ import { SectionType } from "@/types/bodysection.types";
 const sections: SectionType[] = [
   {
     id: 1,
-    title: "Trinòa",
+    title: "Logos",
     imagePath: "/Tre-architetti.png",
-    idSection: "trinoa",
+    idSection: "logos",
     children: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
           facere harum animi tenetur enim doloremque in minus ullam quidem
           soluta odit molestiae quibusdam modi dolore dolorem, voluptate

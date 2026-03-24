@@ -23,7 +23,7 @@ export default function Navbar() {
   ];
 
   const dropdownLinks: NavlinkType[] = [
-    { name: "Trinòa", href: "/#trinoa" },
+    { name: "Logos", href: "/#logos" },
     { name: "Motto", href: "/#motto" },
     { name: "Vision", href: "/#vision" },
     { name: "Mission", href: "/#mission" },
@@ -67,29 +67,29 @@ export default function Navbar() {
     isHomePage && !isScrolled ? "hover:text-blue-300" : "hover:text-blue-600";
 
   // Inverto il colore del logo se è sulla hero
-  const logoPath = "/LogoTrinoaSVG.svg";
+  const logoPath = "/Logos.svg";
   const logoClasses = isHomePage && !isScrolled ? "brightness-0 invert" : "";
 
   // Ora il componente navbar
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out px-6 py-3 ${navbarBg}`}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out px-6 py-2 ${navbarBg}`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo a sinistra */}
         <Link href="/" className="flex items-center gap-2">
           <Image
             src={logoPath}
-            alt="Trinòa Logo"
-            width={130}
-            height={45}
+            alt="Logos Logo"
+            width={150}
+            height={85}
             priority
             className={`object-contain ${logoClasses}`}
           />
         </Link>
 
         {/* Menu a destra (nascosto su Mobile) */}
-        <div className="hidden md:flex items-center gap-9">
+        <div className="hidden md:flex items-center gap-9 ">
           {/* 'Chi siamo' dropdown */}
           <div
             className="relative group py-2"
