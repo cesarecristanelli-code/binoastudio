@@ -1,4 +1,3 @@
-import Footer from "../components/Footer";
 import Hero from "@/components/hero-section/Hero";
 import ChiSiamo from "@/components/company-section/ChiSiamo";
 import FullBleedImage from "@/components/company-section/FullBleed";
@@ -17,8 +16,6 @@ export default function Home() {
       <div className="bg-[#D1CBC0] w-screen pb-36">
         <CosaFacciamo />
       </div>
-
-      <Footer />
     </main>
   );
 }

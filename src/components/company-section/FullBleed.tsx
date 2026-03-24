@@ -9,7 +9,7 @@ export default function FullBleedImage() {
         fill
         className="object-cover"
       />
-      <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-b from-[rgb(218,211,201)]/70 via-[#3C3833]/70 to-[#3C3833]/90" />
     </div>
   );
 }

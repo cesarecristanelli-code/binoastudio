@@ -18,15 +18,15 @@ export default function Navbar() {
 
   const navLinks: NavlinkType[] = [
     { name: "Vendita", href: "/vendita" },
-    { name: "Consulenza", href: "/consulenza" },
-    { name: "Progettazione", href: "/progettazione" },
+    { name: "Consulenza", href: "/#consulenza" },
+    { name: "Progettazione", href: "/#progettazione" },
   ];
 
   const dropdownLinks: NavlinkType[] = [
-    { name: "Trinòa", href: "#trinoa" },
-    { name: "Motto", href: "#motto" },
-    { name: "Vision", href: "#vision" },
-    { name: "Mission", href: "#mission" },
+    { name: "Trinòa", href: "/#trinoa" },
+    { name: "Motto", href: "/#motto" },
+    { name: "Vision", href: "/#vision" },
+    { name: "Mission", href: "/#mission" },
   ];
 
   const pathname = usePathname();
@@ -208,6 +208,7 @@ export default function Navbar() {
             key={link.href}
             href={link.href}
             className="text-2xl font-semibold text-black hover:text-blue-600 transition-colors"
+            onClick={() => setIsOpen(false)}
           >
             {link.name}
           </Link>

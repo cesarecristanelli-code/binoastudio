@@ -1,27 +1,16 @@
 "use client";
-import { ReactNode } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { SectionProps } from "@/types/bodysection.types";
 
-export interface SectionStyle {
-  bodyColor?: string;
-  titleColor?: string;
-  textColor?: string;
-}
 
-interface SectionProps {
-  title: string;
-  children: string | ReactNode;
-  imagePath: string;
-  reverse: boolean;
-  style?: SectionStyle;
-}
 
 export default function Section({
   title,
   children,
   imagePath,
   reverse,
+  idSection,
   style = {},
 }: SectionProps) {
   const {
@@ -32,7 +21,8 @@ export default function Section({
 
   return (
     <section
-      className={`flex flex-col ${reverse ? "md:flex-row-reverse xl:-me-17" : "md:flex-row xl:-ms-17"} items-center py-8 md:py-12 gap-0 md:gap- min-h-[60vh]`}
+      className={`flex flex-col ${reverse ? "md:flex-row-reverse xl:-me-17" : "md:flex-row xl:-ms-17"} items-center py-8 md:py-12 gap-0 md:gap- min-h-[60vh] scroll-mt-20 md:scroll-md-36`}
+      id={idSection}
     >
       {/* Immagine */}
       <div

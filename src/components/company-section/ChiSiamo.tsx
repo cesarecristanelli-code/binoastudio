@@ -1,22 +1,15 @@
-import { ReactNode, Fragment } from "react";
+import { Fragment } from "react";
 import Section from "./BodySection";
 import Title from "./BodyTitle";
 import FoundersGrid from "./FoundersGrid";
+import { SectionType } from "@/types/bodysection.types";
 
-interface BodySectionType {
-  id: number;
-  title: string;
-  imagePath: string;
-  children: string | ReactNode;
-  revrese: boolean;
-  divClasses: string;
-}
-
-const sections: BodySectionType[] = [
+const sections: SectionType[] = [
   {
     id: 1,
     title: "Trinòa",
     imagePath: "/Tre-architetti.png",
+    idSection: "trinoa",
     children: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
           facere harum animi tenetur enim doloremque in minus ullam quidem
           soluta odit molestiae quibusdam modi dolore dolorem, voluptate
@@ -29,6 +22,7 @@ const sections: BodySectionType[] = [
     id: 2,
     title: "Motto",
     imagePath: "/Tre-architetti.png",
+    idSection: "motto",
     children: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
           facere harum animi tenetur enim doloremque in minus ullam quidem
           soluta odit molestiae quibusdam modi dolore dolorem, voluptate
@@ -41,6 +35,7 @@ const sections: BodySectionType[] = [
     id: 3,
     title: "Vision",
     imagePath: "/Guarda-orizzonte.png",
+    idSection: "vision",
     children: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
           facere harum animi tenetur enim doloremque in minus ullam quidem
           soluta odit molestiae quibusdam modi dolore dolorem, voluptate
@@ -53,6 +48,7 @@ const sections: BodySectionType[] = [
     id: 4,
     title: "Mission",
     imagePath: "/Stretta-di-mano.png",
+    idSection: "mission",
     children: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
           facere harum animi tenetur enim doloremque in minus ullam quidem
           soluta odit molestiae quibusdam modi dolore dolorem, voluptate
@@ -77,6 +73,7 @@ export default function ChiSiamo() {
             <Section
               title={s.title}
               imagePath={s.imagePath}
+              idSection={s.idSection}
               reverse={s.revrese}
             >
               {s.children}
