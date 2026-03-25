@@ -23,7 +23,7 @@ export default function Navbar() {
   ];
 
   const dropdownLinks: NavlinkType[] = [
-    { name: "Logos", href: "/#logos" },
+    { name: "Binoa", href: "/#binoa" },
     { name: "Motto", href: "/#motto" },
     { name: "Vision", href: "/#vision" },
     { name: "Mission", href: "/#mission" },
@@ -80,7 +80,7 @@ export default function Navbar() {
         <Link href="/" className="flex items-center gap-2">
           <Image
             src={logoPath}
-            alt="Logos Logo"
+            alt="Binoa Logo"
             width={110}
             height={65}
             priority
