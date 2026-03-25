@@ -67,13 +67,13 @@ export default function Navbar() {
     isHomePage && !isScrolled ? "hover:text-blue-300" : "hover:text-blue-600";
 
   // Inverto il colore del logo se è sulla hero
-  const logoPath = "/Logos.svg";
+  const logoPath = "/BinoaLogo.svg";
   const logoClasses = isHomePage && !isScrolled ? "brightness-0 invert" : "";
 
   // Ora il componente navbar
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out px-6 py-2 ${navbarBg}`}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out px-5 py-2 ${navbarBg}`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo a sinistra */}
@@ -81,8 +81,8 @@ export default function Navbar() {
           <Image
             src={logoPath}
             alt="Logos Logo"
-            width={150}
-            height={85}
+            width={110}
+            height={65}
             priority
             className={`object-contain ${logoClasses}`}
           />
