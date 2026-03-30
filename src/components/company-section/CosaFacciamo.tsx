@@ -9,40 +9,56 @@ export default function CosaFacciamo() {
   const sections: SectionType[] = [
     {
       id: 1,
-      title: "Vendite",
+      title: "COMPRAVENDITA IMMOBILIARE",
       imagePath: "/Tre-architetti.png",
-      idSection: "vendite",
-      children: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
-          facere harum animi tenetur enim doloremque in minus ullam quidem
-          soluta odit molestiae quibusdam modi dolore dolorem, voluptate
-          voluptatem. Doloribus recusandae neque qui nulla officiis ducimus,
-          vitae officia culpa provident harum?`,
+      idSection: "compravendita-immobiliare",
+      children: (
+        <>
+          Offriamo un servizio di intermediazione che ha come obiettivo una{" "}
+          <b>“vendita sicura”</b>. Uniamo la ricerca commerciale di Pietro al
+          rigore tecnico di Andrea, garantendo che ogni immobile abbia i
+          documenti necessari in ordine. Accompagniamo i clienti con
+          trasparenza, trasformando la trattativa in un&apos;intesa solida.
+        </>
+      ),
       revrese: false,
       divClasses: "mt-28 mb-16",
     },
     {
       id: 2,
-      title: "Gestione Progetti",
+      title: "GESTIONE PROGETTI",
       imagePath: "/Tre-architetti.png",
-      idSection: "consulenza",
-      children: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
-          facere harum animi tenetur enim doloremque in minus ullam quidem
-          soluta odit molestiae quibusdam modi dolore dolorem, voluptate
-          voluptatem. Doloribus recusandae neque qui nulla officiis ducimus,
-          vitae officia culpa provident harum?`,
+      idSection: "gestione-progetti",
+      children: (
+        <>
+          Ci proponiamo come partner strategici per imprese e investitori anche
+          nel ruolo di <b>Site Manager</b>. Gestiamo la complessità, con un
+          approccio metodico che si fonda dalle norme ISO del project
+          management. Dalla pianificazione dei processi tecnici ed economici
+          oltre a quelli legati al marketing e alla compravendita in corso di
+          costruzione, solleviamo committenti e imprese da aspetti critici sia
+          tecnici che operativi, garantendo efficienza e qualità per trasformare
+          le aree di sviluppo in realtà concrete.
+        </>
+      ),
       revrese: true,
       divClasses: "my-28",
     },
     {
       id: 3,
-      title: "Progettazione",
+      title: "PROGETTAZIONE",
       imagePath: "/Guarda-orizzonte.png",
       idSection: "progettazione",
-      children: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
-          facere harum animi tenetur enim doloremque in minus ullam quidem
-          soluta odit molestiae quibusdam modi dolore dolorem, voluptate
-          voluptatem. Doloribus recusandae neque qui nulla officiis ducimus,
-          vitae officia culpa provident harum?`,
+      children: (
+        <>
+          Trasformiamo le idee in spazi attraverso una progettazione integrale
+          che unisce estetica e ingegnerizzazione. Ci occupiamo anche dei
+          cantieri, con una particolare attenzione all&apos;ambiente. Supportiamo il
+          cliente dal concept iniziale fino alla firma finale, assicurando che
+          ogni intervento, dalla ristrutturazione alla grande opera, sia
+          tecnicamente solido e protetto
+        </>
+      ),
       revrese: false,
       divClasses: "my-28",
     },

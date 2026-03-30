@@ -7,53 +7,56 @@ import { SectionType } from "@/types/bodysection.types";
 const sections: SectionType[] = [
   {
     id: 1,
-    title: "Binoa",
+    title: "BINÒA",
     imagePath: "/Tre-architetti.png",
     idSection: "binoa",
-    children: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
-          facere harum animi tenetur enim doloremque in minus ullam quidem
-          soluta odit molestiae quibusdam modi dolore dolorem, voluptate
-          voluptatem. Doloribus recusandae neque qui nulla officiis ducimus,
-          vitae officia culpa provident harum?`,
+    children: (
+      <>
+        <b>BINÒA</b> nasce dall’incontro tra la solidità tecnica di Andrea,
+        architetto senior, e l’energia di Pietro, esperto in marketing
+        immobiliare. Fondiamo due generazioni e competenze speculari per
+        superare i limiti del nostro tempo. Guidati dal motto{" "}
+        <b>“Gestiamo valori”</b>, seguiamo un percorso strategico che evolve
+        dalla vendita sicura alla gestione di grandi progetti. Uniamo rigore
+        tecnico e cura umana per garantire intese solide e trasparenti.
+      </>
+    ),
     revrese: false,
     divClasses: "mt-28 mb-16",
   },
   {
     id: 2,
-    title: "Motto",
+    title: "MOTTO",
+    subtitle: "Gestiamo valori",
     imagePath: "/Tre-architetti.png",
     idSection: "motto",
-    children: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
-          facere harum animi tenetur enim doloremque in minus ullam quidem
-          soluta odit molestiae quibusdam modi dolore dolorem, voluptate
-          voluptatem. Doloribus recusandae neque qui nulla officiis ducimus,
-          vitae officia culpa provident harum?`,
+    children: `Per BINÒA ogni progetto è in primis un incontro tra persone. 
+    Uniamo il rigore dell’architettura all’ascolto profondo per tutelare il capitale umano e la serenità dei clienti. 
+    Diamo trasparenza ai principi che rendono una dimora il riflesso autentico dei valori di chi la abita.`,
     revrese: true,
     divClasses: "my-28",
   },
   {
     id: 3,
-    title: "Vision",
+    title: "VISION",
+    subtitle: "Gestiamo immobili in modo integrale",
     imagePath: "/Guarda-orizzonte.png",
     idSection: "vision",
-    children: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
-          facere harum animi tenetur enim doloremque in minus ullam quidem
-          soluta odit molestiae quibusdam modi dolore dolorem, voluptate
-          voluptatem. Doloribus recusandae neque qui nulla officiis ducimus,
-          vitae officia culpa provident harum?`,
+    children: `Guardiamo al futuro del mercato evolvendo come partner strategici per investimenti complessi 
+    e progettazione internazionale. La nostra ambizione è governare l'intero ciclo di vita dell'edificio, colmando 
+    ogni distanza tecnica o burocratica per unire stabilmente persone e dimore.`,
     revrese: false,
     divClasses: "my-28",
   },
   {
     id: 4,
-    title: "Mission",
+    title: "MISSION",
+    subtitle: "Ci prendiamo cura degli immobili",
     imagePath: "/Stretta-di-mano.png",
     idSection: "mission",
-    children: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
-          facere harum animi tenetur enim doloremque in minus ullam quidem
-          soluta odit molestiae quibusdam modi dolore dolorem, voluptate
-          voluptatem. Doloribus recusandae neque qui nulla officiis ducimus,
-          vitae officia culpa provident harum?`,
+    children: `Operiamo attraverso un metodo che renda la vendita sicura e trasparente, integrando analisi urbanistica 
+    e marketing relazionale per garantire una gestione completa. Accompagniamo le persone con onestà e competenza, mettendo 
+    la tutela e la valorizzazione del progetto o della vendita al centro di ogni nostra azione.`,
     revrese: true,
     divClasses: "my-28",
   },
@@ -72,6 +75,7 @@ export default function ChiSiamo() {
           <div className={s.divClasses}>
             <Section
               title={s.title}
+              subtitle={s.subtitle}
               imagePath={s.imagePath}
               idSection={s.idSection}
               reverse={s.revrese}

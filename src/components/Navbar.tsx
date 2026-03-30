@@ -14,16 +14,21 @@ interface NavlinkType {
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [isChiSiamoOpen, setIsChiSiamoOpen] = useState<boolean>(false);
+  const [isCosaFacciamoOpen, setIsCosaFacciamoOpen] = useState<boolean>(false);
+  const [isMobileChiSiamoOpen, setIsMobileChiSiamoOpen] =
+    useState<boolean>(false);
+  const [isMobileCosaFacciamoOpen, setIsMobileCosaFacciamoOpen] =
+    useState<boolean>(false);
 
-  const navLinks: NavlinkType[] = [
-    { name: "Vendita", href: "/vendita" },
-    { name: "Consulenza", href: "/#consulenza" },
+  const cosaFacciamoLinks: NavlinkType[] = [
+    { name: "Compravendita Immobiliare", href: "/#compravendita-immobiliare" },
+    { name: "Gestione Progetti", href: "/#gestione-progetti" },
     { name: "Progettazione", href: "/#progettazione" },
   ];
 
-  const dropdownLinks: NavlinkType[] = [
-    { name: "Binoa", href: "/#binoa" },
+  const chiSiamoLinks: NavlinkType[] = [
+    { name: "Binòa", href: "/#binoa" },
     { name: "Motto", href: "/#motto" },
     { name: "Vision", href: "/#vision" },
     { name: "Mission", href: "/#mission" },
@@ -63,8 +68,6 @@ export default function Navbar() {
     : "bg-[rgb(250,248,245)] shadow-md border-b border-gray-100"; //se non si è nella Home
   const isTransparent = isHomePage && !isScrolled && !isOpen;
   const textColor = isTransparent ? "text-white" : "text-black";
-  const linkHoverColor =
-    isHomePage && !isScrolled ? "hover:text-blue-300" : "hover:text-blue-600";
 
   // Inverto il colore del logo se è sulla hero
   const logoPath = "/BinoaLogo.svg";
@@ -93,21 +96,28 @@ export default function Navbar() {
           {/* 'Chi siamo' dropdown */}
           <div
             className="relative group py-2"
-            onMouseOver={() => setIsDropdownOpen(true)}
-            onMouseLeave={() => setIsDropdownOpen(false)}
+            onMouseOver={() => setIsChiSiamoOpen(true)}
+            onMouseLeave={() => setIsChiSiamoOpen(false)}
+            onFocus={() => setIsChiSiamoOpen(true)}
+            onBlur={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget))
+                setIsChiSiamoOpen(false);
+            }}
           >
             <button
-              className={`flex items-center text-sm gap-1 font-medium tracking-wide transition-colors ${textColor} hover:opacity-70`}
+              aria-expanded={isChiSiamoOpen}
+              aria-haspopup={true}
+              className={`flex items-center gap-1 font-medium tracking-wide transition-colors ${textColor} hover:opacity-70 p-1`}
             >
               Chi siamo
               <ChevronDownIcon
-                className={`w-4 h-4 transition-transform duration-200 ${isDropdownOpen && "rotate-180"}`}
+                className={`w-4 h-4 transition-transform duration-200 ${isChiSiamoOpen && "rotate-180"}`}
               />
             </button>
             <div
-              className={`absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 transition-all duration-200 origin-top-left ${isDropdownOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
+              className={`absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 transition-all duration-200 origin-top-left ${isChiSiamoOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 invisible"}`}
             >
-              {dropdownLinks.map((link) => (
+              {chiSiamoLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -119,33 +129,66 @@ export default function Navbar() {
             </div>
           </div>
 
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`text-sm font-medium tracking-wide transition-colors ${textColor} ${linkHoverColor}`}
+          <div
+            className="relative group py-2"
+            onMouseOver={() => setIsCosaFacciamoOpen(true)}
+            onMouseLeave={() => setIsCosaFacciamoOpen(false)}
+            onFocus={() => setIsCosaFacciamoOpen(true)}
+            onBlur={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget))
+                setIsCosaFacciamoOpen(false);
+            }}
+          >
+            <button
+              aria-expanded={isCosaFacciamoOpen}
+              aria-haspopup={true}
+              className={`flex items-center gap-1 font-medium tracking-wide transition-colors ${textColor} hover:opacity-70`}
             >
-              {link.name}
-            </Link>
-          ))}
+              Cosa Facciamo
+              <ChevronDownIcon
+                className={`w-4 h-4 transition-transform duration-200 ${isCosaFacciamoOpen && "rotate-180"}`}
+              />
+            </button>
+            <div
+              className={`absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 transition-all duration-200 origin-top-left ${isCosaFacciamoOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 invisible"}`}
+            >
+              {cosaFacciamoLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="block px-5 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          </div>
 
-          <Link href="#footer">
+          <Link href="/vendita">
             <button
               className={`ml-4 text-xs font-semibold uppercase tracking-widest px-6 py-2.5 rounded-full transition-all duration-300 cursor-pointer ${
                 isHomePage && !isScrolled
                   ? "bg-white text-black hover:bg-gray-200" // Pulsante su trasparente
-                  : "bg-black text-white hover:bg-gray-800" // Pulsante su bianco
+                  : "bg-[#3C3833] text-white hover:bg-[#3C3833]/80" // Pulsante su bianco
               }`}
             >
-              Contattaci
+              Compravendita Immobiliare
             </button>
+          </Link>
+
+          <Link href="#footer">
+            <span
+              className={`font-medium tracking-wide transition-colors ${textColor} hover:opacity-70`}
+            >
+              Contatti
+            </span>
           </Link>
         </div>
 
         {/* Mobile menu icon */}
         <div className="md:hidden">
           <button
-            className={`md:hidden relative z-60 p-2 transition-colors ${textColor}`}
+            className={`md:hidden relative z-70 p-2 transition-colors ${textColor}`}
             aria-label="toggle-menu"
             onClick={() => setIsOpen(!isOpen)}
           >
@@ -186,41 +229,87 @@ export default function Navbar() {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 z-50 bg-white flex flex-col items-center justify-center gap-8 transition-transform duration-500 ease-in-out md:hidden ${
+        className={`fixed inset-0 z-60 bg-[rgb(250,248,245)] flex flex-col px-8 pt-24 transition-transform duration-500 ease-in-out md:hidden ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
       >
-        <div className="flex flex-col items-center gap-4">
-          <span className="text-sm uppercase tracking-widest text-gray-400 font-bold">Chi Siamo</span>
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-4">
-            {dropdownLinks.map((link) => (
-              <Link key={link.href} href={link.href} onClick={() => setIsOpen(false)} className="text-xl font-medium text-black">
-                {link.name}
-              </Link>
-            ))}
+        <div className="flex flex-col gap-6 overflow-y-auto mt-5">
+          {/* Sezione: Chi Siamo (Accordion) */}
+          <div className="flex flex-col">
+            <button
+              onClick={() => setIsMobileChiSiamoOpen(!isMobileChiSiamoOpen)}
+              className="flex items-center justify-between text-2xl font-semibold text-black"
+            >
+              Chi Siamo
+              <ChevronDownIcon
+                className={`w-6 h-6 transition-transform ${isMobileChiSiamoOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+            <div
+              className={`flex flex-col gap-4 pl-4 overflow-hidden transition-all duration-300 ${isMobileChiSiamoOpen ? "max-h-60 mt-4 opacity-100" : "max-h-0 opacity-0"}`}
+            >
+              {chiSiamoLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="text-lg text-gray-600"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="w-12 h-px bg-gray-200 my-4" />
-        
-        {navLinks.map((link) => (
+          {/* Sezione: Cosa Facciamo (Accordion) */}
+          <div className="flex flex-col">
+            <button
+              onClick={() =>
+                setIsMobileCosaFacciamoOpen(!isMobileCosaFacciamoOpen)
+              }
+              className="flex items-center justify-between text-2xl font-semibold text-black"
+            >
+              Cosa Facciamo
+              <ChevronDownIcon
+                className={`w-6 h-6 transition-transform ${isMobileCosaFacciamoOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+            <div
+              className={`flex flex-col gap-4 pl-4 overflow-hidden transition-all duration-300 ${isMobileCosaFacciamoOpen ? "max-h-60 mt-4 opacity-100" : "max-h-0 opacity-0"}`}
+            >
+              {cosaFacciamoLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="text-lg text-gray-600"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Link Semplice: Vendita */}
           <Link
-            key={link.href}
-            href={link.href}
-            className="text-2xl font-semibold text-black hover:text-blue-600 transition-colors"
+            href="/#compravendita-immobiliare"
             onClick={() => setIsOpen(false)}
+            className="text-2xl font-semibold text-black"
           >
-            {link.name}
+            Compravendita Immobiliare
           </Link>
-        ))}
 
-        <Link
-          href="/contattaci"
-          onClick={() => setIsOpen(false)}
-          className="mt-4 bg-black text-white px-10 py-4 rounded-full text-lg font-bold shadow-lg"
-        >
-          Contattaci
-        </Link>
+          <div className="h-px bg-gray-200 my-4" />
+
+          {/* Bottone CTA Finale */}
+          <Link
+            href="#footer"
+            onClick={() => setIsOpen(false)}
+            className="bg-[#3C3833] text-white text-center py-4 rounded-full text-lg font-bold shadow-lg"
+          >
+            Contatti
+          </Link>
+        </div>
       </div>
     </nav>
   );

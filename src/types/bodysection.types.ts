@@ -8,6 +8,7 @@ export interface SectionStyle {
 
 export interface SectionProps {
   title: string;
+  subtitle?: string;
   children: string | ReactNode;
   imagePath: string;
   reverse: boolean;
@@ -18,6 +19,7 @@ export interface SectionProps {
 export interface SectionType {
   id: number;
   title: string;
+  subtitle?: string;
   imagePath: string;
   idSection: string;
   children: string | ReactNode;

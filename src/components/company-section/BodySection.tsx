@@ -3,10 +3,9 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { SectionProps } from "@/types/bodysection.types";
 
-
-
 export default function Section({
   title,
+  subtitle,
   children,
   imagePath,
   reverse,
@@ -55,12 +54,20 @@ export default function Section({
             rounded-xl ${reverse ? "md:rounded-s-xl md:rounded-e-none" : "md:rounded-e-xl md:rounded-s-none"}
         `}
       >
-        <h3
+        <h2
           style={{ color: titleColor }}
-          className={`text-3xl md:text-4xl mb-4 uppercase tracking-wider`}
+          className={`text-3xl md:text-4xl mb-1 tracking-wide`}
         >
           {title}
-        </h3>
+        </h2>
+        {subtitle && (
+          <h3
+            style={{ color: titleColor }}
+            className="text-2xl mb-4 tracking-wide"
+          >
+            {subtitle}
+          </h3>
+        )}
         <p className={`leading-relaxed max-w-md`} style={{ color: textColor }}>
           {children}
         </p>
