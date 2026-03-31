@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import Title from "./BodyTitle";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import { SectionType } from "@/types/bodysection.types";
+import Form from "./FormCommenti";
 
 export default function CosaFacciamo() {
   const sections: SectionType[] = [
@@ -53,10 +54,10 @@ export default function CosaFacciamo() {
         <>
           Trasformiamo le idee in spazi attraverso una progettazione integrale
           che unisce estetica e ingegnerizzazione. Ci occupiamo anche dei
-          cantieri, con una particolare attenzione all&apos;ambiente. Supportiamo il
-          cliente dal concept iniziale fino alla firma finale, assicurando che
-          ogni intervento, dalla ristrutturazione alla grande opera, sia
-          tecnicamente solido e protetto
+          cantieri, con una particolare attenzione all&apos;ambiente.
+          Supportiamo il cliente dal concept iniziale fino alla firma finale,
+          assicurando che ogni intervento, dalla ristrutturazione alla grande
+          opera, sia tecnicamente solido e protetto
         </>
       ),
       revrese: false,
@@ -100,6 +101,9 @@ export default function CosaFacciamo() {
           </Section>
         </Fragment>
       ))}
+      <div className="container flex justify-center items-center mx-auto">
+        <Form />
+      </div>
     </div>
   );
 }

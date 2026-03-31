@@ -20,7 +20,7 @@ export default function Section({
 
   return (
     <section
-      className={`flex flex-col ${reverse ? "md:flex-row-reverse xl:-me-17" : "md:flex-row xl:-ms-17"} items-center py-8 md:py-12 gap-0 md:gap- min-h-[60vh] scroll-mt-20 md:scroll-md-36`}
+      className={`flex flex-col ${reverse ? "md:flex-row-reverse xl:-me-17" : "md:flex-row xl:-ms-17"} items-center py-8 md:py-12 gap-0 md:gap- min-h-[60vh] scroll-mt-20 md:scroll-mt-36`}
       id={idSection}
     >
       {/* Immagine */}
