@@ -1,8 +1,9 @@
 import { Fragment } from "react";
 import Section from "./BodySection";
 import Title from "./BodyTitle";
-import FoundersGrid from "./FoundersGrid";
+// import FoundersGrid from "./FoundersGrid";
 import { SectionType } from "@/types/bodysection.types";
+import CVImage from "./CVImage";
 
 const sections: SectionType[] = [
   {
@@ -12,8 +13,8 @@ const sections: SectionType[] = [
     idSection: "binoa",
     children: (
       <>
-        <b>BINÒA</b> nasce dall’incontro tra la solidità tecnica di Andrea,
-        architetto senior, e l’energia di Pietro, esperto in marketing
+        <b>BINÒA</b> nasce dall&apos;incontro tra la solidità tecnica di Andrea,
+        architetto senior, e l&apos;energia di Pietro, esperto in marketing
         immobiliare. Fondiamo due generazioni e competenze speculari per
         superare i limiti del nostro tempo. Guidati dal motto{" "}
         <b>“Gestiamo valori”</b>, seguiamo un percorso strategico che evolve
@@ -26,20 +27,20 @@ const sections: SectionType[] = [
   },
   {
     id: 2,
-    title: "MOTTO",
-    subtitle: "Gestiamo valori",
+    title: "GESTIAMO VALORI",
+    subtitle: "Motto",
     imagePath: "/Tre-architetti.png",
     idSection: "motto",
     children: `Per BINÒA ogni progetto è in primis un incontro tra persone. 
-    Uniamo il rigore dell’architettura all’ascolto profondo per tutelare il capitale umano e la serenità dei clienti. 
+    Uniamo il rigore dell'architettura all'ascolto profondo per tutelare il capitale umano e la serenità dei clienti. 
     Diamo trasparenza ai principi che rendono una dimora il riflesso autentico dei valori di chi la abita.`,
     revrese: true,
     divClasses: "my-28",
   },
   {
     id: 3,
-    title: "VISION",
-    subtitle: "Gestiamo immobili in modo integrale",
+    title: "GESTIAMO IMMOBILI IN MODO INTEGRALE",
+    subtitle: "Vision",
     imagePath: "/Guarda-orizzonte.png",
     idSection: "vision",
     children: `Guardiamo al futuro del mercato evolvendo come partner strategici per investimenti complessi 
@@ -50,8 +51,8 @@ const sections: SectionType[] = [
   },
   {
     id: 4,
-    title: "MISSION",
-    subtitle: "Ci prendiamo cura degli immobili",
+    title: "CI PRENDIAMO CURA DEGLI IMMOBILI",
+    subtitle: "Mission",
     imagePath: "/Stretta-di-mano.png",
     idSection: "mission",
     children: `Operiamo attraverso un metodo che renda la vendita sicura e trasparente, integrando analisi urbanistica 
@@ -84,7 +85,7 @@ export default function ChiSiamo() {
             </Section>
           </div>
 
-          {s.id === 1 && <FoundersGrid />}
+          {s.id === 1 && <CVImage />}
         </Fragment>
       ))}
     </div>

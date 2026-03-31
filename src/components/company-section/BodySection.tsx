@@ -25,7 +25,7 @@ export default function Section({
     >
       {/* Immagine */}
       <div
-        className={`w-full md:w-1/2 aspect-4/3 md:h-100 relative overflow-hidden ${reverse ? "md:rounded-e-2xl md:rounded-s-lg" : "md:rounded-s-2xl md:rounded-e-lg"}`}
+        className={`w-full md:w-1/2 aspect-4/3 md:h-100 md:z-20 relative overflow-hidden ${reverse ? "md:rounded-e-2xl md:rounded-s-lg" : "md:rounded-s-2xl md:rounded-e-lg"}`}
       >
         <Image
           src={imagePath}
@@ -51,26 +51,28 @@ export default function Section({
             p-6 md:p-8 
             relative z-10 
             shadow-lg md:shadow-none
-            rounded-xl ${reverse ? "md:rounded-s-xl md:rounded-e-none" : "md:rounded-e-xl md:rounded-s-none"}
+            rounded-xl ${reverse ? "md:rounded-s-xl md:rounded-e-lg md:-me-10" : "md:rounded-e-xl md:rounded-s-lg md:-ms-2"}
         `}
       >
-        <h2
-          style={{ color: titleColor }}
-          className={`text-3xl md:text-4xl mb-1 tracking-wide`}
-        >
-          {title}
-        </h2>
+
         {subtitle && (
           <h3
             style={{ color: titleColor }}
-            className="text-2xl mb-4 tracking-wide"
+            className="text-2xl mb-2 tracking-wide"
           >
             {subtitle}
           </h3>
         )}
-        <p className={`leading-relaxed max-w-md`} style={{ color: textColor }}>
+        <h2
+          style={{ color: titleColor }}
+          className={`text-3xl md:text-4xl mb-4 tracking-wide`}
+        >
+          {title}
+        </h2>
+        
+        <div className={`leading-relaxed max-w-md`} style={{ color: textColor }}>
           {children}
-        </p>
+        </div>
       </motion.div>
     </section>
   );

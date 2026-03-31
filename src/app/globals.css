@@ -22,7 +22,8 @@ rgb(183,171,159)  Cool Greige
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   /* --font-sans: var(--font-geist-sans); */
-  --font-sans: "Montserrat", sans-serif;
+  /* --font-sans: "Montserrat", sans-serif; */
+  --font-sans: "Albert Sans", sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 
