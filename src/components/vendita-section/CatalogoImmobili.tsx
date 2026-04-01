@@ -4,7 +4,7 @@ import { CardImmobileType } from "@/types/card.types";
 import { useState } from "react";
 import CardImmobile from "./CardImmbolie";
 import CardFooter from "./CradImmobileFooter";
-import Form from "./FormImmobile";
+// import Form from "./FormImmobile";
 
 export default function CatalogoImmobili() {
   const [catalogo, setCatalogo] = useState<CardImmobileType[]>([]);
@@ -16,7 +16,7 @@ export default function CatalogoImmobili() {
   return (
     <>
       <div className="container flex justify-center items-center my-52">
-        <Form onUpdate={onUpdate} />
+        {/* <Form onUpdate={onUpdate} /> */}
       </div>
       <div className="w-full h-96 flex justify-center items-center my-20">
         {catalogo.map((i) => (

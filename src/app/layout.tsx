@@ -24,9 +24,7 @@ const albert = Albert_Sans({
   variable: "--font-albertsans",
   subsets: ["latin"],
   weight: ["200", "400", "600", "700"],
-})
-
-
+});
 
 // Questi dati finiscono direttamente nell'head dell'html
 export const metadata: Metadata = {
@@ -45,7 +43,7 @@ export default function RootLayout({
         className={`${albert.variable} antialiased flex flex-col min-h-screen`}
       >
         <Navbar />
-        {children}
+        <main className="grow">{children}</main>
 
         <Footer />
       </body>

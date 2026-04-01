@@ -38,7 +38,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScrolling = () => {
-      // Se scorre più di 50px, setto lo steato isScrolled = true
+      // Se scorre più di 50px, setto lo stato isScrolled = true
       if (window.scrollY > 50) {
         setIsScrolled(true);
       } else {
@@ -129,6 +129,7 @@ export default function Navbar() {
             </div>
           </div>
 
+          {/* 'Cosa Facciamo' dropdown menu */}
           <div
             className="relative group py-2"
             onMouseOver={() => setIsCosaFacciamoOpen(true)}
@@ -183,6 +184,8 @@ export default function Navbar() {
               Contatti
             </span>
           </Link>
+
+          <Link href="/login" className={`${isHomePage && !isScrolled ? "text-white" : "text-black"} text-sm`}>Login</Link>
         </div>
 
         {/* Mobile menu icon */}
