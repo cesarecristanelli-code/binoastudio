@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 export interface CardImmobileProps {
-  imagePath: string,
+  imagePaths: string[],
   prezzo: number,
   nomeImmobile: string,
   indirizzo: string,

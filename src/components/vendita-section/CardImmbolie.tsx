@@ -2,7 +2,7 @@ import { CardImmobileProps } from "@/types/card.types";
 import Image from "next/image";
 
 export default function CardImmobile({
-  imagePath,
+  imagePaths,
   prezzo,
   nomeImmobile,
   children,
@@ -12,7 +12,7 @@ export default function CardImmobile({
     <div className="max-w-xl flex flex-col rounded-xl shadow-lg m-3 cursor-pointer">
       <div className="relative w-80 h-52 overflow-hidden rounded-t-xl">
         <Image
-          src={imagePath}
+          src={imagePaths[0]}
           alt={`Foto di ${nomeImmobile}`}
           fill
           className="object-cover"

@@ -1,40 +1,90 @@
 "use client";
 
 import { CardImmobileType } from "@/types/card.types";
+import { useState } from "react";
 
 interface FormProps {
-  onUpload: (immobile: CardImmobileType) => void;
+  onUpdate: (immobile: CardImmobileType) => void;
 }
 
-export default function Form({ onUpload }: FormProps) {
+export default function Form({ onUpdate }: FormProps) {
+  const [status, setStatus] = useState<{
+    message: string;
+    type: "success" | "error" | null;
+  }>({
+    message: "",
+    type: null,
+  });
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
+    setIsLoading(true);
+    setStatus({ message: "", type: null });
 
     const formData = new FormData(e.currentTarget as HTMLFormElement);
 
     // Il passagio da fare se uso Vercel Blob
     // const response = await uploadToVercelAction(formData)
 
-    const files = formData.getAll("foto") as File[];
-    const fotoUrls = files.map((f) => URL.createObjectURL(f));
+    try {
+      const nomeImmobile = formData.get("nome") as string;
+      const prezzo = Number(formData.get("prezzo"));
+      const indirizzo = formData.get("indirizzo") as string;
+      const metratura = Number(formData.get("metratura"));
+      const numeroBagni = Number(formData.get("numero-bagni"));
+      const numeroLocali = Number(formData.get("numero-locali"));
+      const descrizione = formData.get("descrizione") as string;
+      const files = formData.getAll("foto") as File[];
 
-    const datiImmobile: CardImmobileType = {
-      id: crypto.randomUUID(),
-      nomeImmobile: formData.get("nome") as string,
-      prezzo: Number(formData.get("prezzo")),
-      indirizzo: formData.get("indirizzo") as string,
-      metratura: Number(formData.get("metratura")),
-      numeroBagni: Number(formData.get("numero-bagni")),
-      numeroLocali: Number(formData.get("numero-locali")),
-      descrizione: formData.get("descrizione") as string,
-      imagePaths: fotoUrls,
-    };
+      // Controlli
+      if (!nomeImmobile) throw new Error("Nome dell'immoble non valido");
+      if (prezzo <= 0) throw new Error("Il prezzo non è valido");
+      if (!indirizzo) throw new Error("Indirizzo non valido");
+      if (metratura <= 0) throw new Error("Metratura non valida");
+      if (numeroBagni <= 0) throw new Error("Numero dei bagni non valido");
+      if (numeroLocali <= 0) throw new Error("Numero dei locali non valido");
+      if (!descrizione) throw new Error("Descrizione non valida");
+      if (!files || files.length <= 0)
+        throw new Error("Devi inserire almeno 1 immagine");
+      // Fine controlli
 
-    onUpload(datiImmobile);
+      const fotoUrls = files.map((f) => URL.createObjectURL(f));
 
-    (e.currentTarget as HTMLFormElement).reset();
+      const datiImmobile: CardImmobileType = {
+        id: crypto.randomUUID(),
+        nomeImmobile: formData.get("nome") as string,
+        prezzo: Number(formData.get("prezzo")),
+        indirizzo: formData.get("indirizzo") as string,
+        metratura: Number(formData.get("metratura")),
+        numeroBagni: Number(formData.get("numero-bagni")),
+        numeroLocali: Number(formData.get("numero-locali")),
+        descrizione: formData.get("descrizione") as string,
+        imagePaths: fotoUrls,
+      };
 
-    console.log("Dati pronti per essere inviati al DB: ", datiImmobile);
+      setStatus({ message: "Immobile caricato con successo", type: "success" });
+      onUpdate(datiImmobile);
+      console.log("Dati dell'immobile caricati: ", datiImmobile);
+      (e.currentTarget as HTMLFormElement).reset();
+
+      setTimeout(() => {
+        setStatus({ message: "", type: null });
+      }, 4000);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Errore durante il caricamento dell'immobile. Riprova";
+
+      setStatus({
+        message: errorMessage,
+        type: "error",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -46,6 +96,7 @@ export default function Form({ onUpload }: FormProps) {
             Nome Immobile
           </label>
           <input
+            required
             type="text"
             name="nome"
             id="nome"
@@ -59,6 +110,7 @@ export default function Form({ onUpload }: FormProps) {
           </label>
           <div className="flex flex-row">
             <input
+              required
               type="number"
               name="prezzo"
               id="prezzo"
@@ -75,6 +127,7 @@ export default function Form({ onUpload }: FormProps) {
             Indirizzo
           </label>
           <input
+            required
             type="text"
             name="indirizzo"
             id="indirizzo"
@@ -90,6 +143,7 @@ export default function Form({ onUpload }: FormProps) {
             </label>
             <div className="flex">
               <input
+                required
                 type="number"
                 name="metratura"
                 id="metratura"
@@ -106,6 +160,7 @@ export default function Form({ onUpload }: FormProps) {
             </label>
 
             <input
+              required
               type="number"
               name="numero-bagni"
               id="numero-bagni"
@@ -118,6 +173,7 @@ export default function Form({ onUpload }: FormProps) {
             </label>
 
             <input
+              required
               type="number"
               name="numero-locali"
               id="numero-locali"
@@ -131,10 +187,11 @@ export default function Form({ onUpload }: FormProps) {
             Foto Immobile
           </label>
           <input
+            required
             type="file"
-            {...{ webkitdirectory: "", directory: "" }}
+            // {...{ webkitdirectory: "", directory: "" }}
             multiple
-            accept="image/*"
+            // accept="image/*"
             name="foto"
             id="foto"
             className="border-2 border-black rounded-xl file:border-e-2 file:border-e-black file:p-2 file:me-4 hover:file:cursor-pointer file:bg-gray-200"
@@ -146,19 +203,28 @@ export default function Form({ onUpload }: FormProps) {
             Descrizione
           </label>
           <textarea
+            required
             name="descrizione"
             id="descrizione"
             className="w-sm min-h-32 py-2 px-3 bg-white border-2 border-black rounded-xl text-sm"
           />
         </div>
         {/* Submit */}
-        <div className="w-full flex justify-center mt-2">
+        <div className="w-full flex flex-col gap-3 justify-center mt-2">
           <button
             type="submit"
-            className="px-2 py-3 border-2 border-black cursor-pointer rounded-2xl font-semibold"
+            disabled={isLoading}
+            className={`px-2 py-3 border-2 border-black ${isLoading ? "" : "cursor-pointer"} rounded-2xl font-semibold `}
           >
-            Carica
+            {isLoading ? "Caricamento..." : "Carica Immobile"}
           </button>
+          {status.type && (
+            <p
+              className={`px-2 py-3 border-2 rounded-md text-center text-white ${status.type === "success" ? "border-green-700 bg-green-300" : "border-red-600 bg-red-400"} `}
+            >
+              {status.message}
+            </p>
+          )}
         </div>
       </div>
     </form>
