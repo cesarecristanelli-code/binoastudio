@@ -1,18 +1,12 @@
-
-// Devo create un provider (Context API) che inserisco nella pagina Layout.tsx dentro alla cartella (gestione-immobili). In questo modo posso gestire il passaggio dei props
-
-
 "use client";
 
 import { CardImmobileType } from "@/types/card.types";
 import { useState } from "react";
 import Link from "next/link";
+import { useImmobiliProvider } from "@/context/ImmobiliContext";
 
-interface FormProps {
-  onUpdate: (immobile: CardImmobileType) => void;
-}
-
-export default function Form({ onUpdate }: FormProps) {
+export default function Form() {
+  const { aggiornaCatalogo } = useImmobiliProvider();
   const [status, setStatus] = useState<{
     message: string;
     type: "success" | "error" | null;
@@ -70,7 +64,7 @@ export default function Form({ onUpdate }: FormProps) {
       };
 
       setStatus({ message: "Immobile caricato con successo", type: "success" });
-      onUpdate(datiImmobile);
+      aggiornaCatalogo(datiImmobile);
       console.log("Dati dell'immobile caricati: ", datiImmobile);
       (e.currentTarget as HTMLFormElement).reset();
 
@@ -101,7 +95,7 @@ export default function Form({ onUpdate }: FormProps) {
               Inserisci i dati dell&apos;Immobile
             </h2>
             <Link
-              href="/vendite"
+              href="/vendita"
               className="underline hover:text-blue-500 cursor-pointer"
             >
               Vai al catalgo

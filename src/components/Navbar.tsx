@@ -87,7 +87,8 @@ export default function Navbar() {
             width={90}
             height={60}
             priority
-            className={`object-contain ${logoClasses}`}
+            className={`${logoClasses}`}
+            style={{height: "auto"}}
           />
         </Link>
 

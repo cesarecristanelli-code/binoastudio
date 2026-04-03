@@ -18,17 +18,31 @@ export default function ImmobiliProvider({
 }: {
   children: ReactNode;
 }) {
-  const [catalogoImmobili, setCatalogoImmobili] = useState<CardImmobileType[]>(() => {
-    if (typeof window !== "undefined") {
-        const immobiliSalvati = localStorage.getItem("immobili_backup")
+  const [catalogoImmobili, setCatalogoImmobili] = useState<CardImmobileType[]>(
+    () => {
+      if (typeof window === "undefined") return [];
+
+      try {
+        const immobiliSalvati = localStorage.getItem("immobili_backup");
         return immobiliSalvati ? JSON.parse(immobiliSalvati) : [];
-    }
-  },);
+      } catch (e) {
+        console.error(
+          "Sei dentro al catch di useState... c'è stato un problema: ",
+          e,
+        );
+        return [];
+      }
+    },
+  );
 
   const aggiornaCatalogo = (immobile: CardImmobileType) => {
+    const nuovoImmobile = { ...immobile, id: crypto.randomUUID() };
     setCatalogoImmobili((prev) => {
-      const catalogoAggiornato = [...prev, immobile];
-      localStorage.setItem("immobili_backup", JSON.stringify(catalogoImmobili));
+      const catalogoAggiornato = [...prev, nuovoImmobile];
+      localStorage.setItem(
+        "immobili_backup",
+        JSON.stringify(catalogoAggiornato),
+      );
       return catalogoAggiornato;
     });
   };

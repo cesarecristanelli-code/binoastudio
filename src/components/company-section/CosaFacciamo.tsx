@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import Title from "./BodyTitle";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import { SectionType } from "@/types/bodysection.types";
-import Form from "./FormCommenti";
+// import Form from "./FormCommenti";
 
 export default function CosaFacciamo() {
   const sections: SectionType[] = [
@@ -101,9 +101,9 @@ export default function CosaFacciamo() {
           </Section>
         </Fragment>
       ))}
-      <div className="container flex justify-center items-center mx-auto">
+      {/* <div className="container flex justify-center items-center mx-auto">
         <Form />
-      </div>
+      </div> */}
     </div>
   );
 }
