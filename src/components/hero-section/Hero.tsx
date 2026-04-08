@@ -15,9 +15,10 @@ export default function Hero({ title, bgImage }: HeroProps) {
           alt="Sfondo Trinòa"
           fill
           priority
+          quality={100}
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-black/30" />
       </div>
 
       <div className="relative z-10 text-gray-100 px-6 w-full">

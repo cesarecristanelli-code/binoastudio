@@ -53,7 +53,7 @@
 export default function CatalogoImmobili() {
   return (
     <div className="w-full mt-52 flex items-center justify-center">
-      <p className="text-xl">Loading...</p>
+      <p className="text-xl tracking-wide font-semibold">Coming Soon</p>
     </div> 
   )
 }

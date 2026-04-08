@@ -11,7 +11,7 @@ export default function CosaFacciamo() {
     {
       id: 1,
       title: "COMPRAVENDITA IMMOBILIARE",
-      imagePath: "/compravendita-immagine.png",
+      imagePath: "/compravendita-immagine.jpg",
       idSection: "compravendita-immobiliare",
       children: (
         <>
@@ -25,7 +25,7 @@ export default function CosaFacciamo() {
     {
       id: 2,
       title: "GESTIONE PROGETTI",
-      imagePath: "/gestione-immagine.png",
+      imagePath: "/gestione-immagine.jpg",
       idSection: "gestione-progetti",
       children: `Ci proponiamo come partner strategici per imprese e investitori. 
       Gestiamo la complessità, con un approccio metodico che si fonda sulle norme ISO del project management. 
@@ -37,7 +37,7 @@ export default function CosaFacciamo() {
     {
       id: 3,
       title: "PROGETTAZIONE",
-      imagePath: "/progettazione-immagine.png",
+      imagePath: "/progettazione-immagine.jpg",
       idSection: "progettazione",
       children: `Trasformiamo le idee in spazi attraverso una progettazione integrale che unisce estetica e ingegnerizzazione. 
       Ci occupiamo anche dei cantieri, con una particolare attenzione all'ambiente. 

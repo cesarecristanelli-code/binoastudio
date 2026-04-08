@@ -1,4 +1,5 @@
 import { FaLinkedin } from "react-icons/fa";
+import Link from "next/link"
 
 export default function Footer() {
   return (
@@ -7,16 +8,18 @@ export default function Footer() {
       id="footer"
     >
       <p className="font-light">
-        &copy; Binoastudio. <span className="text-red-300">Tutti i diritti riservati.</span>
+        &copy; 2026 Binòastudio. 
       </p>
       <p className="font-light">
-        <span className="text-red-400">P.IVA 12345678910 Cod. Fisc 0101010101010</span> | Sede: via Vespucci
-        Amerigo, 2 - 37068 Vigasio, VR (IT)
+        Binòa - di Pietro Bonetto | P.IVA: IT04658490232 | REA: VR-438596 | Sede: Via Amerigo Vespucci 2a, 37068 Vigasio (VR)
       </p>
-      <p className="font-light text-red-400">
+      <p className="font-light">
         Email: andrea@binoastudio.com pietro@binoastudio.com
       </p>
-      <p className="font-light text-red-400">Privacy Policy | Cookies Policy</p>
+      <p className="font-light">
+        Andrea: +393473146280  Pietro: +393425026686
+      </p>
+      <Link href="/privacy" className="font-light hover:underline">Privacy Policy </Link>
       <div className="flex gap-6 justify-between    mt-5 text-gray-200">
         <div className="flex flex-col gap-2 justify-center">
           <p className="text-[#E5E0D8] text-xs uppercase tracking-widest ps-1">
@@ -30,11 +33,11 @@ export default function Footer() {
           </a>
         </div>
         <div className="flex flex-col gap-2 justify-center">
-          <p className="text-red-400 text-xs uppercase tracking-widest ps-1">
+          <p className="text-[#E5E0D8] text-xs uppercase tracking-widest ps-1">
             Pietro
           </p>
           <a
-            href="https://www.linkedin.com/in/andreacristanelli/"
+            href="https://www.linkedin.com/in/pietro-bonetto-637aa1176/"
             className="text-[#E5E0D8] hover:text-[#D1CBC0] transition-colors p-2 border border-[#E5E0D8]/20 rounded-full hover:bg-white/5 mx-auto"
           >
             <FaLinkedin size={20} />
