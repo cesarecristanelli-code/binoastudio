@@ -31,3 +31,9 @@ model ImmaginiImmobile {
   immobileId String
   immobile   Immobile @relation(fields: [immobileId], references: [id], onDelete: Cascade)
 }
+
+model User {
+  username String @id
+  password String
+  role     String @default("user")
+}

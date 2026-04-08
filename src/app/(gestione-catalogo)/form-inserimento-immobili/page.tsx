@@ -1,18 +1,17 @@
 "use client";
 
-import { CardImmobileType } from "@/types/card.types";
 import { useState } from "react";
 import Link from "next/link";
-import { useImmobiliProvider } from "@/context/ImmobiliContext";
+
+import generateImmobile from "@/actions/immobili";
 
 export default function Form() {
-  const { aggiornaCatalogo } = useImmobiliProvider();
   const [status, setStatus] = useState<{
+    success: boolean | null;
     message: string;
-    type: "success" | "error" | null;
   }>({
+    success: null,
     message: "",
-    type: null,
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -20,7 +19,7 @@ export default function Form() {
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
     setIsLoading(true);
-    setStatus({ message: "", type: null });
+    setStatus({ success: null, message: "" });
 
     const formData = new FormData(e.currentTarget as HTMLFormElement);
 
@@ -28,59 +27,21 @@ export default function Form() {
     // const response = await uploadToVercelAction(formData)
 
     try {
-      const nomeImmobile = formData.get("nome") as string;
-      const prezzo = Number(formData.get("prezzo"));
-      const indirizzo = formData.get("indirizzo") as string;
-      const metratura = Number(formData.get("metratura"));
-      const numeroBagni = Number(formData.get("numero-bagni"));
-      const numeroLocali = Number(formData.get("numero-locali"));
-      const descrizione = formData.get("descrizione") as string;
-      const files = formData.getAll("foto") as File[];
+      const response = await generateImmobile(formData);
 
-      // Controlli
-      if (!nomeImmobile) throw new Error("Nome dell'immoble non valido");
-      if (prezzo <= 0) throw new Error("Il prezzo non è valido");
-      if (!indirizzo) throw new Error("Indirizzo non valido");
-      if (metratura <= 0) throw new Error("Metratura non valida");
-      if (numeroBagni <= 0) throw new Error("Numero dei bagni non valido");
-      if (numeroLocali <= 0) throw new Error("Numero dei locali non valido");
-      if (!descrizione) throw new Error("Descrizione non valida");
-      if (!files || files.length <= 0)
-        throw new Error("Devi inserire almeno 1 immagine");
-      // Fine controlli
+      if (response.success) {
+        setStatus(response);
+        (e.currentTarget as HTMLFormElement).reset();
 
-      const fotoUrls = files.map((f) => URL.createObjectURL(f));
-
-      const datiImmobile: CardImmobileType = {
-        id: crypto.randomUUID(),
-        nomeImmobile: formData.get("nome") as string,
-        prezzo: Number(formData.get("prezzo")),
-        indirizzo: formData.get("indirizzo") as string,
-        metratura: Number(formData.get("metratura")),
-        numeroBagni: Number(formData.get("numero-bagni")),
-        numeroLocali: Number(formData.get("numero-locali")),
-        descrizione: formData.get("descrizione") as string,
-        imagePaths: fotoUrls,
-      };
-
-      setStatus({ message: "Immobile caricato con successo", type: "success" });
-      aggiornaCatalogo(datiImmobile);
-      console.log("Dati dell'immobile caricati: ", datiImmobile);
-      (e.currentTarget as HTMLFormElement).reset();
-
-      setTimeout(() => {
-        setStatus({ message: "", type: null });
-      }, 4000);
+        setTimeout(() => setStatus({ success: null, message: "" }));
+      } else {
+        throw new Error(response.message || "Errore durante il salvataggio");
+      }
     } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Errore durante il caricamento dell'immobile. Riprova";
+      const errorMessage: string =
+        error instanceof Error ? error.message : "Si è verificato un problema";
 
-      setStatus({
-        message: errorMessage,
-        type: "error",
-      });
+      setStatus({ success: false, message: errorMessage });
     } finally {
       setIsLoading(false);
     }
@@ -233,9 +194,9 @@ export default function Form() {
             >
               {isLoading ? "Caricamento..." : "Carica Immobile"}
             </button>
-            {status.type && (
+            {status.success && (
               <p
-                className={`px-2 py-3 border-2 rounded-md text-center text-white ${status.type === "success" ? "border-green-700 bg-green-300" : "border-red-600 bg-red-400"} `}
+                className={`px-2 py-3 border-2 rounded-md text-center text-white ${status.success === true ? "border-green-700 bg-green-300" : "border-red-600 bg-red-400"} `}
               >
                 {status.message}
               </p>

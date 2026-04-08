@@ -1,18 +1,21 @@
-import { CardImmobileProps } from "@/types/card.types";
+import { CardImmobileProps } from "@/types/cardImmobile.types";
 import Image from "next/image";
 
 export default function CardImmobile({
-  imagePaths,
+  immagini,
   prezzo,
   nomeImmobile,
   children,
   indirizzo,
 }: CardImmobileProps) {
+
+  const coverImage = immagini.find(img => img.isCover) || immagini[0];
+
   return (
     <div className="max-w-xl flex flex-col rounded-xl shadow-lg m-3 cursor-pointer">
       <div className="relative w-80 h-52 overflow-hidden rounded-t-xl">
         <Image
-          src={imagePaths[0]}
+          src={coverImage.path}
           alt={`Foto di ${nomeImmobile}`}
           fill
           className="object-cover"

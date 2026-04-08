@@ -1,7 +1,14 @@
 import { ReactNode } from "react";
 
+interface ImmagineImmobileType {
+  id: string;
+  path: string,
+  isCover: boolean,
+  immobileId: string,
+}
+
 export interface CardImmobileProps {
-  imagePaths: string[],
+  immagini: ImmagineImmobileType[],
   prezzo: number,
   nomeImmobile: string,
   indirizzo: string,
@@ -19,7 +26,7 @@ export interface CardImmobileType {
   prezzo: number,
   nomeImmobile: string,
   indirizzo: string,
-  imagePaths: string[],
+  immagini: ImmagineImmobileType[],
   metratura: number,
   numeroLocali: number,
   numeroBagni: number,

@@ -47,3 +47,6 @@ next.md
 # Database locale (SQLite)
 *.db 
 *.db-journal
+
+# Files nella cartella uploads
+public/uploads/

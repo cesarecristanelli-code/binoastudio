@@ -2,21 +2,35 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import loginAction from "@/actions/auth";
 
 export default function Login() {
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  const handleLogin = (e: React.SubmitEvent) => {
+  const handleLogin = async (e: React.SubmitEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
-    if (username === "admin" && password === "binoa6898") {
-      localStorage.setItem("isLoggedIn", "true");
-      router.push("/form-inserimento-immobili");
-    } else {
-      setError("Credenziali non valide!");
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+
+    try {
+      const response = await loginAction(formData);
+
+      if (response.success) {
+        localStorage.setItem("isLoggedIn", "true");
+        router.push("/form-inserimento-immobili");
+        router.refresh();
+      } else {
+        setError(response.message || "Errore");
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Errore dal server";
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -37,7 +51,6 @@ export default function Login() {
           name="username"
           id="username"
           required
-          onChange={(e) => setUsername(e.target.value)}
           className="p-3 border-2 border-black w-sm mb-3 rounded-xl"
         />
 
@@ -49,7 +62,6 @@ export default function Login() {
           name="password"
           id="password"
           required
-          onChange={(e) => setPassword(e.target.value)}
           className="p-3 border-2 border-black w-sm mb-3 rounded-xl"
         />
 
@@ -64,6 +76,9 @@ export default function Login() {
           <p className="p-4 mx-auto text-center text-white border-2 border-red-600 bg-red-400 rounded-md">
             {error}
           </p>
+        )}
+        {isLoading && (
+          <p className="p-4 mx-auto text-center">Caricamento...</p>
         )}
       </form>
     </section>

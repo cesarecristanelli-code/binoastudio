@@ -1,4 +1,4 @@
-import { CardImFooterProps } from "@/types/card.types";
+import { CardImFooterProps } from "@/types/cardImmobile.types";
 import {LayoutTemplate, Bath} from "lucide-react"
 import { ArrowsPointingOutIcon } from "@heroicons/react/24/outline";
 
