@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import fs from "fs/promises";
 import path from "path";
 
-export default async function generateImmobile(formData: FormData) {
+export default async function insertImmobile(formData: FormData) {
 
     try {
         const nome = formData.get("nome") as string;

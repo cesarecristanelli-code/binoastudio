@@ -8,11 +8,13 @@ interface ImmagineImmobileType {
 }
 
 export interface CardImmobileProps {
+  id: string,
   immagini: ImmagineImmobileType[],
   prezzo: number,
   nomeImmobile: string,
   indirizzo: string,
   children: string | ReactNode,
+  elimina: (id: string) => void
 }
 
 export interface CardImFooterProps {

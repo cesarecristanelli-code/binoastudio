@@ -19,7 +19,8 @@ export default async function loginAction(formData: FormData) {
         }
 
         return {success: true, message: "Login effettuato"}
-    } catch {
-        return {success: false, message: "Errore nel database"}
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "Si è verificato un problema. Riprova"
+        return {success: false, message: errorMessage}
     }
 }

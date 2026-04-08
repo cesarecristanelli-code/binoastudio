@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-
-import generateImmobile from "@/actions/immobili";
+import insertImmobile from "@/actions/insertImmobili";
 
 export default function Form() {
   const [status, setStatus] = useState<{
@@ -27,7 +26,7 @@ export default function Form() {
     // const response = await uploadToVercelAction(formData)
 
     try {
-      const response = await generateImmobile(formData);
+      const response = await insertImmobile(formData);
 
       if (response.success) {
         setStatus(response);
