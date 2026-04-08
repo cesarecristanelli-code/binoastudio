@@ -21,7 +21,7 @@ export default function Login() {
       if (response.success) {
         localStorage.setItem("isLoggedIn", "true");
         router.push("/form-inserimento-immobili");
-        router.refresh();
+        // router.refresh();
       } else {
         setError(response.message || "Errore");
       }

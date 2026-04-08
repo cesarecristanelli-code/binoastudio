@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <main className="w-full grow">
       {/* Hero Section */}
-      <Hero title="we manage values" bgImage="/sfondohero-binoa.png" />
+      <Hero title="we manage values" bgImage="/studio-unsplash.jpg" />
 
       <ChiSiamo />
 

@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import Section from "./BodySection";
 import Title from "./BodyTitle";
-// import FoundersGrid from "./FoundersGrid";
+
 import { SectionType } from "@/types/bodysection.types";
 import CVImage from "./CVImage";
 
@@ -13,13 +13,13 @@ const sections: SectionType[] = [
     idSection: "binoa",
     children: (
       <>
-        <b>BINÒA</b> nasce dall&apos;incontro tra la solidità tecnica di Andrea,
-        architetto senior, e l&apos;energia di Pietro, esperto in marketing
-        immobiliare. Fondiamo due generazioni e competenze speculari per
-        superare i limiti del nostro tempo. Guidati dal motto{" "}
-        <b>“Gestiamo valori”</b>, seguiamo un percorso strategico che evolve
-        dalla vendita sicura alla gestione di grandi progetti. Uniamo rigore
-        tecnico e cura umana per garantire intese solide e trasparenti.
+        <b>BINÒA</b> nasce dall&apos;incontro tra l&apos;esperienza di Andrea,
+        architetto senior e l&apos;energia di Pietro, agente immobiliare.
+        Fondiamo due generazioni e competenze speculari per superare i limiti
+        del nostro tempo. Guidati dal motto <b>“Gestiamo valori”</b>, seguiamo
+        un percorso strategico che evolve dalla vendita sicura alla gestione di
+        progetti. Uniamo rigore tecnico e cura umana per garantire intese solide
+        e trasparenti.
       </>
     ),
     revrese: false,
@@ -32,8 +32,7 @@ const sections: SectionType[] = [
     imagePath: "/motto-immagine.png",
     idSection: "motto",
     children: `Per BINÒA ogni progetto è in primis un incontro tra persone. 
-    Uniamo il rigore dell'architettura all'ascolto profondo per tutelare il capitale umano e la serenità dei clienti. 
-    Diamo trasparenza ai principi che rendono una dimora il riflesso autentico dei valori di chi la abita.`,
+    Uniamo i principi dell'architettura all'ascolto profondo per tutelare il capitale umano e la serenità dei clienti.`,
     revrese: true,
     divClasses: "my-28",
   },
@@ -43,9 +42,8 @@ const sections: SectionType[] = [
     subtitle: "Vision",
     imagePath: "/vision-immagine.png",
     idSection: "vision",
-    children: `Guardiamo al futuro del mercato evolvendo come partner strategici per investimenti complessi 
-    e progettazione internazionale. La nostra ambizione è governare l'intero ciclo di vita dell'edificio, colmando 
-    ogni distanza tecnica o burocratica per unire stabilmente persone e dimore.`,
+    children: `Guardiamo al futuro evolvendo come partner strategici per sviluppi immobiliari. 
+    La nostra visione è governare l'intero ciclo di vita dell'edificio, colmando ogni distanza tecnica o burocratica per unire vite e dimore.`,
     revrese: false,
     divClasses: "my-28",
   },
@@ -55,9 +53,8 @@ const sections: SectionType[] = [
     subtitle: "Mission",
     imagePath: "/mission-immagine.png",
     idSection: "mission",
-    children: `Operiamo attraverso un metodo che renda la vendita sicura e trasparente, integrando analisi urbanistica 
-    e marketing relazionale per garantire una gestione completa. Accompagniamo le persone con onestà e competenza, mettendo 
-    la tutela e la valorizzazione del progetto o della vendita al centro di ogni nostra azione.`,
+    children: `Operiamo attraverso un percorso, integrando analisi urbanistica e marketing relazionale per garantire una gestione completa. 
+    Accompagniamo le persone con onestà e competenza, mettendo la tutela e la valorizzazione del progetto o della vendita al centro di ogni nostra azione.`,
     revrese: true,
     divClasses: "my-28",
   },

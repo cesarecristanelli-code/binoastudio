@@ -21,7 +21,7 @@ export default async function CatalogoImmobili() {
   }
 
   return (
-    <div className="w-full h-96 flex justify-center items-center my-20">
+    <div className="w-full h-96 flex justify-center items-center my-52">
       {catalogoImmobili.map((i) => (
         <CardImmobile
           key={i.id}
