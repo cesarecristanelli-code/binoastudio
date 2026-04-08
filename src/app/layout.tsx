@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Albert_Sans } from "next/font/google";
+import { Albert_Sans, Marcellus } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "@/components/Footer";
@@ -25,6 +25,13 @@ const albert = Albert_Sans({
   subsets: ["latin"],
   weight: ["200", "400", "600", "700"],
 });
+
+/* const marcellus = Marcellus({
+  variable: "--font-marcellus",
+  subsets: ["latin"],
+  weight: ["400"],
+}); */
+
 
 // Questi dati finiscono direttamente nell'head dell'html
 export const metadata: Metadata = {

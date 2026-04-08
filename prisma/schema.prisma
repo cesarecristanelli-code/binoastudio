@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Immobile {
+  id           String             @id @default(cuid())
+  nome         String
+  prezzo       Int
+  indirizzo    String
+  metratura    Int
+  numeroLocali Int
+  numeroBagni  Int
+  descrizione  String?
+  immagini     ImmaginiImmobile[]
+}
+
+model ImmaginiImmobile {
+  id         String   @id @default(cuid())
+  path       String
+  isCover    Boolean  @default(false)
+  immobileId String
+  immobile   Immobile @relation(fields: [immobileId], references: [id], onDelete: Cascade)
+}

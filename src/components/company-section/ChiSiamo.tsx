@@ -9,7 +9,7 @@ const sections: SectionType[] = [
   {
     id: 1,
     title: "BINÒA",
-    imagePath: "/Tre-architetti.png",
+    imagePath: "/sfondohero-binoa.png",
     idSection: "binoa",
     children: (
       <>
@@ -29,7 +29,7 @@ const sections: SectionType[] = [
     id: 2,
     title: "GESTIAMO VALORI",
     subtitle: "Motto",
-    imagePath: "/Tre-architetti.png",
+    imagePath: "/motto-immagine.png",
     idSection: "motto",
     children: `Per BINÒA ogni progetto è in primis un incontro tra persone. 
     Uniamo il rigore dell'architettura all'ascolto profondo per tutelare il capitale umano e la serenità dei clienti. 
@@ -41,7 +41,7 @@ const sections: SectionType[] = [
     id: 3,
     title: "GESTIAMO IMMOBILI IN MODO INTEGRALE",
     subtitle: "Vision",
-    imagePath: "/Guarda-orizzonte.png",
+    imagePath: "/vision-immagine.png",
     idSection: "vision",
     children: `Guardiamo al futuro del mercato evolvendo come partner strategici per investimenti complessi 
     e progettazione internazionale. La nostra ambizione è governare l'intero ciclo di vita dell'edificio, colmando 
@@ -53,7 +53,7 @@ const sections: SectionType[] = [
     id: 4,
     title: "CI PRENDIAMO CURA DEGLI IMMOBILI",
     subtitle: "Mission",
-    imagePath: "/Stretta-di-mano.png",
+    imagePath: "/mission-immagine.png",
     idSection: "mission",
     children: `Operiamo attraverso un metodo che renda la vendita sicura e trasparente, integrando analisi urbanistica 
     e marketing relazionale per garantire una gestione completa. Accompagniamo le persone con onestà e competenza, mettendo 

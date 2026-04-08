@@ -40,3 +40,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 next.md
+
+/src/generated/prisma
+
+
+# Database locale (SQLite)
+*.db 
+*.db-journal
