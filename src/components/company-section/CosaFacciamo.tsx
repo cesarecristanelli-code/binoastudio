@@ -19,7 +19,7 @@ export default function CosaFacciamo() {
           Uniamo la ricerca <i>commerciale</i> agli aspetti <i>tecnici</i>. Accompagniamo i clienti con trasparenza, trasformando la trattativa in un&apos;intesa solida.
         </>
       ),
-      revrese: false,
+      reverse: false,
       divClasses: "mt-28 mb-16",
     },
     {
@@ -31,7 +31,7 @@ export default function CosaFacciamo() {
       Gestiamo la complessità, con un approccio metodico che si fonda sulle norme ISO del project management. 
       Dalla pianificazione dei processi tecnici ed economici oltre a quelli legati al marketing e alla compravendita in corso di costruzione, 
       solleviamo committenti e imprese da aspetti critici sia tecnici che operativi, garantendo efficienza e qualità per trasformare le aree di sviluppo in realtà concrete.`,
-      revrese: true,
+      reverse: true,
       divClasses: "my-28",
     },
     {
@@ -43,7 +43,7 @@ export default function CosaFacciamo() {
       Ci occupiamo anche dei cantieri, con una particolare attenzione all'ambiente. 
       Supportiamo il cliente dal concept iniziale fino alla firma finale, assicurando che ogni intervento, dalla ristrutturazione alla grande opera, 
       sia tecnicamente solido e protetto.`,
-      revrese: false,
+      reverse: false,
       divClasses: "my-28",
     },
   ];
@@ -60,7 +60,7 @@ export default function CosaFacciamo() {
           <Section
             title={s.title}
             imagePath={s.imagePath}
-            reverse={s.revrese}
+            reverse={s.reverse}
             idSection={s.idSection}
             style={{
               bodyColor: "#2D2A26",
