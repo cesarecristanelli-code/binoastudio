@@ -5,35 +5,25 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  output   = "../src/app/generated/prisma"
 }
 
 datasource db {
-  provider = "sqlite"
-}
-
-model Immobile {
-  id           String             @id @default(cuid())
-  nome         String
-  prezzo       Int
-  indirizzo    String
-  metratura    Int
-  numeroLocali Int
-  numeroBagni  Int
-  descrizione  String?
-  immagini     ImmaginiImmobile[]
-}
-
-model ImmaginiImmobile {
-  id         String   @id @default(cuid())
-  path       String
-  isCover    Boolean  @default(false)
-  immobileId String
-  immobile   Immobile @relation(fields: [immobileId], references: [id], onDelete: Cascade)
+  provider = "postgresql"
 }
 
 model User {
-  username String @id
-  password String
-  role     String @default("user")
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+  posts Post[]
+}
+
+model Post {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean @default(false)
+  authorId  Int
+  author    User    @relation(fields: [authorId], references: [id])
 }
