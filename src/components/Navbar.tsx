@@ -186,7 +186,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <Link href="/login" className={`${isHomePage && !isScrolled ? "text-white" : "text-black"} text-sm`}>Login</Link>
+          {/* <Link href="/login" className={`${isHomePage && !isScrolled ? "text-white" : "text-black"} text-sm`}>Login</Link> */}
         </div>
 
         {/* Mobile menu icon */}
