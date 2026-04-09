@@ -1,9 +1,8 @@
 import { Fragment } from "react";
 import Section from "./BodySection";
 import Title from "./BodyTitle";
-
 import { SectionType } from "@/types/bodysection.types";
-import CVImage from "./CVImage";
+import CVSection from "./CVSection";
 
 const sections: SectionType[] = [
   {
@@ -22,7 +21,7 @@ const sections: SectionType[] = [
         e trasparenti.
       </>
     ),
-    revrese: false,
+    reverse: false,
     divClasses: "mt-28 mb-16",
   },
   {
@@ -33,7 +32,7 @@ const sections: SectionType[] = [
     idSection: "motto",
     children: `Per BINÒA ogni progetto è in primis un incontro tra persone. 
     Uniamo i principi dell'architettura all'ascolto profondo per tutelare il capitale umano e la serenità dei clienti.`,
-    revrese: true,
+    reverse: true,
     divClasses: "my-28",
   },
   {
@@ -44,7 +43,7 @@ const sections: SectionType[] = [
     idSection: "vision",
     children: `Guardiamo al futuro evolvendo come partner strategici per sviluppi immobiliari. 
     La nostra visione è governare l'intero ciclo di vita dell'edificio, colmando ogni distanza tecnica o burocratica per unire vite e dimore.`,
-    revrese: false,
+    reverse: false,
     divClasses: "my-28",
   },
   {
@@ -55,7 +54,7 @@ const sections: SectionType[] = [
     idSection: "mission",
     children: `Operiamo attraverso un percorso, integrando analisi urbanistica e marketing relazionale per garantire una gestione completa. 
     Accompagniamo le persone con onestà e competenza, mettendo la tutela e la valorizzazione del progetto o della vendita al centro di ogni nostra azione.`,
-    revrese: true,
+    reverse: true,
     divClasses: "my-28",
   },
 ];
@@ -68,7 +67,7 @@ export default function ChiSiamo() {
     >
       <Title number="01" title="Chi siamo" />
 
-      {sections.map((s) => (
+      {sections.map((s: SectionType) => (
         <Fragment key={s.id}>
           <div className={s.divClasses}>
             <Section
@@ -76,13 +75,13 @@ export default function ChiSiamo() {
               subtitle={s.subtitle}
               imagePath={s.imagePath}
               idSection={s.idSection}
-              reverse={s.revrese}
+              reverse={s.reverse}
             >
               {s.children}
             </Section>
           </div>
 
-          {s.id === 1 && <CVImage />}
+          {s.id === 1 && <CVSection />}
         </Fragment>
       ))}
     </div>

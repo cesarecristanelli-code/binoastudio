@@ -8,6 +8,7 @@ export default function Section({
   subtitle,
   children,
   imagePath,
+  imagePosition,
   reverse,
   idSection,
   style = {},
@@ -17,6 +18,8 @@ export default function Section({
     titleColor = "#5C5854",
     textColor = "#332F2C",
   } = style;
+
+  
 
   return (
     <section
@@ -31,7 +34,7 @@ export default function Section({
           src={imagePath}
           alt={title}
           fill
-          className="object-cover transition-transform duration-500 hover:scale-105"
+          className={`object-cover ${imagePosition} transition-transform duration-500 hover:scale-105`}
         />
       </div>
 
