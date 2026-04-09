@@ -54,6 +54,10 @@ public/uploads/
 .vercel
 .env*.local
 
-/app/generated/prisma
 
 .env*.local
+
+
+# da rimuovere appena pronta
+/src/app/(gestione-catalogo)
+
