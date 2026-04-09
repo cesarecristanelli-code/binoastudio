@@ -35,7 +35,14 @@ const albert = Albert_Sans({
 
 // Questi dati finiscono direttamente nell'head dell'html
 export const metadata: Metadata = {
-  title: "Binòa Studio",
+  title: {
+    default: "Binòa Studio",
+    template: "%s | Binòa Studio",
+  },
+  applicationName: "Binòa Studio", // Nome dell'applicazione/sito
+  openGraph: {
+    siteName: "Binòa Studio", // Nome che compare quando condividi il link su WhatsApp/Social
+  },
   description: "We manage values",
 };
 
