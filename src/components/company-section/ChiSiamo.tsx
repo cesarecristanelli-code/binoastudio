@@ -8,7 +8,7 @@ const sections: SectionType[] = [
   {
     id: 1,
     title: "BINÒA",
-    imagePath: "/sfondohero-binoa.png",
+    imagePath: "/sfondo-binoa-v2.png",
     idSection: "binoa",
     children: (
       <>
