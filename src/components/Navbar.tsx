@@ -85,7 +85,7 @@ export default function Navbar() {
             src={logoPath}
             alt="Binoa Logo"
             width={90}
-            height={60}
+            height={97}
             priority
             className={`${logoClasses}`}
             style={{height: "auto"}}

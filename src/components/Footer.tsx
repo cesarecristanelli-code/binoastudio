@@ -21,13 +21,13 @@ export default function Footer() {
           Binòa - di Pietro Bonetto | P.IVA: IT04658490232 | REA: VR-438596 |
           Sede: Via Amerigo Vespucci 2a, 37068 Vigasio (VR)
         </p>
+      </div>
         <p className="font-light">
           <span className="font-medium">Andrea</span>: andrea@binoastudio.com | +393473146280
         </p>
         <p className="font-light pb-3">
           <span className="font-medium">Pietro</span>: pietro@binoastudio.com | +393425026686
         </p>
-      </div>
       <Link href="/privacy" className="font-light hover:underline">
         Privacy Policy{" "}
       </Link>
