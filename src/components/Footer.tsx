@@ -26,7 +26,7 @@ export default function Footer() {
           <span className="font-medium">Andrea</span>: andrea@binoastudio.com | +393473146280
         </p>
         <p className="font-light pb-3">
-          <span className="font-medium">Pietro</span>: pietro@binoastudio.com | +393425026686
+          <span className="font-medium">Pietro</span>: pietro@binoastudio.com | +393520133936
         </p>
       <Link href="/privacy" className="font-light hover:underline">
         Privacy Policy{" "}
