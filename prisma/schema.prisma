@@ -33,6 +33,7 @@ model Session {
 
 model Immobile {
   id           String             @id @default(cuid())
+  slug         String             @unique
   nome         String
   indirizzo    String
   metratura    Int

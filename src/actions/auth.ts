@@ -31,7 +31,9 @@ async function createSession(userId: string) {
   });
 }
 
-export async function loginAction(formData: FormData) {
+export async function loginAction(
+  formData: FormData,
+): Promise<{ success: boolean; message: string }> {
   const usernameRow = formData.get("username") as string;
   const passwordRow = formData.get("password") as string;
 
@@ -52,18 +54,23 @@ export async function loginAction(formData: FormData) {
       },
     });
 
-    if (!user || (await bcrypt.compare(password, user.password)))
+    if (!user || !(await bcrypt.compare(password, user.password)))
       return { success: false, message: "Credenziali non valide" };
 
+    await prisma.session.deleteMany({
+      where: {
+        expiresAt: { lt: new Date() },
+      },
+    });
+
     await createSession(user.id);
+    return { success: true, message: "Login effettuato" };
   } catch (error) {
     return {
       success: false,
       message: error instanceof Error ? error.message : "Errore sconosciuto",
     };
   }
-
-  redirect("/form-inserimento-immobili");
 }
 
 export async function getSession(): Promise<Prisma.SessionGetPayload<{
@@ -93,7 +100,49 @@ export async function getSession(): Promise<Prisma.SessionGetPayload<{
 
   if (!session) return null;
 
+  if (session.expiresAt < new Date()) return null;
+
   return session;
 }
 
-// crea logoutAction()
+export async function requireAuth(): Promise<
+  Prisma.SessionGetPayload<{
+    select: {
+      token: true;
+      userId: true;
+      expiresAt: true;
+      id: true;
+      createdAt: true;
+    };
+    include: {
+      user: true;
+    };
+  }>
+> {
+  const session = await getSession();
+
+  if (!session) redirect("/");
+
+  return session;
+}
+
+export async function logoutAction() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("session_token")?.value;
+
+  if (!token) return;
+
+  try {
+    await prisma.session.deleteMany({
+      where: {
+        token: token,
+      },
+    });
+  } catch (error) {
+    console.error("Logout error: ", error);
+  }
+
+  cookieStore.delete("session_token");
+
+  redirect("/");
+}
