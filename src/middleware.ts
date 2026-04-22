@@ -9,7 +9,8 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isLoginPage = pathname === "/admin-login";
-  const isAdminArea = pathname.startsWith("/admin-login/");
+  const isProtectedPage =
+    pathname.startsWith("/admin-login/") && pathname !== "/admin-login";
 
   if (isLoginPage && token) {
     return NextResponse.redirect(
@@ -17,7 +18,7 @@ export function middleware(request: NextRequest) {
     );
   }
 
-  if (isAdminArea && !token) {
+  if (isProtectedPage && !token) {
     return NextResponse.redirect(new URL("/admin-login", request.url));
   }
 
