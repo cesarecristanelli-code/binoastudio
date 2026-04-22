@@ -13,17 +13,44 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+  id        String    @id @default(cuid())
+  username  String    @unique
+  email     String    @unique
+  password  String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  sessions  Session[]
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  authorId  Int
-  author    User    @relation(fields: [authorId], references: [id])
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+model Immobile {
+  id           String             @id @default(cuid())
+  nome         String
+  indirizzo    String
+  metratura    Int
+  numeroLocali Int
+  numeroBagni  Int
+  descrizione  String             @db.Text
+  prezzo       Float
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @default(now()) @updatedAt
+  immagini     ImmagineImmobile[]
+}
+
+model ImmagineImmobile {
+  id         String   @id @default(cuid())
+  immobileId String
+  immobile   Immobile @relation(fields: [immobileId], references: [id])
+  path       String
+  isCover    Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
 }

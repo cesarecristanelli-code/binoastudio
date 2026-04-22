@@ -1,6 +1,9 @@
-import { PrismaClient, Prisma } from "../src/app/generated/prisma/client";
+import { PrismaClient, Prisma } from "@/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import "dotenv/config";
+import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+dotenv.config({ path: ".env.local" });
+dotenv.config({ path: ".env" }); // fallback
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL,
@@ -10,43 +13,30 @@ const prisma = new PrismaClient({
   adapter,
 });
 
-const userData: Prisma.UserCreateInput[] = [
-  {
-    name: "Alice",
-    email: "alice@prisma.io",
-    posts: {
-      create: [
-        {
-          title: "Join the Prisma Discord",
-          content: "https://pris.ly/discord",
-          published: true,
-        },
-        {
-          title: "Prisma on YouTube",
-          content: "https://pris.ly/youtube",
-        },
-      ],
-    },
-  },
-  {
-    name: "Bob",
-    email: "bob@prisma.io",
-    posts: {
-      create: [
-        {
-          title: "Follow Prisma on Twitter",
-          content: "https://www.twitter.com/prisma",
-          published: true,
-        },
-      ],
-    },
-  },
-];
+async function main() {
+  const password = await bcrypt.hash(process.env.ADMIN_PASSWORD!, 10);
+  const email = process.env.ADMIN_EMAIL!;
 
-export async function main() {
-  for (const u of userData) {
-    await prisma.user.create({ data: u });
-  }
+  await prisma.user.upsert({
+    where: {
+      email: email,
+    },
+    update: {
+      password: password,
+    },
+    create: {
+      email: email,
+      password: password,
+      username: "admin",
+    },
+  });
 }
 
-main();
+main()
+  .then(() => {
+    console.log("Admin inserito con successo");
+  })
+  .catch((e) => {
+    console.error("Errore nell'inserimento dell'admin: ", e);
+  })
+  .finally(() => prisma.$disconnect());
