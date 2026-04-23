@@ -41,7 +41,7 @@ yarn-error.log*
 next-env.d.ts
 next.md
 
-/src/generated/prisma
+src/generated/prisma
 
 
 # Database locale (SQLite)
