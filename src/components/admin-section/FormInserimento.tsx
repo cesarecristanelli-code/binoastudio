@@ -73,7 +73,7 @@ export default function FormInserimento() {
         setPreviews([]);
         (e.currentTarget as HTMLFormElement).reset();
 
-        setTimeout(() => setStatus({ success: null, message: "" }));
+        setTimeout(() => setStatus({ success: null, message: "" }), 5000);
       }
     } catch (error) {
       const errorMessage: string =
