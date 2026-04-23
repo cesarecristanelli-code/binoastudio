@@ -41,7 +41,7 @@ yarn-error.log*
 next-env.d.ts
 next.md
 
-/src/app/generated/prisma
+/src/generated/prisma
 
 
 # Database locale (SQLite)
@@ -58,6 +58,5 @@ public/uploads/
 .env*.local
 
 
-# da rimuovere appena pronta
-/src/app/(gestione-catalogo)
+
 

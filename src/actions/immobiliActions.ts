@@ -218,3 +218,33 @@ export async function updateImmobile(
     };
   }
 }
+
+export async function deleteImmobile(immobileId: string): Promise<Result> {
+  await requireAuth();
+
+  try {
+    const immobile = await getImmobile(immobileId);
+
+    if (!immobile) return { success: false, message: "Immobile non trovato" };
+
+    const keys = immobile.immagini.map((img) => {
+      const parts = img.url.split("/");
+      return parts[parts.length - 1];
+    });
+
+    await utapi.deleteFiles(keys);
+
+    await prisma.immobile.delete({
+      where: {
+        id: immobileId,
+      },
+    });
+
+    return { success: true, message: "Immobile eliminato" };
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Errore sconosciuto";
+    console.log("Errore durante l'eliminazione: ", errorMessage);
+    return { success: false, message: errorMessage };
+  }
+}

@@ -1,11 +1,14 @@
 import { getImmobile } from "@/actions/immobiliActions";
 import { notFound } from "next/navigation";
+import { requireAuth } from "@/actions/auth";
+import FormAggiornamento from "@/components/admin-section/FormAggiornamento";
 
 export default async function UpdateForm({
   params,
 }: {
   params: { id: string };
 }) {
+  await requireAuth();
   const { id } = params;
 
   const immobile = await getImmobile(id);
@@ -14,9 +17,7 @@ export default async function UpdateForm({
 
   return (
     <section className="flex w-full h-[300px] items-center justify-center">
-      <form className="flex size-[100px] border-2 border-black">
-        <p>Form di Aggiornamento in arrivo!</p>
-      </form>
+      <FormAggiornamento immobile={immobile} />
     </section>
   );
 }
