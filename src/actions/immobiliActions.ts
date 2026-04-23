@@ -5,16 +5,19 @@ import { requireAuth } from "@/actions/auth";
 import prisma from "@/lib/prisma";
 import { Prisma } from "@/generated/prisma/client";
 import { Result, Immobile } from "@/types/actions.types";
+import { UTApi } from "uploadthing/server";
 
 const immobiliSchema = z.object({
-  nome: z.string(),
-  prezzo: z.number(),
-  indirizzo: z.string(),
-  metratura: z.number(),
-  numeroBagni: z.number(),
-  numeroLocali: z.number(),
+  nome: z.string().min(1, "Il nome non può essere vuoto"),
+  prezzo: z.number().positive(),
+  indirizzo: z.string().min(5),
+  metratura: z.number().int(),
+  numeroBagni: z.number().int(),
+  numeroLocali: z.number().int(),
   descrizione: z.string(),
-  foto: z.array(z.string()),
+  foto: z
+    .array(z.url({ protocol: /^https?$/, hostname: z.regexes.domain }))
+    .min(1, "Devi inserire almeno una foto"),
 });
 
 export async function insertImmobile(formData: FormData): Promise<Result> {
@@ -108,19 +111,33 @@ export async function getImmobile(
   }
 }
 
-export async function updateImmobile(immobile: Immobile): Promise<Result> {
+const utapi = new UTApi();
+
+export async function updateImmobile(
+  immobileId: string,
+  formData: FormData,
+): Promise<Result> {
   await requireAuth();
+
+  const nome = formData.get("nome") as string;
+  const prezzo = formData.get("prezzo") as string;
+  const indirizzo = formData.get("indirizzo") as string;
+  const metratura = formData.get("metratura") as string;
+  const numeroBagni = formData.get("numeroBagni") as string;
+  const numeroLocali = formData.get("numeroLocali") as string;
+  const descrizione = formData.get("descrizione") as string;
+  const nuoviUrls = formData.getAll("foto") as string[];
 
   try {
     const validazione = immobiliSchema.safeParse({
-      nome: immobile.nome,
-      prezzo: Number(immobile.prezzo),
-      indirizzo: immobile.indirizzo,
-      metratura: Number(immobile.metratura),
-      numeroBagni: Number(immobile.numeroBagni),
-      numeroLocali: Number(immobile.numeroLocali),
-      descrizione: immobile.descrizione,
-      foto: immobile.immagini.map((i) => i.url),
+      nome: nome,
+      prezzo: Number(prezzo),
+      indirizzo: indirizzo,
+      metratura: Number(metratura),
+      numeroBagni: Number(numeroBagni),
+      numeroLocali: Number(numeroLocali),
+      descrizione: descrizione,
+      foto: nuoviUrls,
     });
 
     if (!validazione.success) {
@@ -130,22 +147,46 @@ export async function updateImmobile(immobile: Immobile): Promise<Result> {
       );
       return { success: false, message: "Errore nell'inserimento dei dati" };
     }
+    const nuovoSlug = validazione.data.nome.toLowerCase().split(" ").join("-");
 
-    const nuovoSlug = immobile.nome.toLowerCase().split(" ").join("-");
+    const immobilePrecedente = await getImmobile(immobileId);
+
+    if (!immobilePrecedente)
+      return { success: false, message: "Immobile non trovato" };
+
+    const immaginiDaEliminare = immobilePrecedente.immagini.filter(
+      (imgVecchia) => !validazione.data.foto.includes(imgVecchia.url),
+    );
+
+    if (immaginiDaEliminare.length > 0) {
+      const keys = immaginiDaEliminare.map((img) => {
+        const parts = img.url.split("/");
+        return parts[parts.length - 1];
+      });
+
+      await utapi.deleteFiles(keys);
+    }
 
     const response = await prisma.immobile.update({
       where: {
-        id: immobile.id,
+        id: immobileId,
       },
       data: {
-        nome: immobile.nome,
-        prezzo: immobile.prezzo,
-        indirizzo: immobile.indirizzo,
-        metratura: immobile.metratura,
-        numeroBagni: immobile.numeroBagni,
-        numeroLocali: immobile.numeroLocali,
-        descrizione: immobile.descrizione,
+        nome: validazione.data.nome,
+        prezzo: validazione.data.prezzo,
+        indirizzo: validazione.data.indirizzo,
+        metratura: validazione.data.metratura,
+        numeroBagni: validazione.data.numeroBagni,
+        numeroLocali: validazione.data.numeroLocali,
+        descrizione: validazione.data.descrizione,
         slug: nuovoSlug,
+        immagini: {
+          deleteMany: {},
+          create: validazione.data.foto.map((url, index) => ({
+            url: url,
+            isCover: index === 0,
+          })),
+        },
       },
     });
 
@@ -167,6 +208,7 @@ export async function updateImmobile(immobile: Immobile): Promise<Result> {
         message: "Esiste già un immobile con questo nome",
       };
     }
+
     return {
       success: false,
       message:

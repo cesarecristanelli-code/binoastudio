@@ -1,21 +1,25 @@
 "use client";
 
-import { useState } from "react";
-import { insertImmobile } from "@/actions/immobiliActions";
-import Link from "next/link";
+import { Immobile } from "@/types/actions.types";
 import { useUploadThing } from "@/lib/uploadthing";
+import { useState } from "react";
+import { updateImmobile } from "@/actions/immobiliActions";
+import Link from "next/link";
 
-export default function FormInserimento() {
+export default function FormAggionramento({
+  immobile,
+}: {
+  immobile: Immobile;
+}) {
   const [status, setStatus] = useState<{
     success: boolean | null;
     message: string;
-  }>({
-    success: null,
-    message: "",
-  });
+  }>({ success: null, message: "" });
+  const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
-  const [previews, setPreviews] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [previews, setPreviews] = useState<string[]>(
+    immobile.immagini.map((i) => i.url),
+  );
 
   const { startUpload } = useUploadThing("imageUploader");
 
@@ -32,14 +36,21 @@ export default function FormInserimento() {
   };
 
   const removeImage = (index: number) => {
+    const urlToRemove = previews[index];
     setFiles((prev) => prev.filter((_, i) => i !== index));
-    setPreviews((prev) => prev.filter((_, i) => i !== index));
+
+    if (urlToRemove.startsWith("blob:")) {
+      const blobIndex = previews
+        .slice(0, index)
+        .filter((url) => url.startsWith("blob:")).length;
+      setFiles((prev) => prev.filter((_, i) => i !== blobIndex));
+    }
   };
 
-  async function handleSubmit(e: React.SubmitEvent) {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
 
-    if (files.length === 0) {
+    if (previews.length === 0) {
       setStatus({ success: false, message: "Devi inserire almeno una foto" });
       return;
     }
@@ -48,30 +59,34 @@ export default function FormInserimento() {
     setStatus({ success: null, message: "" });
 
     try {
-      const uploadRes = await startUpload(files);
+      const existingUrls = previews.filter((url) => !url.startsWith("blob:"));
 
-      if (!uploadRes) {
-        setStatus({
-          success: false,
-          message: "Errore durante l'upload delle immagini",
-        });
-        setIsLoading(false);
-        return;
+      let newUrls: string[] = [];
+      if (files.length) {
+        const uploadRes = await startUpload(files);
+        if (!uploadRes) {
+          setStatus({
+            success: false,
+            message: "Errore durante l'upload delle immagini",
+          });
+          setIsLoading(false);
+          return;
+        }
+        newUrls = uploadRes.map((f) => f.ufsUrl);
       }
 
-      const finalUrls: string[] = uploadRes.map((f) => f.ufsUrl);
+      const finalUrls = [...existingUrls, ...newUrls];
 
       const formData = new FormData(e.currentTarget as HTMLFormElement);
       finalUrls.forEach((url) => formData.append("foto", url));
 
-      const response = await insertImmobile(formData);
+      const response = await updateImmobile(immobile.id, formData);
 
       setStatus(response);
 
       if (response.success) {
         setFiles([]);
         setPreviews([]);
-        (e.currentTarget as HTMLFormElement).reset();
 
         setTimeout(() => setStatus({ success: null, message: "" }));
       }
@@ -83,14 +98,14 @@ export default function FormInserimento() {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex flex-col max-w-3xl gap-4 p-5 border-2 border-black rounded-xl shadow-md">
         <div className="flex justify-center">
           <h2 className="text-center text-xl font-bold grow">
-            Inserisci i dati dell&apos;Immobile
+            Aggiorna i dati dell&apos;Immobile
           </h2>
           <Link
             href="/vendita"
@@ -111,6 +126,7 @@ export default function FormInserimento() {
               type="text"
               name="nome"
               id="nome"
+              defaultValue={immobile.nome}
               className="w-sm py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
           </div>
@@ -125,6 +141,7 @@ export default function FormInserimento() {
                 type="number"
                 name="prezzo"
                 id="prezzo"
+                defaultValue={immobile.prezzo}
                 className="w-52 py-2 px-3 bg-white border-2 border-black rounded-s-xl"
               />
               <span className="w-10 text-center py-2 px-3 bg-gray-200 border-2 border-black border-s-transparent rounded-e-xl">
@@ -144,6 +161,7 @@ export default function FormInserimento() {
             type="text"
             name="indirizzo"
             id="indirizzo"
+            defaultValue={immobile.indirizzo}
             className="w-sm py-2 px-3 bg-white border-2 border-black rounded-xl placeholder:italic"
             placeholder="via Pompei 2 - Legnago, VR"
           />
@@ -160,6 +178,7 @@ export default function FormInserimento() {
                 type="number"
                 name="metratura"
                 id="metratura"
+                defaultValue={immobile.metratura}
                 className="w-20 py-2 px-3 bg-white border-2 border-black rounded-s-xl"
               />
               <span className="w-10 text-center py-2 px-3 bg-gray-200 border-2 border-black border-s-transparent rounded-e-xl">
@@ -177,6 +196,7 @@ export default function FormInserimento() {
               type="number"
               name="numero-bagni"
               id="numero-bagni"
+              defaultValue={immobile.numeroBagni}
               className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
           </div>
@@ -190,6 +210,7 @@ export default function FormInserimento() {
               type="number"
               name="numero-locali"
               id="numero-locali"
+              defaultValue={immobile.numeroLocali}
               className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
           </div>
@@ -246,6 +267,7 @@ export default function FormInserimento() {
             required
             name="descrizione"
             id="descrizione"
+            defaultValue={immobile.descrizione}
             className="w-2xl min-h-32 py-2 px-3 bg-white border-2 border-black rounded-xl text-sm"
           />
         </div>
@@ -256,7 +278,7 @@ export default function FormInserimento() {
             disabled={isLoading}
             className={`px-2 py-3 border-2 border-black ${isLoading ? "" : "cursor-pointer"} rounded-2xl font-semibold `}
           >
-            {isLoading ? "Caricamento..." : "Carica Immobile"}
+            {isLoading ? "Aggiornamento..." : "Salva modifiche"}
           </button>
           {status.success && (
             <p

@@ -1,7 +1,7 @@
 import FormInserimento from "@/components/admin-section/FormInserimento";
 import { requireAuth } from "@/actions/auth";
 
-export default async function Form() {
+export default async function InsertPropertyPage() {
   await requireAuth();
 
   return (
