@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { insertImmobile } from "@/actions/immobiliActions";
-import { UploadDropzone } from "@/lib/uploadthing";
 import Link from "next/link";
+import { useUploadThing } from "@/lib/uploadthing";
 
 export default function FormInserimento() {
   const [status, setStatus] = useState<{
@@ -13,23 +13,63 @@ export default function FormInserimento() {
     success: null,
     message: "",
   });
-  const [images, setImages] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { startUpload } = useUploadThing("imageUploader");
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const selectedFiles = Array.from(e.target.files);
+      setFiles((prev) => [...prev, ...selectedFiles]);
+
+      const newPreviews = selectedFiles.map((file) =>
+        URL.createObjectURL(file),
+      );
+      setPreviews((prev) => [...prev, ...newPreviews]);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setPreviews((prev) => prev.filter((_, i) => i !== index));
+  };
 
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
+
+    if (files.length === 0) {
+      setStatus({ success: false, message: "Devi inserire almeno una foto" });
+      return;
+    }
+
     setIsLoading(true);
     setStatus({ success: null, message: "" });
 
-    const formData = new FormData(e.currentTarget as HTMLFormElement);
-
-    images.forEach((url) => formData.append("foto", url));
-
     try {
+      const uploadRes = await startUpload(files);
+
+      if (!uploadRes) {
+        setStatus({
+          success: false,
+          message: "Errore durante l'upload delle immagini",
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      const finalUrls: string[] = uploadRes.map((f) => f.ufsUrl);
+
+      const formData = new FormData(e.currentTarget as HTMLFormElement);
+      finalUrls.forEach((url) => formData.append("foto", url));
+
       const response = await insertImmobile(formData);
 
       if (response.success) {
         setStatus(response);
+        setFiles([]);
+        setPreviews([]);
         (e.currentTarget as HTMLFormElement).reset();
 
         setTimeout(() => setStatus({ success: null, message: "" }));
@@ -157,17 +197,46 @@ export default function FormInserimento() {
         </div>
         {/* Foto Immobile */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="foto" className="ps-2 text-balck">
-            Foto Immobile
-          </label>
-          <UploadDropzone
-            endpoint="imageUploader"
-            onClientUploadComplete={(res) => {
-              const urls = res.map((f) => f.ufsUrl);
-              setImages(urls);
-              console.log("Caricamento immagini completato");
-            }}
-          />
+          <label className="ps-2 text-black font-bold">Foto Immobile</label>
+
+          <div className="border-2 border-dashed border-gray-400 p-6 rounded-xl text-center">
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+              id="file-upload"
+            />
+            <label
+              htmlFor="file-upload"
+              className="cursor-pointer text-blue-600 underline"
+            >
+              Clicca qui per selezionare le foto
+            </label>
+            <p className="text-xs text-gray-500 mt-1">
+              Verranno caricate solo al momento del salvataggio
+            </p>
+          </div>
+          {/* Anteprima Locale */}
+          <div className="flex flex-wrap gap-2 mt-2">
+            {previews.map((url, index) => (
+              <div key={index} className="relative group">
+                <img
+                  src={url}
+                  alt="preview"
+                  className="w-24 h-24 object-cover rounded-lg border"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeImage(index)}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs shadow-lg"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
         {/* Descrizione */}
         <div className="flex flex-col gap-2">
