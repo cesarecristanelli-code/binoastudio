@@ -20,6 +20,7 @@ const immobiliSchema = z.object({
     .min(1, "Devi inserire almeno una foto"),
 });
 
+// === INSERT ===
 export async function insertImmobile(formData: FormData): Promise<Result> {
   const session = await requireAuth();
 
@@ -92,6 +93,7 @@ export async function insertImmobile(formData: FormData): Promise<Result> {
   }
 }
 
+// === GET ===
 export async function getImmobile(
   immobileId: string,
 ): Promise<Immobile | null> {
@@ -113,6 +115,25 @@ export async function getImmobile(
 
 const utapi = new UTApi();
 
+export async function getAllImmobili(): Promise<Immobile[] | null> {
+  try {
+    const immobili = await prisma.immobile.findMany({
+      include: {
+        immagini: true,
+      },
+    });
+    if (!immobili) return null;
+    return immobili;
+  } catch (error) {
+    console.log(
+      "Errore nel recupero del catalogo: ",
+      error instanceof Error ? error.message : "Errore generico",
+    );
+    return null;
+  }
+}
+
+// === UPDATE ===
 export async function updateImmobile(
   immobileId: string,
   formData: FormData,
@@ -219,6 +240,7 @@ export async function updateImmobile(
   }
 }
 
+// === DELETE ===
 export async function deleteImmobile(immobileId: string): Promise<Result> {
   await requireAuth();
 
