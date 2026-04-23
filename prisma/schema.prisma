@@ -5,7 +5,7 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../src/app/generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -50,7 +50,7 @@ model ImmagineImmobile {
   id         String   @id @default(cuid())
   immobileId String
   immobile   Immobile @relation(fields: [immobileId], references: [id])
-  path       String
+  url        String   @unique
   isCover    Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt

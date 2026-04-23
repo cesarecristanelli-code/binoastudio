@@ -3,6 +3,9 @@ import { Albert_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "@/components/Footer";
+import { ourFileRouter } from "./api/uploadthing/core";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
 
 /* const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +35,6 @@ const albert = Albert_Sans({
   weight: ["400"],
 }); */
 
-
 // Questi dati finiscono direttamente nell'head dell'html
 export const metadata: Metadata = {
   title: {
@@ -56,6 +58,7 @@ export default function RootLayout({
       <body
         className={`${albert.variable} antialiased flex flex-col min-h-screen`}
       >
+        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <Navbar />
         <main className="grow">{children}</main>
 

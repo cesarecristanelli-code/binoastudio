@@ -42,6 +42,7 @@ export type ImmobileSumAggregateOutputType = {
 
 export type ImmobileMinAggregateOutputType = {
   id: string | null
+  slug: string | null
   nome: string | null
   indirizzo: string | null
   metratura: number | null
@@ -55,6 +56,7 @@ export type ImmobileMinAggregateOutputType = {
 
 export type ImmobileMaxAggregateOutputType = {
   id: string | null
+  slug: string | null
   nome: string | null
   indirizzo: string | null
   metratura: number | null
@@ -68,6 +70,7 @@ export type ImmobileMaxAggregateOutputType = {
 
 export type ImmobileCountAggregateOutputType = {
   id: number
+  slug: number
   nome: number
   indirizzo: number
   metratura: number
@@ -97,6 +100,7 @@ export type ImmobileSumAggregateInputType = {
 
 export type ImmobileMinAggregateInputType = {
   id?: true
+  slug?: true
   nome?: true
   indirizzo?: true
   metratura?: true
@@ -110,6 +114,7 @@ export type ImmobileMinAggregateInputType = {
 
 export type ImmobileMaxAggregateInputType = {
   id?: true
+  slug?: true
   nome?: true
   indirizzo?: true
   metratura?: true
@@ -123,6 +128,7 @@ export type ImmobileMaxAggregateInputType = {
 
 export type ImmobileCountAggregateInputType = {
   id?: true
+  slug?: true
   nome?: true
   indirizzo?: true
   metratura?: true
@@ -223,6 +229,7 @@ export type ImmobileGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type ImmobileGroupByOutputType = {
   id: string
+  slug: string
   nome: string
   indirizzo: string
   metratura: number
@@ -259,6 +266,7 @@ export type ImmobileWhereInput = {
   OR?: Prisma.ImmobileWhereInput[]
   NOT?: Prisma.ImmobileWhereInput | Prisma.ImmobileWhereInput[]
   id?: Prisma.StringFilter<"Immobile"> | string
+  slug?: Prisma.StringFilter<"Immobile"> | string
   nome?: Prisma.StringFilter<"Immobile"> | string
   indirizzo?: Prisma.StringFilter<"Immobile"> | string
   metratura?: Prisma.IntFilter<"Immobile"> | number
@@ -273,6 +281,7 @@ export type ImmobileWhereInput = {
 
 export type ImmobileOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   nome?: Prisma.SortOrder
   indirizzo?: Prisma.SortOrder
   metratura?: Prisma.SortOrder
@@ -287,6 +296,7 @@ export type ImmobileOrderByWithRelationInput = {
 
 export type ImmobileWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  slug?: string
   AND?: Prisma.ImmobileWhereInput | Prisma.ImmobileWhereInput[]
   OR?: Prisma.ImmobileWhereInput[]
   NOT?: Prisma.ImmobileWhereInput | Prisma.ImmobileWhereInput[]
@@ -300,10 +310,11 @@ export type ImmobileWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Immobile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Immobile"> | Date | string
   immagini?: Prisma.ImmagineImmobileListRelationFilter
-}, "id">
+}, "id" | "slug">
 
 export type ImmobileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   nome?: Prisma.SortOrder
   indirizzo?: Prisma.SortOrder
   metratura?: Prisma.SortOrder
@@ -325,6 +336,7 @@ export type ImmobileScalarWhereWithAggregatesInput = {
   OR?: Prisma.ImmobileScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ImmobileScalarWhereWithAggregatesInput | Prisma.ImmobileScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Immobile"> | string
+  slug?: Prisma.StringWithAggregatesFilter<"Immobile"> | string
   nome?: Prisma.StringWithAggregatesFilter<"Immobile"> | string
   indirizzo?: Prisma.StringWithAggregatesFilter<"Immobile"> | string
   metratura?: Prisma.IntWithAggregatesFilter<"Immobile"> | number
@@ -338,6 +350,7 @@ export type ImmobileScalarWhereWithAggregatesInput = {
 
 export type ImmobileCreateInput = {
   id?: string
+  slug: string
   nome: string
   indirizzo: string
   metratura: number
@@ -352,6 +365,7 @@ export type ImmobileCreateInput = {
 
 export type ImmobileUncheckedCreateInput = {
   id?: string
+  slug: string
   nome: string
   indirizzo: string
   metratura: number
@@ -366,6 +380,7 @@ export type ImmobileUncheckedCreateInput = {
 
 export type ImmobileUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   nome?: Prisma.StringFieldUpdateOperationsInput | string
   indirizzo?: Prisma.StringFieldUpdateOperationsInput | string
   metratura?: Prisma.IntFieldUpdateOperationsInput | number
@@ -380,6 +395,7 @@ export type ImmobileUpdateInput = {
 
 export type ImmobileUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   nome?: Prisma.StringFieldUpdateOperationsInput | string
   indirizzo?: Prisma.StringFieldUpdateOperationsInput | string
   metratura?: Prisma.IntFieldUpdateOperationsInput | number
@@ -394,6 +410,7 @@ export type ImmobileUncheckedUpdateInput = {
 
 export type ImmobileCreateManyInput = {
   id?: string
+  slug: string
   nome: string
   indirizzo: string
   metratura: number
@@ -407,6 +424,7 @@ export type ImmobileCreateManyInput = {
 
 export type ImmobileUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   nome?: Prisma.StringFieldUpdateOperationsInput | string
   indirizzo?: Prisma.StringFieldUpdateOperationsInput | string
   metratura?: Prisma.IntFieldUpdateOperationsInput | number
@@ -420,6 +438,7 @@ export type ImmobileUpdateManyMutationInput = {
 
 export type ImmobileUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   nome?: Prisma.StringFieldUpdateOperationsInput | string
   indirizzo?: Prisma.StringFieldUpdateOperationsInput | string
   metratura?: Prisma.IntFieldUpdateOperationsInput | number
@@ -433,6 +452,7 @@ export type ImmobileUncheckedUpdateManyInput = {
 
 export type ImmobileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   nome?: Prisma.SortOrder
   indirizzo?: Prisma.SortOrder
   metratura?: Prisma.SortOrder
@@ -453,6 +473,7 @@ export type ImmobileAvgOrderByAggregateInput = {
 
 export type ImmobileMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   nome?: Prisma.SortOrder
   indirizzo?: Prisma.SortOrder
   metratura?: Prisma.SortOrder
@@ -466,6 +487,7 @@ export type ImmobileMaxOrderByAggregateInput = {
 
 export type ImmobileMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   nome?: Prisma.SortOrder
   indirizzo?: Prisma.SortOrder
   metratura?: Prisma.SortOrder
@@ -521,6 +543,7 @@ export type ImmobileUpdateOneRequiredWithoutImmaginiNestedInput = {
 
 export type ImmobileCreateWithoutImmaginiInput = {
   id?: string
+  slug: string
   nome: string
   indirizzo: string
   metratura: number
@@ -534,6 +557,7 @@ export type ImmobileCreateWithoutImmaginiInput = {
 
 export type ImmobileUncheckedCreateWithoutImmaginiInput = {
   id?: string
+  slug: string
   nome: string
   indirizzo: string
   metratura: number
@@ -563,6 +587,7 @@ export type ImmobileUpdateToOneWithWhereWithoutImmaginiInput = {
 
 export type ImmobileUpdateWithoutImmaginiInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   nome?: Prisma.StringFieldUpdateOperationsInput | string
   indirizzo?: Prisma.StringFieldUpdateOperationsInput | string
   metratura?: Prisma.IntFieldUpdateOperationsInput | number
@@ -576,6 +601,7 @@ export type ImmobileUpdateWithoutImmaginiInput = {
 
 export type ImmobileUncheckedUpdateWithoutImmaginiInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   nome?: Prisma.StringFieldUpdateOperationsInput | string
   indirizzo?: Prisma.StringFieldUpdateOperationsInput | string
   metratura?: Prisma.IntFieldUpdateOperationsInput | number
@@ -620,6 +646,7 @@ export type ImmobileCountOutputTypeCountImmaginiArgs<ExtArgs extends runtime.Typ
 
 export type ImmobileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   nome?: boolean
   indirizzo?: boolean
   metratura?: boolean
@@ -635,6 +662,7 @@ export type ImmobileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
 
 export type ImmobileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   nome?: boolean
   indirizzo?: boolean
   metratura?: boolean
@@ -648,6 +676,7 @@ export type ImmobileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
 
 export type ImmobileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   nome?: boolean
   indirizzo?: boolean
   metratura?: boolean
@@ -661,6 +690,7 @@ export type ImmobileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 
 export type ImmobileSelectScalar = {
   id?: boolean
+  slug?: boolean
   nome?: boolean
   indirizzo?: boolean
   metratura?: boolean
@@ -672,7 +702,7 @@ export type ImmobileSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ImmobileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nome" | "indirizzo" | "metratura" | "numeroLocali" | "numeroBagni" | "descrizione" | "prezzo" | "createdAt" | "updatedAt", ExtArgs["result"]["immobile"]>
+export type ImmobileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "nome" | "indirizzo" | "metratura" | "numeroLocali" | "numeroBagni" | "descrizione" | "prezzo" | "createdAt" | "updatedAt", ExtArgs["result"]["immobile"]>
 export type ImmobileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   immagini?: boolean | Prisma.Immobile$immaginiArgs<ExtArgs>
   _count?: boolean | Prisma.ImmobileCountOutputTypeDefaultArgs<ExtArgs>
@@ -687,6 +717,7 @@ export type $ImmobilePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    slug: string
     nome: string
     indirizzo: string
     metratura: number
@@ -1121,6 +1152,7 @@ export interface Prisma__ImmobileClient<T, Null = never, ExtArgs extends runtime
  */
 export interface ImmobileFieldRefs {
   readonly id: Prisma.FieldRef<"Immobile", 'String'>
+  readonly slug: Prisma.FieldRef<"Immobile", 'String'>
   readonly nome: Prisma.FieldRef<"Immobile", 'String'>
   readonly indirizzo: Prisma.FieldRef<"Immobile", 'String'>
   readonly metratura: Prisma.FieldRef<"Immobile", 'Int'>

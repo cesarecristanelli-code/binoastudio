@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@import "uploadthing/tw/v4";
+@source "../../node_modules/@uploadthing/react/dist";
+
 /* 
 rgb(250,248,245)  Off-White
 rgb(218,211,201)  Light Greige
@@ -15,10 +18,10 @@ rgb(183,171,159)  Cool Greige
   /* --background: #ffffff;
   --foreground: #171717; */
   --background: rgb(250,248,245);
-  --foreground: #2D2926;  
+  --foreground: #2D2926; 
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   /* --font-sans: var(--font-geist-sans); */
@@ -26,12 +29,11 @@ rgb(183,171,159)  Cool Greige
   --font-sans: "Albert Sans", sans-serif;
   /* --font-serif: "Marcellus", serif; */
   --font-mono: var(--font-geist-mono);
-}
-
-@theme {
   /* --font-archivo: "Archivo", sans-serif; */
   --font-arvo: "Arvo", sans-serif;
 }
+
+
 
 
 

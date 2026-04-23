@@ -98,6 +98,7 @@ export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeo
 
 export const ImmobileScalarFieldEnum = {
   id: 'id',
+  slug: 'slug',
   nome: 'nome',
   indirizzo: 'indirizzo',
   metratura: 'metratura',
@@ -115,7 +116,7 @@ export type ImmobileScalarFieldEnum = (typeof ImmobileScalarFieldEnum)[keyof typ
 export const ImmagineImmobileScalarFieldEnum = {
   id: 'id',
   immobileId: 'immobileId',
-  path: 'path',
+  url: 'url',
   isCover: 'isCover',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

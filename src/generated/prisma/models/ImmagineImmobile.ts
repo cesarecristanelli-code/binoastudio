@@ -27,7 +27,7 @@ export type AggregateImmagineImmobile = {
 export type ImmagineImmobileMinAggregateOutputType = {
   id: string | null
   immobileId: string | null
-  path: string | null
+  url: string | null
   isCover: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -36,7 +36,7 @@ export type ImmagineImmobileMinAggregateOutputType = {
 export type ImmagineImmobileMaxAggregateOutputType = {
   id: string | null
   immobileId: string | null
-  path: string | null
+  url: string | null
   isCover: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -45,7 +45,7 @@ export type ImmagineImmobileMaxAggregateOutputType = {
 export type ImmagineImmobileCountAggregateOutputType = {
   id: number
   immobileId: number
-  path: number
+  url: number
   isCover: number
   createdAt: number
   updatedAt: number
@@ -56,7 +56,7 @@ export type ImmagineImmobileCountAggregateOutputType = {
 export type ImmagineImmobileMinAggregateInputType = {
   id?: true
   immobileId?: true
-  path?: true
+  url?: true
   isCover?: true
   createdAt?: true
   updatedAt?: true
@@ -65,7 +65,7 @@ export type ImmagineImmobileMinAggregateInputType = {
 export type ImmagineImmobileMaxAggregateInputType = {
   id?: true
   immobileId?: true
-  path?: true
+  url?: true
   isCover?: true
   createdAt?: true
   updatedAt?: true
@@ -74,7 +74,7 @@ export type ImmagineImmobileMaxAggregateInputType = {
 export type ImmagineImmobileCountAggregateInputType = {
   id?: true
   immobileId?: true
-  path?: true
+  url?: true
   isCover?: true
   createdAt?: true
   updatedAt?: true
@@ -156,7 +156,7 @@ export type ImmagineImmobileGroupByArgs<ExtArgs extends runtime.Types.Extensions
 export type ImmagineImmobileGroupByOutputType = {
   id: string
   immobileId: string
-  path: string
+  url: string
   isCover: boolean
   createdAt: Date
   updatedAt: Date
@@ -186,7 +186,7 @@ export type ImmagineImmobileWhereInput = {
   NOT?: Prisma.ImmagineImmobileWhereInput | Prisma.ImmagineImmobileWhereInput[]
   id?: Prisma.StringFilter<"ImmagineImmobile"> | string
   immobileId?: Prisma.StringFilter<"ImmagineImmobile"> | string
-  path?: Prisma.StringFilter<"ImmagineImmobile"> | string
+  url?: Prisma.StringFilter<"ImmagineImmobile"> | string
   isCover?: Prisma.BoolFilter<"ImmagineImmobile"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ImmagineImmobile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ImmagineImmobile"> | Date | string
@@ -196,7 +196,7 @@ export type ImmagineImmobileWhereInput = {
 export type ImmagineImmobileOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   immobileId?: Prisma.SortOrder
-  path?: Prisma.SortOrder
+  url?: Prisma.SortOrder
   isCover?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -205,21 +205,21 @@ export type ImmagineImmobileOrderByWithRelationInput = {
 
 export type ImmagineImmobileWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  url?: string
   AND?: Prisma.ImmagineImmobileWhereInput | Prisma.ImmagineImmobileWhereInput[]
   OR?: Prisma.ImmagineImmobileWhereInput[]
   NOT?: Prisma.ImmagineImmobileWhereInput | Prisma.ImmagineImmobileWhereInput[]
   immobileId?: Prisma.StringFilter<"ImmagineImmobile"> | string
-  path?: Prisma.StringFilter<"ImmagineImmobile"> | string
   isCover?: Prisma.BoolFilter<"ImmagineImmobile"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ImmagineImmobile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ImmagineImmobile"> | Date | string
   immobile?: Prisma.XOR<Prisma.ImmobileScalarRelationFilter, Prisma.ImmobileWhereInput>
-}, "id">
+}, "id" | "url">
 
 export type ImmagineImmobileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   immobileId?: Prisma.SortOrder
-  path?: Prisma.SortOrder
+  url?: Prisma.SortOrder
   isCover?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -234,7 +234,7 @@ export type ImmagineImmobileScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ImmagineImmobileScalarWhereWithAggregatesInput | Prisma.ImmagineImmobileScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ImmagineImmobile"> | string
   immobileId?: Prisma.StringWithAggregatesFilter<"ImmagineImmobile"> | string
-  path?: Prisma.StringWithAggregatesFilter<"ImmagineImmobile"> | string
+  url?: Prisma.StringWithAggregatesFilter<"ImmagineImmobile"> | string
   isCover?: Prisma.BoolWithAggregatesFilter<"ImmagineImmobile"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ImmagineImmobile"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ImmagineImmobile"> | Date | string
@@ -242,7 +242,7 @@ export type ImmagineImmobileScalarWhereWithAggregatesInput = {
 
 export type ImmagineImmobileCreateInput = {
   id?: string
-  path: string
+  url: string
   isCover?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -252,7 +252,7 @@ export type ImmagineImmobileCreateInput = {
 export type ImmagineImmobileUncheckedCreateInput = {
   id?: string
   immobileId: string
-  path: string
+  url: string
   isCover?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -260,7 +260,7 @@ export type ImmagineImmobileUncheckedCreateInput = {
 
 export type ImmagineImmobileUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  path?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
   isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -270,7 +270,7 @@ export type ImmagineImmobileUpdateInput = {
 export type ImmagineImmobileUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   immobileId?: Prisma.StringFieldUpdateOperationsInput | string
-  path?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
   isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -279,7 +279,7 @@ export type ImmagineImmobileUncheckedUpdateInput = {
 export type ImmagineImmobileCreateManyInput = {
   id?: string
   immobileId: string
-  path: string
+  url: string
   isCover?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -287,7 +287,7 @@ export type ImmagineImmobileCreateManyInput = {
 
 export type ImmagineImmobileUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  path?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
   isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -296,7 +296,7 @@ export type ImmagineImmobileUpdateManyMutationInput = {
 export type ImmagineImmobileUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   immobileId?: Prisma.StringFieldUpdateOperationsInput | string
-  path?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
   isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -315,7 +315,7 @@ export type ImmagineImmobileOrderByRelationAggregateInput = {
 export type ImmagineImmobileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   immobileId?: Prisma.SortOrder
-  path?: Prisma.SortOrder
+  url?: Prisma.SortOrder
   isCover?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -324,7 +324,7 @@ export type ImmagineImmobileCountOrderByAggregateInput = {
 export type ImmagineImmobileMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   immobileId?: Prisma.SortOrder
-  path?: Prisma.SortOrder
+  url?: Prisma.SortOrder
   isCover?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -333,7 +333,7 @@ export type ImmagineImmobileMaxOrderByAggregateInput = {
 export type ImmagineImmobileMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   immobileId?: Prisma.SortOrder
-  path?: Prisma.SortOrder
+  url?: Prisma.SortOrder
   isCover?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -387,7 +387,7 @@ export type BoolFieldUpdateOperationsInput = {
 
 export type ImmagineImmobileCreateWithoutImmobileInput = {
   id?: string
-  path: string
+  url: string
   isCover?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -395,7 +395,7 @@ export type ImmagineImmobileCreateWithoutImmobileInput = {
 
 export type ImmagineImmobileUncheckedCreateWithoutImmobileInput = {
   id?: string
-  path: string
+  url: string
   isCover?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -433,7 +433,7 @@ export type ImmagineImmobileScalarWhereInput = {
   NOT?: Prisma.ImmagineImmobileScalarWhereInput | Prisma.ImmagineImmobileScalarWhereInput[]
   id?: Prisma.StringFilter<"ImmagineImmobile"> | string
   immobileId?: Prisma.StringFilter<"ImmagineImmobile"> | string
-  path?: Prisma.StringFilter<"ImmagineImmobile"> | string
+  url?: Prisma.StringFilter<"ImmagineImmobile"> | string
   isCover?: Prisma.BoolFilter<"ImmagineImmobile"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ImmagineImmobile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ImmagineImmobile"> | Date | string
@@ -441,7 +441,7 @@ export type ImmagineImmobileScalarWhereInput = {
 
 export type ImmagineImmobileCreateManyImmobileInput = {
   id?: string
-  path: string
+  url: string
   isCover?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -449,7 +449,7 @@ export type ImmagineImmobileCreateManyImmobileInput = {
 
 export type ImmagineImmobileUpdateWithoutImmobileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  path?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
   isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -457,7 +457,7 @@ export type ImmagineImmobileUpdateWithoutImmobileInput = {
 
 export type ImmagineImmobileUncheckedUpdateWithoutImmobileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  path?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
   isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -465,7 +465,7 @@ export type ImmagineImmobileUncheckedUpdateWithoutImmobileInput = {
 
 export type ImmagineImmobileUncheckedUpdateManyWithoutImmobileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  path?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
   isCover?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -476,7 +476,7 @@ export type ImmagineImmobileUncheckedUpdateManyWithoutImmobileInput = {
 export type ImmagineImmobileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   immobileId?: boolean
-  path?: boolean
+  url?: boolean
   isCover?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -486,7 +486,7 @@ export type ImmagineImmobileSelect<ExtArgs extends runtime.Types.Extensions.Inte
 export type ImmagineImmobileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   immobileId?: boolean
-  path?: boolean
+  url?: boolean
   isCover?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -496,7 +496,7 @@ export type ImmagineImmobileSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
 export type ImmagineImmobileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   immobileId?: boolean
-  path?: boolean
+  url?: boolean
   isCover?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -506,13 +506,13 @@ export type ImmagineImmobileSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
 export type ImmagineImmobileSelectScalar = {
   id?: boolean
   immobileId?: boolean
-  path?: boolean
+  url?: boolean
   isCover?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ImmagineImmobileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "immobileId" | "path" | "isCover" | "createdAt" | "updatedAt", ExtArgs["result"]["immagineImmobile"]>
+export type ImmagineImmobileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "immobileId" | "url" | "isCover" | "createdAt" | "updatedAt", ExtArgs["result"]["immagineImmobile"]>
 export type ImmagineImmobileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   immobile?: boolean | Prisma.ImmobileDefaultArgs<ExtArgs>
 }
@@ -531,7 +531,7 @@ export type $ImmagineImmobilePayload<ExtArgs extends runtime.Types.Extensions.In
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     immobileId: string
-    path: string
+    url: string
     isCover: boolean
     createdAt: Date
     updatedAt: Date
@@ -961,7 +961,7 @@ export interface Prisma__ImmagineImmobileClient<T, Null = never, ExtArgs extends
 export interface ImmagineImmobileFieldRefs {
   readonly id: Prisma.FieldRef<"ImmagineImmobile", 'String'>
   readonly immobileId: Prisma.FieldRef<"ImmagineImmobile", 'String'>
-  readonly path: Prisma.FieldRef<"ImmagineImmobile", 'String'>
+  readonly url: Prisma.FieldRef<"ImmagineImmobile", 'String'>
   readonly isCover: Prisma.FieldRef<"ImmagineImmobile", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"ImmagineImmobile", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ImmagineImmobile", 'DateTime'>
