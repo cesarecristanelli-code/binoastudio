@@ -9,12 +9,29 @@ import { UTApi } from "uploadthing/server";
 
 const immobiliSchema = z.object({
   nome: z.string().trim().min(1, "Il nome non può essere vuoto"),
-  prezzo: z.number().positive(),
   indirizzo: z.string().trim().min(5),
-  metratura: z.number().int(),
-  numeroBagni: z.number().int(),
-  numeroLocali: z.number().int(),
-  descrizione: z.string().trim(),
+
+  prezzo: z.number().positive(),
+  metratura: z.number().int().nonnegative(),
+  numeroBagni: z.number().int().nonnegative(),
+  numeroLocali: z.number().int().nonnegative(),
+
+  //Campi con default
+  numeroBalconi: z.number().int().nonnegative().default(0),
+  numeroTerrazzi: z.number().int().nonnegative().default(0),
+  ascensore: z.boolean().default(false),
+  giardino: z.boolean().default(false),
+  boxAuto: z.number().int().default(0),
+  arredo: z.boolean().default(false),
+
+  //Campi opzionali
+  piano: z.string().trim().optional().or(z.literal("")),
+  pianiCondominio: z.number().int().optional().nullable(),
+  speseCondominiali: z.number().positive().optional().nullable(),
+
+  stato: z.string().trim().min(5).max(16).toUpperCase(),
+  classeEnergetica: z.string().trim().min(1).max(2).toUpperCase(),
+  descrizione: z.string().trim().min(10, "La descrizione è troppo corta"),
   foto: z
     .array(z.url({ protocol: /^https?$/, hostname: z.regexes.domain }))
     .min(1, "Devi inserire almeno una foto"),
@@ -24,12 +41,37 @@ const immobiliSchema = z.object({
 export async function insertImmobile(formData: FormData): Promise<Result> {
   await requireAuth();
 
+  const datiImmobile = {
+    nome: formData.get("nome") as string,
+    indirizzo: formData.get("indirizzo") as string,
+    prezzo: Number(formData.get("prezzo") as string),
+    metratura: Number(formData.get("metratura") as string),
+    numeroBagni: Number(formData.get("numeroBagni") as string),
+    numeroLocali:Number(formData.get("numeroLocali") as string),
+    numeroBalconi:Number(formData.get("numeroBalconi") as string),
+    numeroTerrazzi:Number(formData.get("numeroTerrazzi") as string),
+    ascensore: formData.get("ascensore") === "on",
+    giardino: formData.get("giardino") === "on",
+    boxAuto: Number(formData.get("boxAuto") as string),
+    arredo: formData.get("arredo") === "on",
+    piano:  Number(formData.get("piano") as string),
+    pianiCondominio:  Number(formData.get("pianiCondominio") as string),
+    // stato:  formData.
+    // classeEnergetica:
+    // descrizione:
+    // foto: 
+  }
+
   const nome = formData.get("nome") as string;
-  const prezzo = formData.get("prezzo") as string;
   const indirizzo = formData.get("indirizzo") as string;
+
+  const prezzo = formData.get("prezzo") as string;
   const metratura = formData.get("metratura") as string;
   const numeroBagni = formData.get("numeroBagni") as string;
   const numeroLocali = formData.get("numeroLocali") as string;
+
+
+  
   const descrizione = formData.get("descrizione") as string;
   const fotoUrl = formData.getAll("foto") as string[];
 
@@ -98,13 +140,14 @@ export async function insertImmobile(formData: FormData): Promise<Result> {
 
 // === GET ===
 export async function getImmobile(
-  immobileId: string,
+  identifier: string,
+  isSlug: boolean = false,
 ): Promise<Immobile | null> {
   try {
     const immobile = await prisma.immobile.findUnique({
-      where: {
-        id: immobileId,
-      },
+      where:
+        isSlug ? { slug: identifier } : { id: identifier }
+      ,
       include: {
         immagini: true,
       },

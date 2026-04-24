@@ -4,7 +4,7 @@ import { useState } from "react";
 import { insertImmobile } from "@/actions/immobiliActions";
 import Link from "next/link";
 import { useUploadThing } from "@/lib/uploadthing";
-import Image from "next/image"
+import Image from "next/image";
 
 export default function FormInserimento() {
   const [status, setStatus] = useState<{
@@ -40,7 +40,7 @@ export default function FormInserimento() {
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
 
-    const formElement = e.currentTarget as HTMLFormElement
+    const formElement = e.currentTarget as HTMLFormElement;
 
     if (files.length === 0) {
       setStatus({ success: false, message: "Devi inserire almeno una foto" });
@@ -52,7 +52,7 @@ export default function FormInserimento() {
 
     try {
       const uploadRes = await startUpload(files);
-      console.log("UploadRes: ", uploadRes)
+      console.log("UploadRes: ", uploadRes);
 
       if (!uploadRes) {
         setStatus({
@@ -64,7 +64,7 @@ export default function FormInserimento() {
       }
 
       const finalUrls: string[] = uploadRes.map((f) => f.ufsUrl);
-      console.log("Final URLS: ", finalUrls)
+      console.log("Final URLS: ", finalUrls);
 
       const formData = new FormData(formElement);
       finalUrls.forEach((url) => formData.append("foto", url));
@@ -96,7 +96,7 @@ export default function FormInserimento() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="flex flex-col max-w-3xl gap-4 p-5 border-2 border-black rounded-xl shadow-md">
+      <div className="flex flex-col max-w-3xl gap-6 p-5 border-2 border-black rounded-xl shadow-md">
         <div className="flex justify-center">
           <h2 className="text-center text-xl font-bold grow">
             Inserisci i dati dell&apos;Immobile
@@ -189,7 +189,7 @@ export default function FormInserimento() {
               className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
           </div>
-          <div className="flex flex-col gap-2">
+           <div className="flex flex-col gap-2">
             <label htmlFor="numeroLocali" className="ps-2 text-black">
               Numero Locali
             </label>
@@ -202,7 +202,180 @@ export default function FormInserimento() {
               className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
           </div>
-        </div>
+          {/*<div className="flex flex-col gap-2">
+            <label htmlFor="numeroBalconi" className="ps-2 text-black">
+              Numero Balconi
+            </label>
+
+            <input
+              type="number"
+              name="numeroBalconi"
+              id="numeroBalconi"
+              className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="numeroTerrazzi" className="ps-2 text-black">
+              Numero Terrazzi
+            </label>
+
+            <input
+              type="number"
+              name="numeroTerrazzi"
+              id="numeroTerrazzi"
+              className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
+            />
+          </div>*/}
+        </div> 
+        {/* Piano, Piani Condominio, Box Auto */}
+        {/* <div className="flex flex-row justify-around">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="piano" className="ps-2 text-black">
+              Piano
+            </label>
+            <input
+              type="text"
+              name="piano"
+              id="piano"
+              className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="pianiCondominio" className="ps-2 text-black">
+              Piani Condominio
+            </label>
+
+            <input
+              type="number"
+              name="pianiCondominio"
+              id="pianiCondominio"
+              className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="boxAuto" className="ps-2 text-black">
+              Box Auto
+            </label>
+
+            <input
+              required
+              type="number"
+              name="boxAuto"
+              id="boxAuto"
+              className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
+            />
+          </div>
+        </div> */}
+        {/* Ascensore, Giardino, Arredo */}
+        {/* <div className="flex flex-row justify-around">
+          <div>
+            <input type="checkbox" name="ascensore" id="ascensore" />
+            <label htmlFor="ascensore" className="ps-2 text-black">
+              Ascensore
+            </label>
+          </div>
+
+          <div>
+            <input
+              type="checkbox"
+              name="giardino"
+              id="giardino"
+              className="w-5"
+            />
+            <label htmlFor="giardino" className=" text-black">
+              Giardino
+            </label>
+          </div>
+          <div>
+            <input type="checkbox" name="arredo" id="arredo" className="w-5" />
+            <label htmlFor="arredo" className=" text-black">
+              Arredo
+            </label>
+          </div>
+        </div> */}
+        {/* Stato, Classe Energetica, Spese condominiali */}
+        {/* <div className="flex flex-row justify-around">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="stato" className="ps-2 text-black">
+              Stato
+            </label>
+
+            <select
+              required
+              name="stato"
+              id="stato"
+              className="w-40 py-2 px-3 bg-white border-2 border-black rounded-xl"
+            >
+              <option className="uppercase" value="BUONO">
+                buono
+              </option>
+              <option className="uppercase" value="NUOVO">
+                nuovo
+              </option>
+              <option className="uppercase" value="RISTRUTTURATO">
+                ristrutturato
+              </option>
+              <option className="uppercase" value="DA_RISTRUTTURARE">
+                da ristrutturare
+              </option>
+            </select>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="classeEnergia" className="ps-2 text-black">
+              Classe Energetica
+            </label>
+
+            <select
+              required
+              name="classeEnergia"
+              id="classeEnergia"
+              className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
+            >
+              <option className="uppercase" value="A4">
+                A4
+              </option>
+              <option className="uppercase" value="A3">
+                A3
+              </option>
+              <option className="uppercase" value="A2">
+                A2
+              </option>
+              <option className="uppercase" value="A1">
+                A1
+              </option>
+              <option className="uppercase" value="B">
+                B
+              </option>
+              <option className="uppercase" value="C">
+                C
+              </option>
+              <option className="uppercase" value="D">
+                D
+              </option>
+              <option className="uppercase" value="E">
+                E
+              </option>
+              <option className="uppercase" value="F">
+                F
+              </option>
+              <option className="uppercase" value="G">
+                G
+              </option>
+            </select>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="speseCondominiali" className="ps-2 text-black">
+              Spese Condominiali
+            </label>
+
+            <input
+              type="number"
+              name="speseCondominiali"
+              id="speseCondominiali"
+              className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
+            />
+          </div>
+        </div> */}
         {/* Foto Immobile */}
         <div className="flex flex-col gap-2">
           <label className="ps-2 text-black font-bold">Foto Immobile</label>
