@@ -4,6 +4,7 @@ import { useState } from "react";
 import { insertImmobile } from "@/actions/immobiliActions";
 import Link from "next/link";
 import { useUploadThing } from "@/lib/uploadthing";
+import Image from "next/image"
 
 export default function FormInserimento() {
   const [status, setStatus] = useState<{
@@ -39,6 +40,8 @@ export default function FormInserimento() {
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
 
+    const formElement = e.currentTarget as HTMLFormElement
+
     if (files.length === 0) {
       setStatus({ success: false, message: "Devi inserire almeno una foto" });
       return;
@@ -49,6 +52,7 @@ export default function FormInserimento() {
 
     try {
       const uploadRes = await startUpload(files);
+      console.log("UploadRes: ", uploadRes)
 
       if (!uploadRes) {
         setStatus({
@@ -60,20 +64,25 @@ export default function FormInserimento() {
       }
 
       const finalUrls: string[] = uploadRes.map((f) => f.ufsUrl);
+      console.log("Final URLS: ", finalUrls)
 
-      const formData = new FormData(e.currentTarget as HTMLFormElement);
+      const formData = new FormData(formElement);
       finalUrls.forEach((url) => formData.append("foto", url));
 
+      console.log("Form: ", Object.fromEntries(formData.entries()));
+
       const response = await insertImmobile(formData);
+
+      console.log("Risposta dal DB: ", response);
 
       setStatus(response);
 
       if (response.success) {
         setFiles([]);
         setPreviews([]);
-        (e.currentTarget as HTMLFormElement).reset();
+        formElement.reset();
 
-        setTimeout(() => setStatus({ success: null, message: "" }), 5000);
+        setTimeout(() => setStatus({ success: null, message: "" }), 10000);
       }
     } catch (error) {
       const errorMessage: string =
@@ -168,28 +177,28 @@ export default function FormInserimento() {
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="numero-bagni" className="ps-2 text-black">
+            <label htmlFor="numeroBagni" className="ps-2 text-black">
               Numero Bagni
             </label>
 
             <input
               required
               type="number"
-              name="numero-bagni"
-              id="numero-bagni"
+              name="numeroBagni"
+              id="numeroBagni"
               className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="numero-locali" className="ps-2 text-black">
+            <label htmlFor="numeroLocali" className="ps-2 text-black">
               Numero Locali
             </label>
 
             <input
               required
               type="number"
-              name="numero-locali"
-              id="numero-locali"
+              name="numeroLocali"
+              id="numeroLocali"
               className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
           </div>
@@ -221,8 +230,10 @@ export default function FormInserimento() {
           <div className="flex flex-wrap gap-2 mt-2">
             {previews.map((url, index) => (
               <div key={index} className="relative group">
-                <img
+                <Image
                   src={url}
+                  width={50}
+                  height={50}
                   alt="preview"
                   className="w-24 h-24 object-cover rounded-lg border"
                 />

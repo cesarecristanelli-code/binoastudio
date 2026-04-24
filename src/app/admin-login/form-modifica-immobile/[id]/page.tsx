@@ -9,14 +9,24 @@ export default async function UpdateForm({
   params: { id: string };
 }) {
   await requireAuth();
-  const { id } = params;
+  const { id } = await params;
+
+  if (!id) {
+    return (
+      <section className="flex w-full items-center justify-center my-32">
+        <p className="text-lg font-medium opacity-80 italic text-center">
+          ID dell&apos;immobile non trovato
+        </p>
+      </section>
+    );
+  }
 
   const immobile = await getImmobile(id);
 
   if (!immobile) return notFound();
 
   return (
-    <section className="flex w-full h-[300px] items-center justify-center">
+    <section className="flex w-full items-center justify-center my-32">
       <FormAggiornamento immobile={immobile} />
     </section>
   );

@@ -8,13 +8,13 @@ import { Result, Immobile } from "@/types/actions.types";
 import { UTApi } from "uploadthing/server";
 
 const immobiliSchema = z.object({
-  nome: z.string().min(1, "Il nome non può essere vuoto"),
+  nome: z.string().trim().min(1, "Il nome non può essere vuoto"),
   prezzo: z.number().positive(),
-  indirizzo: z.string().min(5),
+  indirizzo: z.string().trim().min(5),
   metratura: z.number().int(),
   numeroBagni: z.number().int(),
   numeroLocali: z.number().int(),
-  descrizione: z.string(),
+  descrizione: z.string().trim(),
   foto: z
     .array(z.url({ protocol: /^https?$/, hostname: z.regexes.domain }))
     .min(1, "Devi inserire almeno una foto"),
@@ -22,7 +22,7 @@ const immobiliSchema = z.object({
 
 // === INSERT ===
 export async function insertImmobile(formData: FormData): Promise<Result> {
-  const session = await requireAuth();
+  await requireAuth();
 
   const nome = formData.get("nome") as string;
   const prezzo = formData.get("prezzo") as string;
@@ -51,9 +51,11 @@ export async function insertImmobile(formData: FormData): Promise<Result> {
         validazione.error.issues.map((i) => i.message).join(", "),
       );
       return { success: false, message: "Errore nell'inserimento dei dati" };
+    } else {
+      console.log("Validazione dei dati corretta: ", validazione.data);
     }
 
-    const immobile = await prisma.immobile.create({
+    await prisma.immobile.create({
       data: {
         nome: validazione.data.nome,
         prezzo: validazione.data.prezzo,
@@ -72,6 +74,7 @@ export async function insertImmobile(formData: FormData): Promise<Result> {
       },
     });
 
+    console.log("Inserimento nel DB riuscito!")
     return { success: true, message: "Immobile inserito" };
   } catch (error) {
     if (

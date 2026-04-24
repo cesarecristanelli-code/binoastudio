@@ -5,6 +5,7 @@ import { useUploadThing } from "@/lib/uploadthing";
 import { useState } from "react";
 import { updateImmobile } from "@/actions/immobiliActions";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function FormAggionramento({
   immobile,
@@ -37,7 +38,7 @@ export default function FormAggionramento({
 
   const removeImage = (index: number) => {
     const urlToRemove = previews[index];
-    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setPreviews((prev) => prev.filter((_, i) => i !== index));
 
     if (urlToRemove.startsWith("blob:")) {
       const blobIndex = previews
@@ -49,6 +50,7 @@ export default function FormAggionramento({
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
+    const formElement = e.currentTarget as HTMLFormElement
 
     if (previews.length === 0) {
       setStatus({ success: false, message: "Devi inserire almeno una foto" });
@@ -77,7 +79,7 @@ export default function FormAggionramento({
 
       const finalUrls = [...existingUrls, ...newUrls];
 
-      const formData = new FormData(e.currentTarget as HTMLFormElement);
+      const formData = new FormData(formElement);
       finalUrls.forEach((url) => formData.append("foto", url));
 
       const response = await updateImmobile(immobile.id, formData);
@@ -87,8 +89,9 @@ export default function FormAggionramento({
       if (response.success) {
         setFiles([]);
         setPreviews([]);
+        formElement.reset();
 
-        setTimeout(() => setStatus({ success: null, message: "" }), 5000);
+        setTimeout(() => setStatus({ success: null, message: "" }), 10000);
       }
     } catch (error) {
       const errorMessage: string =
@@ -187,29 +190,29 @@ export default function FormAggionramento({
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="numero-bagni" className="ps-2 text-black">
+            <label htmlFor="numeroBagni" className="ps-2 text-black">
               Numero Bagni
             </label>
 
             <input
               required
               type="number"
-              name="numero-bagni"
-              id="numero-bagni"
+              name="numeroBagni"
+              id="numeroBagni"
               defaultValue={immobile.numeroBagni}
               className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="numero-locali" className="ps-2 text-black">
+            <label htmlFor="numeroLocali" className="ps-2 text-black">
               Numero Locali
             </label>
 
             <input
               required
               type="number"
-              name="numero-locali"
-              id="numero-locali"
+              name="numeroLocali"
+              id="numeroLocali"
               defaultValue={immobile.numeroLocali}
               className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
@@ -242,8 +245,10 @@ export default function FormAggionramento({
           <div className="flex flex-wrap gap-2 mt-2">
             {previews.map((url, index) => (
               <div key={index} className="relative group">
-                <img
+                <Image
                   src={url}
+                  width={50}
+                  height={50}
                   alt="preview"
                   className="w-24 h-24 object-cover rounded-lg border"
                 />

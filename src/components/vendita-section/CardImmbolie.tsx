@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { getSession } from "@/actions/auth";
 import { Immobile } from "@/types/actions.types";
-import { deleteImmobile } from "@/actions/immobiliActions";
 import DeleteButton from "./DeleteButton";
 
 export default async function CardImmobile({
@@ -23,14 +22,17 @@ export default async function CardImmobile({
   const coverImage =
     immobile.immagini.find((img) => img.isCover) || immobile.immagini[0];
 
+  console.log(immobile)
+
   return (
-    <>
+    <div className="flex flex-col gap-5">
       <div className="max-w-xl flex flex-col rounded-xl shadow-lg m-3 cursor-pointer">
         <div className="relative w-80 h-52 overflow-hidden rounded-t-xl">
           <Image
             src={coverImage.url}
             alt={`Foto di ${immobile.nome}`}
             fill
+            sizes="2xl"
             className="object-cover"
           />
         </div>
@@ -55,7 +57,7 @@ export default async function CardImmobile({
           {/* Bottone MODIFICA */}
           <Link
             href={`/admin-login/form-modifica-immobile/${immobile.id}`}
-            className="border-2 border-black rounded-xl text-center px-3 py-2 cursor-pointer"
+            className="border-2 border-black rounded-xl text-center px-3 py-2 cursor-pointer bg-gray-200 hover:opacity-80"
           >
             Modifica
           </Link>
@@ -63,6 +65,6 @@ export default async function CardImmobile({
           <DeleteButton id={immobile.id} />
         </div>
       )}
-    </>
+    </div>
   );
 }
