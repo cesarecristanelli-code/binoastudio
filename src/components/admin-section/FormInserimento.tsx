@@ -189,7 +189,7 @@ export default function FormInserimento() {
               className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
           </div>
-           <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2">
             <label htmlFor="numeroLocali" className="ps-2 text-black">
               Numero Locali
             </label>
@@ -226,7 +226,7 @@ export default function FormInserimento() {
               className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
           </div>*/}
-        </div> 
+        </div>
         {/* Piano, Piani Condominio, Box Auto */}
         {/* <div className="flex flex-row justify-around">
           <div className="flex flex-col gap-2">
@@ -241,14 +241,14 @@ export default function FormInserimento() {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="pianiCondominio" className="ps-2 text-black">
+            <label htmlFor="totalePiani" className="ps-2 text-black">
               Piani Condominio
             </label>
 
             <input
               type="number"
-              name="pianiCondominio"
-              id="pianiCondominio"
+              name="totalePiani"
+              id="totalePiani"
               className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
           </div>

@@ -44,48 +44,41 @@ export async function insertImmobile(formData: FormData): Promise<Result> {
   const datiImmobile = {
     nome: formData.get("nome") as string,
     indirizzo: formData.get("indirizzo") as string,
+    descrizione: formData.get("descrizione") as string,
+
     prezzo: Number(formData.get("prezzo") as string),
     metratura: Number(formData.get("metratura") as string),
     numeroBagni: Number(formData.get("numeroBagni") as string),
-    numeroLocali:Number(formData.get("numeroLocali") as string),
-    numeroBalconi:Number(formData.get("numeroBalconi") as string),
-    numeroTerrazzi:Number(formData.get("numeroTerrazzi") as string),
+    numeroLocali: Number(formData.get("numeroLocali") as string),
+    numeroBalconi: Number(formData.get("numeroBalconi") as string),
+    numeroTerrazzi: Number(formData.get("numeroTerrazzi") as string),
     ascensore: formData.get("ascensore") === "on",
     giardino: formData.get("giardino") === "on",
     boxAuto: Number(formData.get("boxAuto") as string),
     arredo: formData.get("arredo") === "on",
-    piano:  Number(formData.get("piano") as string),
-    pianiCondominio:  Number(formData.get("pianiCondominio") as string),
-    // stato:  formData.
-    // classeEnergetica:
-    // descrizione:
-    // foto: 
+    piano: Number(formData.get("piano") as string),
+    pianiCondominio: Number(formData.get("pianiCondominio") as string),
+    stato: formData.get("stato") as string,
+    classeEnergetica: formData.get("classeEnergetica") as string,
+
+    foto: formData.getAll("foto") as string[],
   }
 
-  const nome = formData.get("nome") as string;
-  const indirizzo = formData.get("indirizzo") as string;
+  // const nome = formData.get("nome") as string;
+  // const indirizzo = formData.get("indirizzo") as string;
 
-  const prezzo = formData.get("prezzo") as string;
-  const metratura = formData.get("metratura") as string;
-  const numeroBagni = formData.get("numeroBagni") as string;
-  const numeroLocali = formData.get("numeroLocali") as string;
+  // const prezzo = formData.get("prezzo") as string;
+  // const metratura = formData.get("metratura") as string;
+  // const numeroBagni = formData.get("numeroBagni") as string;
+  // const numeroLocali = formData.get("numeroLocali") as string;
 
 
-  
-  const descrizione = formData.get("descrizione") as string;
-  const fotoUrl = formData.getAll("foto") as string[];
+
+  // const descrizione = formData.get("descrizione") as string;
+  // const fotoUrl = formData.getAll("foto") as string[];
 
   try {
-    const validazione = immobiliSchema.safeParse({
-      nome: nome,
-      prezzo: Number(prezzo),
-      indirizzo: indirizzo,
-      metratura: Number(metratura),
-      numeroBagni: Number(numeroBagni),
-      numeroLocali: Number(numeroLocali),
-      descrizione: descrizione,
-      foto: fotoUrl,
-    });
+    const validazione = immobiliSchema.safeParse(datiImmobile);
 
     if (!validazione.success) {
       console.log(

@@ -32,11 +32,26 @@ enum ClasseEnergetica {
   G
 }
 
+enum Contratto {
+  VENDITA
+  AFFITTO
+}
+
+enum TipoImmobile {
+  APPARTAMENTO
+  VILLA
+  LOFT
+  UFFICIO
+  COMMERCIALE
+}
+
+// 
+
 model User {
   id        String    @id @default(cuid())
   username  String    @unique
   email     String    @unique
-  password  String    @unique
+  password  String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt
   sessions  Session[]
@@ -46,36 +61,89 @@ model Session {
   id        String   @id @default(cuid())
   token     String   @unique @default(uuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt DateTime @default(now())
   expiresAt DateTime
 }
 
+// Tabelle Geografiche
+
+model Regione {
+  id        String      @id @default(cuid())
+  nome      String      @unique
+  provincie Provincia[]
+}
+
+model Provincia {
+  id        String   @id @default(cuid())
+  nome      String   @unique
+  sigla     String   @unique @db.VarChar(2)
+  regioneId String
+  regione   Regione  @relation(fields: [regioneId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  comuni    Comune[]
+}
+
+model Comune {
+  id          String     @id @default(cuid())
+  nome        String
+  slug        String     @unique
+  cap         String     @db.VarChar(5)
+  provinciaId String
+  provincia   Provincia  @relation(fields: [provinciaId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  zone        Zona[]
+  immobili    Immobile[]
+}
+
+model Zona {
+  id       String     @id @default(cuid())
+  nome     String
+  slug     String     @unique
+  comuneId String
+  cap      String?
+  comune   Comune     @relation(fields: [comuneId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  immobili Immobile[]
+}
+
 model Immobile {
-  id           String @id @default(cuid())
-  slug         String @unique
-  nome         String
-  indirizzo    String
-  citta        String
+  id          String @id @default(cuid())
+  slug        String @unique
+  nome        String
+  descrizione String @db.Text
+
+  // Localizzazione
+  indirizzo String
+  comuneId  String
+  comune    Comune  @relation(fields: [comuneId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  zonaId    String?
+  zona      Zona?   @relation(fields: [zonaId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  lat       Float
+  lng       Float
+
+  // Caratteristiche principali
+  prezzo    Decimal      @db.Decimal(12, 2)
+  contratto Contratto    @default(VENDITA)
+  tipo      TipoImmobile @default(APPARTAMENTO)
+
   metratura    Int
   numeroLocali Int
   numeroBagni  Int
-  descrizione  String @db.Text
-  prezzo       Float
+  piano        String?
+  totalePiani  Int?
 
-  piano           String?
-  pianiCondominio Int?
-  ascensore       Boolean @default(false)
-  giardino        Boolean @default(false)
-  boxAuto         Int     @default(0)
-  numeroTerrazzi  Int     @default(0)
-  numeroBalconi   Int     @default(0)
+  // Opzioni e Comfort
+  ascensore      Boolean @default(false)
+  giardino       Boolean @default(false)
+  arredato       Boolean @default(false)
+  boxAuto        Int     @default(0)
+  numeroTerrazzi Int     @default(0)
+  numeroBalconi  Int     @default(0)
 
+  //Stato e Certificazioni
   stato             StatoImmobile    @default(BUONO)
   classeEnergia     ClasseEnergetica @default(G)
   speseCondominiali Float?
-  arredato          Boolean          @default(false)
 
+  // Metadata
   createdAt DateTime           @default(now())
   updatedAt DateTime           @default(now()) @updatedAt
   immagini  ImmagineImmobile[]
@@ -84,9 +152,11 @@ model Immobile {
 model ImmagineImmobile {
   id         String   @id @default(cuid())
   immobileId String
-  immobile   Immobile @relation(fields: [immobileId], references: [id], onDelete: Cascade)
+  immobile   Immobile @relation(fields: [immobileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   url        String   @unique
   isCover    Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
+
+  @@index([immobileId, isCover])
 }
