@@ -3,6 +3,8 @@
 @import "uploadthing/tw/v4";
 @source "../../node_modules/@uploadthing/react/dist";
 
+@import "leaflet/dist/leaflet.css";
+
 /* 
 rgb(250,248,245)  Off-White
 rgb(218,211,201)  Light Greige
@@ -17,8 +19,8 @@ rgb(183,171,159)  Cool Greige
 :root {
   /* --background: #ffffff;
   --foreground: #171717; */
-  --background: rgb(250,248,245);
-  --foreground: #2D2926; 
+  --background: rgb(250, 248, 245);
+  --foreground: #2d2926;
 }
 
 @theme {
@@ -32,10 +34,6 @@ rgb(183,171,159)  Cool Greige
   /* --font-archivo: "Archivo", sans-serif; */
   --font-arvo: "Arvo", sans-serif;
 }
-
-
-
-
 
 /* @media (prefers-color-scheme: dark) {
   :root {

@@ -5,6 +5,19 @@ import { insertImmobile } from "@/actions/immobiliActions";
 import Link from "next/link";
 import { useUploadThing } from "@/lib/uploadthing";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+
+const MapPicker = dynamic(
+  () => import("@/components/admin-section/MapPicker"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-100 w-full bg-slate-100 rounded-xl animate-pulse flex items-center justify-center text-slate-400">
+        Caricamento mappa in corso...
+      </div>
+    ),
+  },
+);
 
 export default function FormInserimento() {
   const [status, setStatus] = useState<{
@@ -376,13 +389,14 @@ export default function FormInserimento() {
             />
           </div>
         </div> */}
-        {/* Foto Immobile */}
+        {/* Immagini Immobile */}
         <div className="flex flex-col gap-2">
           <label className="ps-2 text-black font-bold">Foto Immobile</label>
 
           <div className="border-2 border-dashed border-gray-400 p-6 rounded-xl text-center">
             <input
               type="file"
+              name="immagini"
               multiple
               accept="image/*"
               onChange={handleFileChange}

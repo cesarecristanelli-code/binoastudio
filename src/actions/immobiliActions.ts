@@ -1,38 +1,63 @@
 "use server";
 
-import z from "zod";
+import z, { prettifyError } from "zod";
 import { requireAuth } from "@/actions/auth";
 import prisma from "@/lib/prisma";
-import { Prisma } from "@/generated/prisma/client";
-import { Result, Immobile } from "@/types/actions.types";
+import { ClasseEnergetica, Contratto, Prisma, StatoImmobile, TipoImmobile, Immobile, ImmagineImmobile } from "@/generated/prisma/client";
+import { Result } from "@/types/actions.types";
 import { UTApi } from "uploadthing/server";
 
+function generateSlug(nome: string): string {
+  return nome.toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '') // Rimuove caratteri speciali
+    .replace(/[\s_-]+/g, '-')  // Sostituisce spazi e underscore con un singolo -
+    .replace(/^-+|-+$/g, '');  // Rimuove trattini all'inizio/fine
+}
+
 const immobiliSchema = z.object({
+  // Info base
   nome: z.string().trim().min(1, "Il nome non può essere vuoto"),
-  indirizzo: z.string().trim().min(5),
-
-  prezzo: z.number().positive(),
-  metratura: z.number().int().nonnegative(),
-  numeroBagni: z.number().int().nonnegative(),
-  numeroLocali: z.number().int().nonnegative(),
-
-  //Campi con default
-  numeroBalconi: z.number().int().nonnegative().default(0),
-  numeroTerrazzi: z.number().int().nonnegative().default(0),
-  ascensore: z.boolean().default(false),
-  giardino: z.boolean().default(false),
-  boxAuto: z.number().int().default(0),
-  arredo: z.boolean().default(false),
-
-  //Campi opzionali
-  piano: z.string().trim().optional().or(z.literal("")),
-  pianiCondominio: z.number().int().optional().nullable(),
-  speseCondominiali: z.number().positive().optional().nullable(),
-
-  stato: z.string().trim().min(5).max(16).toUpperCase(),
-  classeEnergetica: z.string().trim().min(1).max(2).toUpperCase(),
   descrizione: z.string().trim().min(10, "La descrizione è troppo corta"),
-  foto: z
+
+  // Localizzazione -- queste servono solo per la logica del Form, ma non finiscono nel model Immobile
+  regioneId: z.string().trim().min(1, "Seleziona una regione"),
+  provinciaId: z.string().trim().min(1, "Seleziona una provincia"),
+
+  // questi invece finiscono nel model Immobile
+  comuneId: z.string().trim().min(1, "Selezione un comune"),
+  zonaId: z.string().trim().nullable().optional(),
+
+  indirizzo: z.string().trim().min(3, "Indirizzo obbligatorio"),
+  lat: z.coerce.number().min(-90).max(90),
+  lng: z.coerce.number().min(-180).max(180),
+
+  // Caratteristiche Economiche
+  prezzo: z.coerce.number().positive("Il prezzo deve essere un numero positivo"),
+  speseCondominiali: z.coerce.number().nonnegative("Le spese condominiai devono essere un numero positivo").optional().nullable(),
+  contratto: z.enum(Contratto),
+  tipo: z.enum(TipoImmobile),
+
+  // Misure e spazi
+  metratura: z.coerce.number().int().positive("Inserisci la metratura"),
+  numeroLocali: z.coerce.number().int().positive("Inserisci il numero di locali").min(1),
+  numeroBagni: z.coerce.number().int().positive("Inserisci il numero di bagni").min(1),
+  piano: z.string().trim().optional().nullable(),
+  totalePiani: z.coerce.number().int().optional().nullable(),
+
+  // Opzioni e Comfort
+  ascensore: z.preprocess((val) => val === "on" || val === true, z.boolean().default(false)),
+  giardino: z.preprocess((val) => val === "on" || val === true, z.boolean().default(false)),
+  arredo: z.preprocess((val) => val === "on" || val === true, z.boolean().default(false)),
+
+  boxAuto: z.coerce.number().int().default(0),
+  numeroTerrazzi: z.coerce.number().int().nonnegative().default(0),
+  numeroBalconi: z.coerce.number().int().nonnegative().default(0),
+
+
+  stato: z.enum(StatoImmobile),
+  classeEnergetica: z.enum(ClasseEnergetica),
+  immagini: z
     .array(z.url({ protocol: /^https?$/, hostname: z.regexes.domain }))
     .min(1, "Devi inserire almeno una foto"),
 });
@@ -41,67 +66,34 @@ const immobiliSchema = z.object({
 export async function insertImmobile(formData: FormData): Promise<Result> {
   await requireAuth();
 
-  const datiImmobile = {
-    nome: formData.get("nome") as string,
-    indirizzo: formData.get("indirizzo") as string,
-    descrizione: formData.get("descrizione") as string,
+  const rawData = Object.fromEntries(formData.entries());
+  const fotoArray = formData.getAll("foto") as string[];
 
-    prezzo: Number(formData.get("prezzo") as string),
-    metratura: Number(formData.get("metratura") as string),
-    numeroBagni: Number(formData.get("numeroBagni") as string),
-    numeroLocali: Number(formData.get("numeroLocali") as string),
-    numeroBalconi: Number(formData.get("numeroBalconi") as string),
-    numeroTerrazzi: Number(formData.get("numeroTerrazzi") as string),
-    ascensore: formData.get("ascensore") === "on",
-    giardino: formData.get("giardino") === "on",
-    boxAuto: Number(formData.get("boxAuto") as string),
-    arredo: formData.get("arredo") === "on",
-    piano: Number(formData.get("piano") as string),
-    pianiCondominio: Number(formData.get("pianiCondominio") as string),
-    stato: formData.get("stato") as string,
-    classeEnergetica: formData.get("classeEnergetica") as string,
-
-    foto: formData.getAll("foto") as string[],
-  }
-
-  // const nome = formData.get("nome") as string;
-  // const indirizzo = formData.get("indirizzo") as string;
-
-  // const prezzo = formData.get("prezzo") as string;
-  // const metratura = formData.get("metratura") as string;
-  // const numeroBagni = formData.get("numeroBagni") as string;
-  // const numeroLocali = formData.get("numeroLocali") as string;
-
-
-
-  // const descrizione = formData.get("descrizione") as string;
-  // const fotoUrl = formData.getAll("foto") as string[];
+  const dataToValidate = { ...rawData, foto: fotoArray };
 
   try {
-    const validazione = immobiliSchema.safeParse(datiImmobile);
+    const validazione = immobiliSchema.safeParse(dataToValidate);
 
     if (!validazione.success) {
+      const errors = prettifyError(validazione.error);
       console.log(
         "Errore validazione dati: ",
-        validazione.error.issues.map((i) => i.message).join(", "),
+        errors
       );
       return { success: false, message: "Errore nell'inserimento dei dati" };
     } else {
       console.log("Validazione dei dati corretta: ", validazione.data);
     }
 
+    const { regioneId, provinciaId, immagini, ...immobileData } = validazione.data;
+    const baseSlug = generateSlug(immobileData.nome);
+
     await prisma.immobile.create({
       data: {
-        nome: validazione.data.nome,
-        prezzo: validazione.data.prezzo,
-        indirizzo: validazione.data.indirizzo,
-        metratura: validazione.data.metratura,
-        numeroBagni: validazione.data.numeroBagni,
-        numeroLocali: validazione.data.numeroLocali,
-        descrizione: validazione.data.descrizione,
-        slug: validazione.data.nome.toLowerCase().split(" ").join("-"),
+        ...immobileData,
+        slug: `${baseSlug}-${Date.now()}`,
         immagini: {
-          create: validazione.data.foto.map((url, index) => ({
+          create: immagini.map((url, index) => ({
             url: url,
             isCover: index === 0,
           })),
@@ -135,7 +127,7 @@ export async function insertImmobile(formData: FormData): Promise<Result> {
 export async function getImmobile(
   identifier: string,
   isSlug: boolean = false,
-): Promise<Immobile | null> {
+): Promise<(Immobile & { immagini: ImmagineImmobile[] }) | null> {
   try {
     const immobile = await prisma.immobile.findUnique({
       where:
@@ -186,7 +178,7 @@ export async function updateImmobile(
   const numeroBagni = formData.get("numeroBagni") as string;
   const numeroLocali = formData.get("numeroLocali") as string;
   const descrizione = formData.get("descrizione") as string;
-  const nuoviUrls = formData.getAll("foto") as string[];
+  const nuoviUrls = formData.getAll("immagini") as string[];
 
   try {
     const validazione = immobiliSchema.safeParse({
@@ -197,7 +189,7 @@ export async function updateImmobile(
       numeroBagni: Number(numeroBagni),
       numeroLocali: Number(numeroLocali),
       descrizione: descrizione,
-      foto: nuoviUrls,
+      immagini: nuoviUrls,
     });
 
     if (!validazione.success) {
@@ -215,11 +207,11 @@ export async function updateImmobile(
       return { success: false, message: "Immobile non trovato" };
 
     const immaginiDaEliminare = immobilePrecedente.immagini.filter(
-      (imgVecchia) => !validazione.data.foto.includes(imgVecchia.url),
+      (imgVecchia: { url: string }) => !validazione.data.immagini.includes(imgVecchia.url),
     );
 
     if (immaginiDaEliminare.length > 0) {
-      const keys = immaginiDaEliminare.map((img) => {
+      const keys = immaginiDaEliminare.map((img: { url: string }) => {
         const parts = img.url.split("/");
         return parts[parts.length - 1];
       });
@@ -242,7 +234,7 @@ export async function updateImmobile(
         slug: nuovoSlug,
         immagini: {
           deleteMany: {},
-          create: validazione.data.foto.map((url, index) => ({
+          create: validazione.data.immagini.map((url, index) => ({
             url: url,
             isCover: index === 0,
           })),

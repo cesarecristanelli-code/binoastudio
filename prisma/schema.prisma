@@ -120,9 +120,10 @@ model Immobile {
   lng       Float
 
   // Caratteristiche principali
-  prezzo    Decimal      @db.Decimal(12, 2)
-  contratto Contratto    @default(VENDITA)
-  tipo      TipoImmobile @default(APPARTAMENTO)
+  prezzo            Decimal      @db.Decimal(12, 2)
+  speseCondominiali Float?
+  contratto         Contratto    @default(VENDITA)
+  tipo              TipoImmobile @default(APPARTAMENTO)
 
   metratura    Int
   numeroLocali Int
@@ -133,15 +134,14 @@ model Immobile {
   // Opzioni e Comfort
   ascensore      Boolean @default(false)
   giardino       Boolean @default(false)
-  arredato       Boolean @default(false)
+  arredo         Boolean @default(false)
   boxAuto        Int     @default(0)
   numeroTerrazzi Int     @default(0)
   numeroBalconi  Int     @default(0)
 
   //Stato e Certificazioni
-  stato             StatoImmobile    @default(BUONO)
-  classeEnergia     ClasseEnergetica @default(G)
-  speseCondominiali Float?
+  stato            StatoImmobile    @default(BUONO)
+  classeEnergetica ClasseEnergetica @default(G)
 
   // Metadata
   createdAt DateTime           @default(now())
