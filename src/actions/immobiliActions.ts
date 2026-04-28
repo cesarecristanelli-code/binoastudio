@@ -63,7 +63,7 @@ const immobiliSchema = z.object({
 });
 
 // === INSERT ===
-export async function insertImmobile(formData: FormData): Promise<Result> {
+export async function insertImmobile(formData: FormData): Promise<Result<null>> {
   await requireAuth();
 
   const rawData = Object.fromEntries(formData.entries());
@@ -102,7 +102,7 @@ export async function insertImmobile(formData: FormData): Promise<Result> {
     });
 
     console.log("Inserimento nel DB riuscito!")
-    return { success: true, message: "Immobile inserito" };
+    return { success: true, message: "Immobile inserito", data: null };
   } catch (error) {
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -168,7 +168,7 @@ export async function getAllImmobili(): Promise<Immobile[] | null> {
 export async function updateImmobile(
   immobileId: string,
   formData: FormData,
-): Promise<Result> {
+): Promise<Result<null>> {
   await requireAuth();
 
   const nome = formData.get("nome") as string;
@@ -249,7 +249,7 @@ export async function updateImmobile(
       };
     }
 
-    return { success: true, message: "Immobile aggiornato" };
+    return { success: true, message: "Immobile aggiornato", data: null };
   } catch (error) {
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -272,7 +272,7 @@ export async function updateImmobile(
 }
 
 // === DELETE ===
-export async function deleteImmobile(immobileId: string): Promise<Result> {
+export async function deleteImmobile(immobileId: string): Promise<Result<null>> {
   await requireAuth();
 
   try {
@@ -293,7 +293,7 @@ export async function deleteImmobile(immobileId: string): Promise<Result> {
       },
     });
 
-    return { success: true, message: "Immobile eliminato" };
+    return { success: true, message: "Immobile eliminato", data: null };
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "Errore sconosciuto";

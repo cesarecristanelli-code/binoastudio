@@ -1,11 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { insertImmobile } from "@/actions/immobiliActions";
 import Link from "next/link";
 import { useUploadThing } from "@/lib/uploadthing";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import {
+  ComuneSubset,
+  getComuneByProvincia,
+  getProvinceByRegione,
+  getRegioni,
+  getZonaByComune,
+  ProvinciaSubset,
+  ZonaSubset,
+} from "@/actions/geoActions";
+import { Regione } from "@/generated/prisma/client";
 
 const MapPicker = dynamic(
   () => import("@/components/admin-section/MapPicker"),
@@ -27,12 +37,156 @@ export default function FormInserimento() {
     success: null,
     message: "",
   });
-  const [files, setFiles] = useState<File[]>([]);
-  const [previews, setPreviews] = useState<string[]>([]);
+  // Stato per la gestione del caricamento del form
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const { startUpload } = useUploadThing("imageUploader");
 
+  // ==== GEO DATA ====
+
+  //regioni e province
+  const [regioni, setRegioni] = useState<Regione[]>([]);
+  const [province, setProvince] = useState<ProvinciaSubset[]>([]);
+  //comuni
+  const [allComuni, setAllComuni] = useState<ComuneSubset[]>([]);
+  const [searchComune, setSearchComune] = useState<string>("");
+  const [selectedComuneId, setSelectedComuneId] = useState<string>("");
+  //zone
+  const [allZone, setAllZone] = useState<ZonaSubset[]>([]);
+  const [searchZona, setSearchZona] = useState<string>("");
+  const [selectedZonaId, setSelectedZonaId] = useState<string>("");
+  const [checkedZona, setCheckedZona] = useState<boolean>(false);
+
+  // Funzioni per il recuper di regioni e provincie
+  useEffect(() => {
+    const loadRegioni = async () => {
+      const res = await getRegioni();
+      if (res.success && res.data) {
+        setRegioni(res.data);
+      } else {
+        console.log(res.message);
+      }
+    };
+
+    loadRegioni();
+  }, []);
+
+  const handleRegioneChange = async (regioneId: string) => {
+    setProvince([]);
+    setAllComuni([]);
+
+    if (!regioneId) return;
+
+    const res = await getProvinceByRegione(regioneId);
+    if (res.success && res.data) {
+      setProvince(res.data);
+    } else {
+      console.log(res.message);
+    }
+  };
+
+  const handleProvinciaChange = async (provinciaId: string) => {
+    setAllComuni([]);
+    setSearchComune("");
+    setSelectedComuneId("");
+
+    if (!provinciaId) return;
+
+    const res = await getComuneByProvincia(provinciaId);
+    if (res.success && res.data) {
+      setAllComuni(res.data);
+    } else {
+      console.log(res.message);
+    }
+  };
+
+  const filteredComuni = useMemo(() => {
+    // Se non c'è testo o abbiamo già selezionato un comune, non mostriamo nulla
+    if (searchComune.trim() === "" || selectedComuneId) return [];
+
+    return allComuni.filter((c) =>
+      c.nome.toLowerCase().includes(searchComune.toLowerCase()),
+    );
+  }, [searchComune, allComuni, selectedComuneId]);
+
+  const handleComuneChange = useCallback(async (comuneId: string) => {
+    setSelectedComuneId(comuneId);
+    setSearchComune("");
+
+    setAllZone([]);
+    setSearchZona("");
+    setSelectedZonaId("");
+
+    if (!comuneId) return;
+
+    const res = await getZonaByComune(comuneId);
+    if (res.success && res.data && res.data.length > 0) {
+      setAllZone(res.data);
+      setCheckedZona(true);
+    }
+  }, []);
+
+  const filteredZone = useMemo(() => {
+    // Se non c'è testo cercato O se abbiamo già cliccato su un suggerimento (bloccando l'ID)
+    // svuotiamo la lista dei suggerimenti.
+    if (searchZona.trim() === "" || selectedZonaId) return [];
+
+    return allZone.filter((z) =>
+      z.nome.toLowerCase().includes(searchZona.toLowerCase()),
+    );
+  }, [searchZona, allZone, selectedZonaId]);
+
+  // ==== GEOLOCATION ====
+
+  //Stati per la gestione della mappa
+  const [coords, setCoords] = useState<{ lat: number; lng: number }>({
+    lat: 45.438,
+    lng: 10.993,
+  });
+  const [isGeocoding, setIsGeocoding] = useState<boolean>(false);
+
+  // Funzioni per la gestione della mapppa e dell'indirizzo
+  const handleVerifyAddress = async () => {
+    const form = document.querySelector("form") as HTMLFormElement;
+    const formData = new FormData(form);
+
+    const indirizzo = formData.get("indirizzo") as string;
+    const comune = "Verona";
+
+    if (!indirizzo || indirizzo.length < 3) return;
+
+    setIsGeocoding(true);
+
+    try {
+      const query = `${indirizzo}, ${comune}, VR`;
+      const res = await fetch(`/api/geocoding?q=${encodeURIComponent(query)}`);
+      const result = await res.json();
+
+      if (result.success) {
+        setCoords({
+          lat: result.data.lat,
+          lng: result.data.lng,
+        });
+      } else {
+        alert(
+          "Indirizzo non trovato. Verifica che sia corretto e completo (es: Via Roma 1, Verona)",
+        );
+      }
+    } finally {
+      setIsGeocoding(false);
+    }
+  };
+
+  const handleMapChange = useCallback((lat: number, lng: number) => {
+    setCoords({ lat, lng });
+  }, []);
+
+  // ==== FILE HANDLING ====
+
+  // Stati per la gestione delle immagini
+  const [files, setFiles] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
+
+  // Funzioni per la gestione delle immagini
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const selectedFiles = Array.from(e.target.files);
@@ -50,6 +204,7 @@ export default function FormInserimento() {
     setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // Funzione per il submit
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
 
@@ -156,19 +311,214 @@ export default function FormInserimento() {
           </div>
         </div>
 
-        {/* Indirizzo */}
+        {/* Regione */}
+        <div className="flex flex-col gap-2">
+          <label htmlFor="regioneId" className="ps-2 text-black">
+            Regione
+          </label>
+          <select
+            name="regioneId"
+            onChange={(e) => handleRegioneChange(e.target.value)}
+            className="w-72 py-2 px-3 bg-white border-2 border-black rounded-xl"
+          >
+            <option value="">Seleziona Regione</option>
+            {regioni.map((r) => (
+              <option key={r.id} value={r.id}>
+                {r.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Provincia */}
+        <div className="flex flex-col gap-2">
+          <label htmlFor="provinciaId" className="ps-2 text-black">
+            Provincia
+          </label>
+          <select
+            name="provinciaId"
+            disabled={province.length === 0}
+            onChange={(e) => handleProvinciaChange(e.target.value)}
+            className="w-72 py-2 px-3 bg-white border-2 border-black rounded-xl disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400"
+          >
+            <option value="">Seleziona Provincia</option>
+            {province.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Comune */}
+        <div className="flex flex-col gap-2 relative">
+          <label className="ps-2 text-black">Comune</label>
+
+          <div className="flex gap-2">
+            <div className="relative grow">
+              <input
+                type="text"
+                value={searchComune}
+                onChange={(e) => {
+                  setSearchComune(e.target.value);
+                  setSelectedComuneId(""); // Se ricomincia a scrivere, resetta la selezione
+                }}
+                placeholder={
+                  allComuni.length > 0
+                    ? "Inizia a scrivere il comune..."
+                    : "Seleziona prima una provincia"
+                }
+                disabled={allComuni.length === 0}
+                className="w-full py-2 px-3 bg-white border-2 border-black rounded-xl disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400"
+              />
+
+              {/* Menu a discesa dei risultati */}
+              {filteredComuni.length > 0 && !selectedComuneId && (
+                <ul className="absolute z-1001 w-full bg-white border-2 border-black rounded-xl mt-1 max-h-60 overflow-y-auto shadow-xl">
+                  {filteredComuni.map((c) => (
+                    <li
+                      key={c.id}
+                      onClick={() => {
+                        setSearchComune(c.nome);
+                        setSelectedComuneId(c.id);
+                        handleComuneChange(c.id); // Funzione per caricare le zone
+                      }}
+                      className="px-4 py-2 hover:bg-blue-100 cursor-pointer border-b last:border-none border-gray-100"
+                    >
+                      {c.nome}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {/* Bottone "+" per aggiungere comune */}
+            <button
+              type="button"
+              onClick={() => {
+                /* Logica aggiunta rapida */
+              }}
+              className="w-11 h-11 flex items-center justify-center border-2 border-black rounded-xl hover:bg-gray-100 transition-colors font-bold cursor-pointer"
+            >
+              +
+            </button>
+          </div>
+
+          {/* Campo nascosto per inviare l'ID al server tramite FormData */}
+          <input type="hidden" name="comuneId" value={selectedComuneId} />
+        </div>
+
+        {/* Zona */}
+        <div className="flex flex-col gap-2 relative">
+          <label className="ps-2 text-black">Zona / Quartiere</label>
+
+          <div className="flex gap-2">
+            <div className="relative grow">
+              {/* Se il comune ha zone, mostriamo l'input di ricerca */}
+              {allZone.length > 0 ? (
+                <>
+                  <input
+                    type="text"
+                    className="w-full py-2 px-3 border-2 border-blue-600 rounded-xl outline-none focus:ring-2 ring-blue-200"
+                    placeholder="Inizia a scrivere la zona..."
+                    value={searchZona}
+                    onChange={(e) => {
+                      setSearchZona(e.target.value);
+                      setSelectedZonaId(""); // Se l'utente ricomincia a scrivere, resettiamo l'ID
+                    }}
+                  />
+
+                  {/* Menu Suggerimenti */}
+                  {filteredZone.length > 0 && (
+                    <ul className="absolute z-100 w-full bg-white border-2 border-blue-600 rounded-xl mt-1 max-h-48 overflow-y-auto shadow-2xl">
+                      {filteredZone.map((z) => (
+                        <li
+                          key={z.id}
+                          className="px-4 py-2 hover:bg-blue-50 cursor-pointer border-b last:border-none"
+                          onClick={() => {
+                            setSearchZona(z.nome);
+                            setSelectedZonaId(z.id);
+                          }}
+                        >
+                          {z.nome}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              ) : (
+                /* Se il comune NON ha zone (o non è selezionato), mostriamo un input disabilitato parlante */
+                <input
+                  type="text"
+                  disabled
+                  className="w-full py-2 px-3 border-2 border-gray-200 bg-gray-50 rounded-xl italic text-gray-400 cursor-not-allowed"
+                  value={
+                    !selectedComuneId
+                      ? "Seleziona prima un comune"
+                      : checkedZona
+                        ? "Nessuna zona censita per questo comune"
+                        : "Caricamento zone in corso..."
+                  }
+                />
+              )}
+            </div>
+
+            {/* Bottone per aggiungere una zona mancante */}
+            <button
+              type="button"
+              disabled={!selectedComuneId}
+              onClick={() => {
+                /* Apri modal/prompt per aggiunta zona */
+              }}
+              className="w-11 h-11 flex items-center justify-center border-2 border-blue-600 text-blue-600 rounded-xl hover:bg-blue-50 transition-colors disabled:opacity-30 disabled:border-gray-300 disabled:text-gray-300"
+              title="Aggiungi nuova zona"
+            >
+              <span className="text-xl font-bold">+</span>
+            </button>
+          </div>
+
+          {/* L'ID che verrà inviato effettivamente al server */}
+          <input type="hidden" name="zonaId" value={selectedZonaId} />
+        </div>
+
+        {/* INDIRIZZO */}
+        <input type="hidden" name="lat" value={coords.lat} />
+        <input type="hidden" name="lng" value={coords.lng} />
         <div className="flex flex-col gap-2">
           <label htmlFor="indirizzo" className="ps-2 text-black">
             Indirizzo
           </label>
-          <input
-            required
-            type="text"
-            name="indirizzo"
-            id="indirizzo"
-            className="w-sm py-2 px-3 bg-white border-2 border-black rounded-xl placeholder:italic"
-            placeholder="via Pompei 2 - Legnago, VR"
+          <div className="flex gap-2">
+            <input
+              required
+              type="text"
+              name="indirizzo"
+              id="indirizzo"
+              disabled={allComuni.length === 0}
+              className="grow py-2 px-3 bg-white border-2 border-black rounded-xl disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400"
+              placeholder="Via Roma 10"
+            />
+            <button
+              type="button"
+              onClick={handleVerifyAddress}
+              disabled={isGeocoding || allComuni.length === 0}
+              className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
+            >
+              {isGeocoding ? "..." : "Verifica"}
+            </button>
+          </div>
+        </div>
+
+        {/* Mappa */}
+        <div className="mt-4">
+          <MapPicker
+            lat={coords.lat}
+            lng={coords.lng}
+            onChange={handleMapChange}
           />
+          <p className="text-[10px] text-gray-500 mt-1 italic">
+            Coordinate attuali: {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)}
+          </p>
         </div>
         {/* Metratura | Numero Bagni | Numero Locali */}
         <div className="flex flex-row justify-around">
@@ -215,7 +565,7 @@ export default function FormInserimento() {
               className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
           </div>
-          {/*<div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2">
             <label htmlFor="numeroBalconi" className="ps-2 text-black">
               Numero Balconi
             </label>
@@ -238,10 +588,10 @@ export default function FormInserimento() {
               id="numeroTerrazzi"
               className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
-          </div>*/}
+          </div>
         </div>
         {/* Piano, Piani Condominio, Box Auto */}
-        {/* <div className="flex flex-row justify-around">
+        <div className="flex flex-row justify-around">
           <div className="flex flex-col gap-2">
             <label htmlFor="piano" className="ps-2 text-black">
               Piano
@@ -278,9 +628,9 @@ export default function FormInserimento() {
               className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
           </div>
-        </div> */}
+        </div>
         {/* Ascensore, Giardino, Arredo */}
-        {/* <div className="flex flex-row justify-around">
+        <div className="flex flex-row justify-around">
           <div>
             <input type="checkbox" name="ascensore" id="ascensore" />
             <label htmlFor="ascensore" className="ps-2 text-black">
@@ -305,9 +655,9 @@ export default function FormInserimento() {
               Arredo
             </label>
           </div>
-        </div> */}
+        </div>
         {/* Stato, Classe Energetica, Spese condominiali */}
-        {/* <div className="flex flex-row justify-around">
+        <div className="flex flex-row justify-around">
           <div className="flex flex-col gap-2">
             <label htmlFor="stato" className="ps-2 text-black">
               Stato
@@ -388,7 +738,7 @@ export default function FormInserimento() {
               className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
             />
           </div>
-        </div> */}
+        </div>
         {/* Immagini Immobile */}
         <div className="flex flex-col gap-2">
           <label className="ps-2 text-black font-bold">Foto Immobile</label>

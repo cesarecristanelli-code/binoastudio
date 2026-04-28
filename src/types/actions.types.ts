@@ -1,7 +1,4 @@
-export interface Result {
-  success: boolean;
-  message: string;
-}
+export type Result<T> = { success: false, message: string } | { success: true, message: string, data: T }
 
 export interface Immobile {
   id: string;

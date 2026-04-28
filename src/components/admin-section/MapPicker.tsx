@@ -38,10 +38,10 @@ export default function MapPicker({ lat, lng, onChange }: MapPickerProps) {
 
   const eventHandlers = useMemo(
     () => ({
-      dragend(e: L.DragEndEvent) {
-        const marker = e.target;
-        if (!marker != null) {
-          const { lat, lng } = marker.getLatLang();
+      dragend(e: L.LeafletEvent) {
+        const marker = e.target as L.Marker;
+        if (marker) {
+          const { lat, lng } = marker.getLatLng();
           onChange(lat, lng);
         }
       },

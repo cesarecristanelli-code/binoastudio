@@ -1,32 +1,34 @@
 import { NextResponse } from "next/server";
 
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<Response> {
     const { searchParams } = new URL(request.url);
-    const adress = searchParams.get("adress");
+    const q = searchParams.get("q");
 
-    if (!adress) {
+    if (!q) {
         return NextResponse.json({ success: false, message: "Indirizzo mancante" }, { status: 400 });
     }
 
     try {
-        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(adress)}&limit=1`, {
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=1`, {
             headers: {
-                "User-Agent": "BinoaStudio (https://binoastudio.com)"
+                "User-Agent": "BinòaStudio (https://binoastudio.com)"
             }
         });
 
         const data = await response.json();
 
         if (data.length === 0) {
-            return NextResponse.json({ success: false, message: "Inidirzzo non trovato" }, { status: 404 });
+            return NextResponse.json({ success: false, message: "Indirizzo non trovato" }, { status: 404 });
         }
+
+        const result = data[0];
 
         return NextResponse.json({
             success: true,
             data: {
-                lat: parseFloat(data[0].lat),
-                lng: parseFloat(data[0].lon),
-                display_name: data[0].display_name
+                lat: parseFloat(result.lat),
+                lng: parseFloat(result.lon),
+                display_name: result.display_name
             }
         });
     } catch (error) {
