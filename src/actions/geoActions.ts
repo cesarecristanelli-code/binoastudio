@@ -2,7 +2,7 @@
 
 import { Regione, Provincia, Comune, Zona } from "@/generated/prisma/client";
 import prisma from "@/lib/prisma";
-import { Result } from "@/types/actions.types";
+import { ComuneExtended, Result } from "@/types/actions.types";
 import { generateResult, generateSlug } from "@/lib/utils";
 
 export type ProvinciaSubset = Pick<Provincia, "id" | "nome">;
@@ -53,6 +53,24 @@ export async function getProvinceByRegione(regioneId: string): Promise<Result<Pr
         return generateResult(false, "Errore durante il recupero delle provincie", error);
     }
 }
+
+export async function getProvinciaByComune(comuneId: string): Promise<Result<ComuneExtended>> {
+    try {
+        const response = await prisma.comune.findUnique({
+            where: { id: comuneId },
+            include: {
+                provincia: true
+            }
+        })
+
+        if (!response) return generateResult(false, "Errore nella risposta del DB", null);
+
+        return generateResult(true, "Provincia recuperata", null, response)
+    } catch (error) {
+        return generateResult(false, "Errore durante il recupero della provincia", error);
+    }
+}
+
 
 export async function getComuneByProvincia(provinciaId: string): Promise<Result<ComuneSubset[]>> {
     try {

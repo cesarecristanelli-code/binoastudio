@@ -1,22 +1,11 @@
+import { Immobile, ImmagineImmobile, Comune, Provincia } from "@/generated/prisma/client"
+
 export type Result<T> = { success: false, message: string } | { success: true, message: string, data: T }
 
-export interface Immobile {
-  id: string;
-  nome: string;
-  prezzo: number;
-  indirizzo: string;
-  metratura: number;
-  numeroBagni: number;
-  numeroLocali: number;
-  descrizione: string;
-  slug: string;
-  immagini: {
-    id: string;
-    url: string;
-    isCover: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-  }[];
-  createdAt: Date;
-  updatedAt: Date;
+export interface ImmobileExtended extends Immobile {
+  immagini: ImmagineImmobile[];
+}
+
+export interface ComuneExtended extends Comune {
+  provincia: Provincia;
 }

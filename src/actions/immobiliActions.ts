@@ -4,7 +4,7 @@ import z, { prettifyError } from "zod";
 import { requireAuth } from "@/actions/auth";
 import prisma from "@/lib/prisma";
 import { ClasseEnergetica, Contratto, Prisma, StatoImmobile, TipoImmobile, Immobile, ImmagineImmobile } from "@/generated/prisma/client";
-import { Result } from "@/types/actions.types";
+import { Result, ImmobileExtended } from "@/types/actions.types";
 import { UTApi } from "uploadthing/server";
 import { generateSlug } from "@/lib/utils";
 
@@ -140,7 +140,7 @@ export async function getImmobile(
 
 const utapi = new UTApi();
 
-export async function getAllImmobili(): Promise<Immobile[] | null> {
+export async function getAllImmobili(): Promise<ImmobileExtended[] | null> {
   try {
     const immobili = await prisma.immobile.findMany({
       include: {

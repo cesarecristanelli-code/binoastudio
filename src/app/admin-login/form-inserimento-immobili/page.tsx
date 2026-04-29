@@ -1,4 +1,4 @@
-import FormInserimento from "@/components/admin-section/FormInserimento";
+import FormInserimento from "@/components/admin-section/inserimento/FormInserimento";
 import { requireAuth } from "@/actions/auth";
 
 export default async function InsertPropertyPage() {

@@ -1,14 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getSession } from "@/actions/auth";
-import { Immobile } from "@/types/actions.types";
 import DeleteButton from "./DeleteButton";
+import { ImmobileExtended } from "@/types/actions.types";
 
 export default async function CardImmobile({
   immobile,
   children,
 }: {
-  immobile: Immobile;
+  immobile: ImmobileExtended;
   children: React.ReactNode;
 }) {
   const isLogged = await getSession();
@@ -22,7 +22,7 @@ export default async function CardImmobile({
   const coverImage =
     immobile.immagini.find((img) => img.isCover) || immobile.immagini[0];
 
-  console.log(immobile)
+  console.log(immobile);
 
   return (
     <div className="flex flex-col gap-5">
@@ -38,7 +38,7 @@ export default async function CardImmobile({
         </div>
         <div className="ms-2 me-5 grow">
           <h1 className="py-4 tracking-tight font-bold text-2xl">
-            € {formatter.format(immobile.prezzo)}
+            € {formatter.format(immobile.prezzo.toNumber())}
           </h1>
 
           <h2 className="py-2 tracking-wide text-gray-800 text-lg font-semibold">
