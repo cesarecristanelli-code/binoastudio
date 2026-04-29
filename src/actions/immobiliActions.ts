@@ -78,6 +78,7 @@ export async function insertImmobile(formData: FormData): Promise<Result<null>> 
       console.log("Validazione dei dati corretta: ", validazione.data);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { regioneId, provinciaId, immagini, ...immobileData } = validazione.data;
     const baseSlug = generateSlug(immobileData.nome);
 

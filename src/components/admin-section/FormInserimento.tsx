@@ -125,7 +125,7 @@ export default function FormInserimento() {
     setAllComuni([]);
     setSearchComune("");
     setSelectedComuneId("");
-    setModalConfig({ ...modalConfig, parentId: provinciaId });
+    setModalConfig((prev) => ({ ...prev, parentId: provinciaId }));
 
     if (!provinciaId) return;
 
@@ -153,7 +153,7 @@ export default function FormInserimento() {
     setAllZone([]);
     setSearchZona("");
     setSelectedZonaId("");
-    setModalConfig({ ...modalConfig, parentId: comuneId });
+    setModalConfig((prev) => ({ ...prev, parentId: comuneId }));
 
     if (!comuneId) return;
 
