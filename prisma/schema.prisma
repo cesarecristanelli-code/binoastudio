@@ -87,7 +87,7 @@ model Comune {
   id          String     @id @default(cuid())
   nome        String
   slug        String     @unique
-  cap         String     @db.VarChar(5)
+  cap         String?    @db.VarChar(5)
   provinciaId String
   provincia   Provincia  @relation(fields: [provinciaId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   zone        Zona[]

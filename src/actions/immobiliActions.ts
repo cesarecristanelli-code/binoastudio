@@ -6,14 +6,7 @@ import prisma from "@/lib/prisma";
 import { ClasseEnergetica, Contratto, Prisma, StatoImmobile, TipoImmobile, Immobile, ImmagineImmobile } from "@/generated/prisma/client";
 import { Result } from "@/types/actions.types";
 import { UTApi } from "uploadthing/server";
-
-function generateSlug(nome: string): string {
-  return nome.toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '') // Rimuove caratteri speciali
-    .replace(/[\s_-]+/g, '-')  // Sostituisce spazi e underscore con un singolo -
-    .replace(/^-+|-+$/g, '');  // Rimuove trattini all'inizio/fine
-}
+import { generateSlug } from "@/lib/utils";
 
 const immobiliSchema = z.object({
   // Info base
