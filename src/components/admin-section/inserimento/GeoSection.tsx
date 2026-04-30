@@ -1,9 +1,9 @@
-import { useInserimentoLogic } from "./useInserimentoLogic";
+import { useInserimentoHooks } from "./useInserimentoHooks";
 
 export default function GeoSection({
   logic,
 }: {
-  logic: ReturnType<typeof useInserimentoLogic>;
+  logic: ReturnType<typeof useInserimentoHooks>;
 }) {
   return (
     <>

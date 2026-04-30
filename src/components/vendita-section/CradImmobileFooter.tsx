@@ -1,5 +1,5 @@
 import { CardImFooterProps } from "@/types/cardImmobile.types";
-import {LayoutTemplate, Bath} from "lucide-react"
+import { LayoutTemplate, Bath } from "lucide-react";
 import { ArrowsPointingOutIcon } from "@heroicons/react/24/outline";
 
 export default function CardFooter({
@@ -24,9 +24,9 @@ export default function CardFooter({
       <div className="flex flex-row gap-1 text-sm">
         <Bath className="size-5 text-blue-800" />
         {numeroBagni === 1 ? (
-          <p>{numeroLocali} bagno</p>
+          <p>{numeroBagni} bagno</p>
         ) : (
-          <p>{numeroLocali} bagni</p>
+          <p>{numeroBagni} bagni</p>
         )}
       </div>
     </div>

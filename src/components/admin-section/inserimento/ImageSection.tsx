@@ -18,7 +18,6 @@ export default function ImageSection({
       <div className="border-2 border-dashed border-gray-400 p-6 rounded-xl text-center">
         <input
           type="file"
-          name="immagini"
           multiple
           accept="image/*"
           onChange={onChange}

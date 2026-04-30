@@ -26,32 +26,34 @@ export default async function CardImmobile({
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="max-w-xl flex flex-col rounded-xl shadow-lg m-3 cursor-pointer">
-        <div className="relative w-80 h-52 overflow-hidden rounded-t-xl">
-          <Image
-            src={coverImage.url}
-            alt={`Foto di ${immobile.nome}`}
-            fill
-            sizes="2xl"
-            className="object-cover"
-          />
+      <Link href={`/vendita/${immobile.slug}`}>
+        <div className="max-w-xl flex flex-col rounded-xl shadow-lg m-3 cursor-pointer">
+          <div className="relative w-80 h-52 overflow-hidden rounded-t-xl">
+            <Image
+              src={coverImage.url}
+              alt={`Foto di ${immobile.nome}`}
+              fill
+              sizes="2xl"
+              className="object-cover"
+            />
+          </div>
+          <div className="ms-2 me-5 grow">
+            <h1 className="py-4 tracking-tight font-bold text-2xl">
+              {formatter.format(immobile.prezzo.toNumber())}
+            </h1>
+
+            <h2 className="py-2 tracking-wide text-gray-800 text-lg font-semibold">
+              {immobile.nome}
+            </h2>
+
+            <h3 className="pb-2 leading-relaxed text-gray-600 capitalize">
+              {immobile.indirizzo}
+            </h3>
+          </div>
+
+          <div className="mt-auto border-t border-gray-200 p-3">{children}</div>
         </div>
-        <div className="ms-2 me-5 grow">
-          <h1 className="py-4 tracking-tight font-bold text-2xl">
-            € {formatter.format(immobile.prezzo.toNumber())}
-          </h1>
-
-          <h2 className="py-2 tracking-wide text-gray-800 text-lg font-semibold">
-            {immobile.nome}
-          </h2>
-
-          <h3 className="pb-2 leading-relaxed text-gray-600 capitalize">
-            {immobile.indirizzo}
-          </h3>
-        </div>
-
-        <div className="mt-auto border-t border-gray-200 p-3">{children}</div>
-      </div>
+      </Link>
       {isLogged && (
         <div className="mt-2 flex justify-between max-w-xl">
           {/* Bottone MODIFICA */}

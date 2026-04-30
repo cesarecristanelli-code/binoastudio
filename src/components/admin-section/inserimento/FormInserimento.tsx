@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useUploadThing } from "@/lib/uploadthing";
 import dynamic from "next/dynamic";
 import Modale from "./Modale";
-import { useInserimentoLogic } from "./useInserimentoLogic";
+import { useInserimentoHooks } from "./useInserimentoHooks";
 import ImageSection from "./ImageSection";
 import GeoSection from "./GeoSection";
 import { getProvinciaByComune } from "@/actions/geoActions";
@@ -24,8 +24,23 @@ const MapPicker = dynamic(
 );
 
 export default function FormInserimento() {
-  const logic = useInserimentoLogic();
+  const logic = useInserimentoHooks();
   const { startUpload } = useUploadThing("imageUploader");
+  //per submit
+  const { status, isLoading } = logic;
+
+  // per modale
+  const {
+    modalConfig,
+    newData,
+    allComuni,
+    setModalConfig,
+    setNewData,
+    handleSaveNewItem,
+  } = logic;
+
+  // per immagini
+  const { previews, handleFileChange, removeImage } = logic;
 
   // =============================== GEOLOCATION ======================================
 
@@ -108,12 +123,15 @@ export default function FormInserimento() {
       }
 
       const finalUrls: string[] = uploadRes.map((f) => f.ufsUrl);
+      const fileKeys = uploadRes.map((f) => f.key);
       console.log("Final URLS: ", finalUrls);
 
       const formData = new FormData(formElement);
-      finalUrls.forEach((url) => formData.append("foto", url));
+      finalUrls.forEach((url) => formData.append("immagini", url));
+      fileKeys.forEach((key) => formData.append("fileKeys", key));
 
       console.log("Form: ", Object.fromEntries(formData.entries()));
+      console.log("URLS delle immagini: ", formData.getAll("immagini"));
 
       const response = await insertImmobile(formData);
 
@@ -137,22 +155,6 @@ export default function FormInserimento() {
       setIsLoading(false);
     }
   }
-
-  //per submit
-  const { status, isLoading } = logic;
-
-  // per modale
-  const {
-    modalConfig,
-    newData,
-    allComuni,
-    setModalConfig,
-    setNewData,
-    handleSaveNewItem,
-  } = logic;
-
-  // per immagini
-  const { previews, handleFileChange, removeImage } = logic;
 
   return (
     <>
@@ -209,6 +211,18 @@ export default function FormInserimento() {
                 </span>
               </div>
             </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="annoCostruzione" className="ps-2 text-black">
+              Anno di Costruzione
+            </label>
+            <input
+              required
+              type="number"
+              name="annoCostruzione"
+              id="annoCostruzione"
+              className="w-52 py-2 px-3 bg-white border-2 border-black rounded-xl"
+            />
           </div>
 
           <GeoSection logic={logic} />
@@ -358,6 +372,7 @@ export default function FormInserimento() {
                 type="number"
                 name="boxAuto"
                 id="boxAuto"
+                placeholder="0"
                 className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
               />
             </div>
@@ -393,6 +408,17 @@ export default function FormInserimento() {
                 Arredo
               </label>
             </div>
+            <div>
+              <input
+                type="checkbox"
+                name="accessoDisabili"
+                id="accessoDisabili"
+                className="w-5"
+              />
+              <label htmlFor="accessoDisabili" className=" text-black">
+                Accesso Disabili
+              </label>
+            </div>
           </div>
           {/* Stato, Classe Energetica, Spese condominiali */}
           <div className="flex flex-col md:flex-row justify-around">
@@ -405,63 +431,39 @@ export default function FormInserimento() {
                 required
                 name="stato"
                 id="stato"
-                className="w-40 py-2 px-3 bg-white border-2 border-black rounded-xl"
+                className="w-40 py-2 px-3 bg-white border-2 border-black rounded-xl uppercase"
               >
-                <option className="uppercase" value="BUONO">
+                <option value="BUONO" selected>
                   buono
                 </option>
-                <option className="uppercase" value="NUOVO">
-                  nuovo
-                </option>
-                <option className="uppercase" value="RISTRUTTURATO">
-                  ristrutturato
-                </option>
-                <option className="uppercase" value="DA_RISTRUTTURARE">
-                  da ristrutturare
-                </option>
+                <option value="NUOVO">nuovo</option>
+                <option value="RISTRUTTURATO">ristrutturato</option>
+                <option value="DA_RISTRUTTURARE">da ristrutturare</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">
-              <label htmlFor="classeEnergia" className="ps-2 text-black">
+              <label htmlFor="classeEnergetica" className="ps-2 text-black">
                 Classe Energetica
               </label>
 
               <select
                 required
-                name="classeEnergia"
-                id="classeEnergia"
-                className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl"
+                name="classeEnergetica"
+                id="classeEnergetica"
+                className="w-30 py-2 px-3 bg-white border-2 border-black rounded-xl uppercase"
               >
-                <option className="uppercase" value="A4">
+                <option value="A4" selected>
                   A4
                 </option>
-                <option className="uppercase" value="A3">
-                  A3
-                </option>
-                <option className="uppercase" value="A2">
-                  A2
-                </option>
-                <option className="uppercase" value="A1">
-                  A1
-                </option>
-                <option className="uppercase" value="B">
-                  B
-                </option>
-                <option className="uppercase" value="C">
-                  C
-                </option>
-                <option className="uppercase" value="D">
-                  D
-                </option>
-                <option className="uppercase" value="E">
-                  E
-                </option>
-                <option className="uppercase" value="F">
-                  F
-                </option>
-                <option className="uppercase" value="G">
-                  G
-                </option>
+                <option value="A3">A3</option>
+                <option value="A2">A2</option>
+                <option value="A1">A1</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="G">G</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">
@@ -477,7 +479,7 @@ export default function FormInserimento() {
               />
             </div>
           </div>
-          <div className="flex flex-col md:flex-row gap-5 md:gap-20 justify-center">
+          <div className="flex flex-col md:flex-row gap-5 md:gap-10 justify-center">
             <div className="flex flex-col gap-2">
               <label htmlFor="contratto" className="ps-2 text-black">
                 Tipologia di contratto
@@ -487,14 +489,12 @@ export default function FormInserimento() {
                 required
                 name="contratto"
                 id="contratto"
-                className="w-52 py-2 px-3 bg-white border-2 border-black rounded-xl"
+                className="w-52 py-2 px-3 bg-white border-2 border-black rounded-xl uppercase"
               >
-                <option value="VEDNITA" className="uppercase">
+                <option value="VENDITA" selected>
                   vendita
                 </option>
-                <option value="AFFITTO" className="uppercase">
-                  affitto
-                </option>
+                <option value="AFFITTO">affitto</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">
@@ -506,23 +506,96 @@ export default function FormInserimento() {
                 required
                 name="tipo"
                 id="tipo"
-                className="w-52 py-2 px-3 bg-white border-2 border-black rounded-xl"
+                className="w-52 py-2 px-3 bg-white border-2 border-black rounded-xl uppercase"
               >
-                <option value="APPARTAMENTO" className="uppercase">
+                <option value="APPARTAMENTO" selected>
                   appartamento
                 </option>
-                <option value="VILLA" className="uppercase">
-                  villa
+                <option value="VILLA">villa</option>
+                <option value="LOFT">loft</option>
+                <option value="UFFICIO">ufficio</option>
+                <option value="COMMERCIALE">commerciale</option>
+              </select>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="classeCatastale" className="ps-2 text-black">
+                Classe Catastale
+              </label>
+              <select
+                name="classeCatastale"
+                id="classeCatastale"
+                className="w-52 py-2 px-3 bg-white border-2 border-black rounded-xl uppercase"
+              >
+                <option value="" disabled selected></option>
+                <option value="SIGNORILE">signorile</option>
+                <option value="CIVILE">civile</option>
+                <option value="ECONOMICA">economica</option>
+                <option value="POPOLARE">popolare</option>
+                <option value="ULTRA_POPOLARE">ultra popolare</option>
+                <option value="RUSTICO">rustico</option>
+                <option value="VILLA">villa</option>
+                <option value="VILLINO">villino</option>
+              </select>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row gap-5 md:gap-10 justify-center">
+            <div className="flex flex-col gap-2">
+              <label htmlFor="riscaldamento" className="ps-2 text-black">
+                Riscaldamento
+              </label>
+
+              <select
+                required
+                name="riscaldamento"
+                id="riscaldamento"
+                className="w-52 py-2 px-3 bg-white border-2 border-black rounded-xl uppercase"
+              >
+                <option value="AUTOMONO" selected>
+                  autonomo
                 </option>
-                <option value="LOFT" className="uppercase">
-                  loft
+                <option value="CENTRALIZZATO">centralizzato</option>
+                <option value="CENTRALIZZATO_CONTABILIZZATO">
+                  centralizzato contabilizzato
                 </option>
-                <option value="UFFICIO" className="uppercase">
-                  ufficio
+                <option value="POMPA_DI_CALORE">pompa di calore</option>
+                <option value="ASSENTE">assente</option>
+              </select>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="raffrescamento" className="ps-2 text-black">
+                Raffreddamento
+              </label>
+
+              <select
+                required
+                name="raffrescamento"
+                id="raffrescamento"
+                className="w-52 py-2 px-3 bg-white border-2 border-black rounded-xl uppercase"
+              >
+                <option value="ASSENTE" selected>
+                  assente
                 </option>
-                <option value="COMMERCIALE" className="uppercase">
-                  commerciale
+                <option value="AUTONOMO">autonomo</option>
+                <option value="CENTRALIZZATO">centralizzato</option>
+              </select>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="statoOccupazione" className="ps-2 text-black">
+                Stato Occupazione
+              </label>
+              <select
+                name="statoOccupazione"
+                id="classestatoOccupazioneCatastale"
+                className="w-52 py-2 px-3 bg-white border-2 border-black rounded-xl uppercase"
+              >
+                <option value="LIBERO" selected>
+                  libero
                 </option>
+                <option value="OCCUPATO_PROPRIETARIO">
+                  occupato proprietario
+                </option>
+                <option value="LOCATO">locato</option>
+                <option value="A_REDDITO">a reddito</option>
               </select>
             </div>
           </div>

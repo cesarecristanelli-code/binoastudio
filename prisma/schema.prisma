@@ -19,6 +19,27 @@ enum StatoImmobile {
   DA_RISTRUTTURARE
 }
 
+enum StatoOccupazione {
+  LIBERO
+  OCCUPATO_PROPRIETARIO
+  LOCATO
+  A_REDDITO
+}
+
+enum Riscaldamento {
+  AUTONOMO
+  CENTRALIZZATO
+  CENTRALIZZATO_CONTABILIZZATO
+  POMPA_DI_CALORE
+  ASSENTE
+}
+
+enum Raffrescamento {
+  AUTONOMO
+  CENTRALIZZATO
+  ASSENTE
+}
+
 enum ClasseEnergetica {
   A4
   A3
@@ -30,6 +51,17 @@ enum ClasseEnergetica {
   E
   F
   G
+}
+
+enum ClasseCatastale {
+  SIGNORILE
+  CIVILE
+  ECONOMICA
+  POPOLARE
+  ULTRA_POPOLARE
+  RUSTICO
+  VILLA
+  VILLINO
 }
 
 enum Contratto {
@@ -124,24 +156,31 @@ model Immobile {
   speseCondominiali Float?
   contratto         Contratto    @default(VENDITA)
   tipo              TipoImmobile @default(APPARTAMENTO)
+  annoCostruzione   Int
 
-  metratura    Int
+  metratura    Int //Superficie Commerciale
   numeroLocali Int
   numeroBagni  Int
   piano        String?
   totalePiani  Int?
 
   // Opzioni e Comfort
-  ascensore      Boolean @default(false)
-  giardino       Boolean @default(false)
-  arredo         Boolean @default(false)
-  boxAuto        Int     @default(0)
-  numeroTerrazzi Int     @default(0)
-  numeroBalconi  Int     @default(0)
+  ascensore       Boolean        @default(false)
+  giardino        Boolean        @default(false)
+  arredo          Boolean        @default(false)
+  boxAuto         Int            @default(0)
+  postiAuto       Int            @default(0)
+  numeroTerrazzi  Int            @default(0)
+  numeroBalconi   Int            @default(0)
+  riscaldamento   Riscaldamento  @default(AUTONOMO)
+  raffrescamento  Raffrescamento @default(ASSENTE)
+  accessoDisabili Boolean        @default(false)
 
   //Stato e Certificazioni
   stato            StatoImmobile    @default(BUONO)
+  statoOccupazione StatoOccupazione @default(LIBERO)
   classeEnergetica ClasseEnergetica @default(G)
+  classeCatastale  ClasseCatastale?
 
   // Metadata
   createdAt DateTime           @default(now())

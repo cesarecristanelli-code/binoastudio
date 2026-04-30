@@ -1,70 +1,30 @@
 "use server";
 
-import z, { prettifyError } from "zod";
+import { prettifyError } from "zod";
 import { requireAuth } from "@/actions/auth";
 import prisma from "@/lib/prisma";
-import { ClasseEnergetica, Contratto, Prisma, StatoImmobile, TipoImmobile, Immobile, ImmagineImmobile } from "@/generated/prisma/client";
+import { Prisma, Immobile, ImmagineImmobile } from "@/generated/prisma/client";
 import { Result, ImmobileExtended } from "@/types/actions.types";
 import { UTApi } from "uploadthing/server";
 import { generateSlug } from "@/lib/utils";
+import { immobiliSchema } from "@/lib/schemas/immobili";
 
-const immobiliSchema = z.object({
-  // Info base
-  nome: z.string().trim().min(1, "Il nome non può essere vuoto"),
-  descrizione: z.string().trim().min(10, "La descrizione è troppo corta"),
-
-  // Localizzazione -- queste servono solo per la logica del Form, ma non finiscono nel model Immobile
-  regioneId: z.string().trim().min(1, "Seleziona una regione"),
-  provinciaId: z.string().trim().min(1, "Seleziona una provincia"),
-
-  // questi invece finiscono nel model Immobile
-  comuneId: z.string().trim().min(1, "Selezione un comune"),
-  zonaId: z.string().trim().nullable().optional(),
-
-  indirizzo: z.string().trim().min(3, "Indirizzo obbligatorio"),
-  lat: z.coerce.number().min(-90).max(90),
-  lng: z.coerce.number().min(-180).max(180),
-
-  // Caratteristiche Economiche
-  prezzo: z.coerce.number().positive("Il prezzo deve essere un numero positivo"),
-  speseCondominiali: z.coerce.number().nonnegative("Le spese condominiai devono essere un numero positivo").optional().nullable(),
-  contratto: z.enum(Contratto),
-  tipo: z.enum(TipoImmobile),
-
-  // Misure e spazi
-  metratura: z.coerce.number().int().positive("Inserisci la metratura"),
-  numeroLocali: z.coerce.number().int().positive("Inserisci il numero di locali").min(1),
-  numeroBagni: z.coerce.number().int().positive("Inserisci il numero di bagni").min(1),
-  piano: z.string().trim().optional().nullable(),
-  totalePiani: z.coerce.number().int().optional().nullable(),
-
-  // Opzioni e Comfort
-  ascensore: z.preprocess((val) => val === "on" || val === true, z.boolean().default(false)),
-  giardino: z.preprocess((val) => val === "on" || val === true, z.boolean().default(false)),
-  arredo: z.preprocess((val) => val === "on" || val === true, z.boolean().default(false)),
-
-  boxAuto: z.coerce.number().int().default(0),
-  numeroTerrazzi: z.coerce.number().int().nonnegative().default(0),
-  numeroBalconi: z.coerce.number().int().nonnegative().default(0),
+const utapi = new UTApi();
 
 
-  stato: z.enum(StatoImmobile),
-  classeEnergetica: z.enum(ClasseEnergetica),
-  immagini: z
-    .array(z.url({ protocol: /^https?$/, hostname: z.regexes.domain }))
-    .min(1, "Devi inserire almeno una foto"),
-});
 
 // === INSERT ===
 export async function insertImmobile(formData: FormData): Promise<Result<null>> {
   await requireAuth();
 
   const rawData = Object.fromEntries(formData.entries());
-  const fotoArray = formData.getAll("foto") as string[];
+  const immaginiArray = formData.getAll("immagini") as string[];
+  const fileKeys = formData.getAll("fileKeys") as string[];
 
-  const dataToValidate = { ...rawData, foto: fotoArray };
+  const dataToValidate = { ...rawData, immagini: immaginiArray };
 
   try {
+    console.log("Dati arrivati allo schema: ", dataToValidate)
     const validazione = immobiliSchema.safeParse(dataToValidate);
 
     if (!validazione.success) {
@@ -73,19 +33,36 @@ export async function insertImmobile(formData: FormData): Promise<Result<null>> 
         "Errore validazione dati: ",
         errors
       );
-      return { success: false, message: "Errore nell'inserimento dei dati" };
+      throw new Error((Object.values(errors).join(". ")))
     } else {
       console.log("Validazione dei dati corretta: ", validazione.data);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { regioneId, provinciaId, immagini, ...immobileData } = validazione.data;
-    const baseSlug = generateSlug(immobileData.nome);
+
+    //gestione dello slug
+    const subSlug = await prisma.comune.findUnique({
+      where: { id: immobileData.comuneId },
+      include: {
+        zone: immobileData.zonaId ? { where: { id: immobileData.zonaId } } : false,
+      }
+    });
+
+    if (!subSlug) throw new Error("Località non trovata durante la gestione dello slug")
+
+    const slugZona = subSlug.zone?.[0]?.slug || null;
+    const slugComune = subSlug.slug;
+
+    const baseSlug = generateSlug(`${immobileData.nome} ${slugZona ? slugZona : slugComune}`);
+
+    const shortId = Math.random().toString(36).substring(2, 6);
+    const uniqueSlug = `${baseSlug}-${shortId}`;
 
     await prisma.immobile.create({
       data: {
         ...immobileData,
-        slug: `${baseSlug}-${Date.now()}`,
+        slug: uniqueSlug,
         immagini: {
           create: immagini.map((url, index) => ({
             url: url,
@@ -95,9 +72,12 @@ export async function insertImmobile(formData: FormData): Promise<Result<null>> 
       },
     });
 
+
     console.log("Inserimento nel DB riuscito!")
     return { success: true, message: "Immobile inserito", data: null };
   } catch (error) {
+    if (fileKeys.length > 0) await utapi.deleteFiles(fileKeys);
+
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === "P2002"
@@ -107,12 +87,10 @@ export async function insertImmobile(formData: FormData): Promise<Result<null>> 
         message: "Esiste già un immobile con questo nome",
       };
     }
+    const errorMessage = error instanceof Error ? error.message : "Errore sconosciuto";
     return {
       success: false,
-      message:
-        error instanceof Error
-          ? error.message
-          : "Errore durante il salvataggio",
+      message: `Errore durante l'inserimento dell'immobile: ${errorMessage}`
     };
   }
 }
@@ -138,7 +116,7 @@ export async function getImmobile(
   }
 }
 
-const utapi = new UTApi();
+
 
 export async function getAllImmobili(): Promise<ImmobileExtended[] | null> {
   try {

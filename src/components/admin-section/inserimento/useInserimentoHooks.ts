@@ -17,7 +17,7 @@ import { Result } from "@/types/actions.types";
 
 
 
-export function useInserimentoLogic() {
+export function useInserimentoHooks() {
     // Stato per stampare i messaggi nel form
     const [status, setStatus] = useState<{
         success: boolean | null;

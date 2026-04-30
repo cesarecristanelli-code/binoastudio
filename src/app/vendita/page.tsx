@@ -9,7 +9,7 @@
 import CardImmobile from "@/components/vendita-section/CardImmbolie";
 import CardFooter from "@/components/vendita-section/CradImmobileFooter";
 import { getAllImmobili } from "@/actions/immobiliActions";
-import Link from "next/link";
+import React from "react";
 
 export default async function CatalogoPage() {
   const immobili = await getAllImmobili();
@@ -24,7 +24,7 @@ export default async function CatalogoPage() {
   return (
     <div className="w-full h-96 flex justify-center items-center my-52">
       {immobili.map((immobile, index) => (
-        <Link key={index} href={`/vendiata/${immobile.slug}`}>
+        <React.Fragment key={index}>
           <CardImmobile immobile={immobile}>
             <CardFooter
               metratura={immobile.metratura}
@@ -32,7 +32,7 @@ export default async function CatalogoPage() {
               numeroLocali={immobile.numeroLocali}
             />
           </CardImmobile>
-        </Link>
+        </React.Fragment>
       ))}
     </div>
   );
