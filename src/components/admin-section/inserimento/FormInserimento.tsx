@@ -1,15 +1,10 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import { insertImmobile } from "@/actions/immobiliActions";
 import Link from "next/link";
-import { useUploadThing } from "@/lib/uploadthing";
 import dynamic from "next/dynamic";
 import Modale from "./Modale";
-import { useInserimentoHooks } from "./useInserimentoHooks";
 import ImageSection from "./ImageSection";
 import GeoSection from "./GeoSection";
-import { getProvinciaByComune } from "@/actions/geoActions";
 
 const MapPicker = dynamic(
   () => import("@/components/admin-section/inserimento/MapPicker"),
@@ -24,138 +19,6 @@ const MapPicker = dynamic(
 );
 
 export default function FormInserimento() {
-  const logic = useInserimentoHooks();
-  const { startUpload } = useUploadThing("imageUploader");
-  //per submit
-  const { status, isLoading } = logic;
-
-  // per modale
-  const {
-    modalConfig,
-    newData,
-    allComuni,
-    setModalConfig,
-    setNewData,
-    handleSaveNewItem,
-  } = logic;
-
-  // per immagini
-  const { previews, handleFileChange, removeImage } = logic;
-
-  // =============================== GEOLOCATION ======================================
-
-  //Stati per la gestione della mappa
-  const [coords, setCoords] = useState<{ lat: number; lng: number }>({
-    lat: 45.438,
-    lng: 10.993,
-  });
-  const [isGeocoding, setIsGeocoding] = useState<boolean>(false);
-
-  // Funzioni per la gestione della mapppa e dell'indirizzo
-  const handleVerifyAddress = async () => {
-    const form = document.querySelector("form") as HTMLFormElement;
-    const formData = new FormData(form);
-
-    const indirizzo = formData.get("indirizzo") as string;
-
-    if (!indirizzo || indirizzo.length < 3) return;
-
-    setIsGeocoding(true);
-
-    try {
-      const comuneConProvincia = await getProvinciaByComune(
-        logic.selectedComuneId,
-      );
-      if (!comuneConProvincia.success) {
-        alert("Errore nella ricerca della provincia");
-        return;
-      }
-
-      const query = `${indirizzo}, ${comuneConProvincia.data.cap}, ${comuneConProvincia.data.nome}, ${comuneConProvincia.data.provincia.sigla}`;
-      const res = await fetch(`/api/geocoding?q=${encodeURIComponent(query)}`);
-      const result = await res.json();
-
-      if (result.success) {
-        setCoords({
-          lat: result.data.lat,
-          lng: result.data.lng,
-        });
-      } else {
-        alert(
-          "Indirizzo non trovato. Verifica che sia corretto e completo (es: Via Roma 1, Verona)",
-        );
-      }
-    } finally {
-      setIsGeocoding(false);
-    }
-  };
-
-  const handleMapChange = useCallback((lat: number, lng: number) => {
-    setCoords({ lat, lng });
-  }, []);
-
-  // ========================================= SUBMIT HANDLING ==================================================
-  async function handleSubmit(e: React.SubmitEvent) {
-    e.preventDefault();
-    const formElement = e.currentTarget as HTMLFormElement;
-
-    const { files, setStatus, setIsLoading, setFiles, setPreviews } = logic;
-
-    if (files.length === 0) {
-      setStatus({ success: false, message: "Devi inserire almeno una foto" });
-      return;
-    }
-
-    setIsLoading(true);
-    setStatus({ success: null, message: "" });
-
-    try {
-      const uploadRes = await startUpload(files);
-      console.log("UploadRes: ", uploadRes);
-
-      if (!uploadRes) {
-        setStatus({
-          success: false,
-          message: "Errore durante l'upload delle immagini",
-        });
-        setIsLoading(false);
-        return;
-      }
-
-      const finalUrls: string[] = uploadRes.map((f) => f.ufsUrl);
-      const fileKeys = uploadRes.map((f) => f.key);
-      console.log("Final URLS: ", finalUrls);
-
-      const formData = new FormData(formElement);
-      finalUrls.forEach((url) => formData.append("immagini", url));
-      fileKeys.forEach((key) => formData.append("fileKeys", key));
-
-      console.log("Form: ", Object.fromEntries(formData.entries()));
-      console.log("URLS delle immagini: ", formData.getAll("immagini"));
-
-      const response = await insertImmobile(formData);
-
-      console.log("Risposta dal DB: ", response);
-
-      setStatus(response);
-
-      if (response.success) {
-        setFiles([]);
-        setPreviews([]);
-        formElement.reset();
-
-        setTimeout(() => setStatus({ success: null, message: "" }), 10000);
-      }
-    } catch (error) {
-      const errorMessage: string =
-        error instanceof Error ? error.message : "Si è verificato un problema";
-
-      setStatus({ success: false, message: errorMessage });
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
   return (
     <>
       <Modale
@@ -228,8 +91,6 @@ export default function FormInserimento() {
           <GeoSection logic={logic} />
 
           {/* INDIRIZZO */}
-          <input type="hidden" name="lat" value={coords.lat} />
-          <input type="hidden" name="lng" value={coords.lng} />
           <div className="flex flex-col gap-2">
             <label htmlFor="indirizzo" className="ps-2 text-black">
               Indirizzo

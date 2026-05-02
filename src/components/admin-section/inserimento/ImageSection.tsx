@@ -1,16 +1,7 @@
+import { Media } from "@/types/inserimentoHooks.types";
 import Image from "next/image";
 
-interface ImageProps {
-  previews: string[];
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onRemove: (index: number) => void;
-}
-
-export default function ImageSection({
-  previews,
-  onChange,
-  onRemove,
-}: ImageProps) {
+export default function ImageSection({ media }: { media: Media }) {
   return (
     <div className="flex flex-col gap-2">
       <label className="ps-2 text-black font-bold">Foto Immobile</label>
@@ -20,7 +11,7 @@ export default function ImageSection({
           type="file"
           multiple
           accept="image/*"
-          onChange={onChange}
+          onChange={media.handleFileChange}
           className="hidden"
           id="file-upload"
         />
@@ -36,7 +27,7 @@ export default function ImageSection({
       </div>
       {/* Anteprima Locale */}
       <div className="flex flex-wrap gap-2 mt-2">
-        {previews.map((url, index) => (
+        {media.previews.map((url, index) => (
           <div key={index} className="relative group">
             <Image
               src={url}
@@ -47,7 +38,7 @@ export default function ImageSection({
             />
             <button
               type="button"
-              onClick={() => onRemove(index)}
+              onClick={() => media.removeFile(index)}
               className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs shadow-lg"
             >
               ✕

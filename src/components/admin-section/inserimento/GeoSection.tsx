@@ -1,180 +1,151 @@
-import { useInserimentoHooks } from "./useInserimentoHooks";
+import { Admin, Geo } from "@/types/inserimentoHooks.types";
 
-export default function GeoSection({
-  logic,
+const GeoField = ({
+  label,
+  children,
+  onAdd,
+  disabledAdd,
 }: {
-  logic: ReturnType<typeof useInserimentoHooks>;
-}) {
-  return (
-    <>
-      {/* Regione */}
-      <div className="flex flex-col gap-2">
-        <label htmlFor="regioneId" className="ps-2 text-black">
-          Regione
-        </label>
-        <div className="flex gap-2">
-          <select
-            name="regioneId"
-            onChange={(e) => logic.handleRegioneChange(e.target.value)}
-            className="w-72 py-2 px-3 bg-white border-2 border-black rounded-xl"
-          >
-            <option value="">Seleziona Regione</option>
-            {logic.regioni.map((r) => (
-              <option key={r.id} value={r.id}>
-                {r.nome}
-              </option>
-            ))}
-          </select>
+  label: string;
+  children: React.ReactNode;
+  onAdd: () => void;
+  disabledAdd: boolean;
+}) => (
+  <div className="flex flex-col gap-2">
+    <label className="ps-2 text-black font-medium">{label}</label>
+    <div className="flex gap-2">
+      <div className="relative grow">{children}</div>
+      <button
+        type="button"
+        disabled={disabledAdd}
+        onClick={onAdd}
+        className="w-10 h-10 border-2 border-black rounded-xl hover:bg-gray-300 transition-colors cursor-pointer disabled:opacity-50"
+      >
+        +
+      </button>
+    </div>
+  </div>
+);
 
-          {/* Bottone + */}
-          <button
-            type="button"
-            onClick={() =>
-              logic.setModalConfig((prev) => ({
-                ...prev,
-                isOpen: true,
-                type: "regione",
-              }))
-            }
-            className="w-10 h-10 border-2 border-black rounded-xl hover:bg-gray-300 transition-colors cursor-pointer"
-          >
-            +
-          </button>
-        </div>
-      </div>
+export default function GeoSection({ geo, admin }: { geo: Geo; admin: Admin }) {
+  return (
+    <div className="grid grid-cols-1 gap-4">
+      {/* Regione */}
+      <GeoField
+        label="Regione"
+        onAdd={() => admin.openModal("regione")}
+        disabledAdd={false}
+      >
+        <select
+          name="regioneId"
+          onChange={(e) => geo.handleRegioneChange(e.target.value)}
+          className="w-72 py-2 px-3 bg-white border-2 border-black rounded-xl"
+        >
+          <option value="">Seleziona Regione</option>
+          {geo.regioni.map((r) => (
+            <option key={r.id} value={r.id}>
+              {r.nome}
+            </option>
+          ))}
+        </select>
+      </GeoField>
 
       {/* Provincia */}
-      <div className="flex flex-col gap-2">
-        <label htmlFor="provinciaId" className="ps-2 text-black">
-          Provincia
-        </label>
-        <div className="flex gap-2">
-          <select
-            name="provinciaId"
-            disabled={logic.province.length === 0}
-            onChange={(e) => logic.handleProvinciaChange(e.target.value)}
-            className="w-72 py-2 px-3 bg-white border-2 border-black rounded-xl disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400"
-          >
-            <option value="">Seleziona Provincia</option>
-            {logic.province.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.nome}
-              </option>
-            ))}
-          </select>
-
-          {/* Bottone + */}
-          <button
-            type="button"
-            disabled={logic.modalConfig.parentId === undefined}
-            onClick={() =>
-              logic.setModalConfig((prev) => ({
-                ...prev,
-                isOpen: true,
-                type: "provincia",
-              }))
-            }
-            className="w-10 h-10 border-2 border-black rounded-xl hover:bg-gray-300 transition-colors cursor-pointer"
-          >
-            +
-          </button>
-        </div>
-      </div>
+      <GeoField
+        label="Provincia"
+        onAdd={() => admin.openModal("provincia", geo.selectedRegioneId)}
+        disabledAdd={geo.selectedProvinciaId === ""}
+      >
+        <select
+          name="provinciaId"
+          disabled={geo.selectedRegioneId === ""}
+          onChange={(e) => geo.handleProvinciaChange(e.target.value)}
+          className="w-72 py-2 px-3 bg-white border-2 border-black rounded-xl disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400"
+        >
+          <option value="">Seleziona Provincia</option>
+          {geo.province.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.nome}
+            </option>
+          ))}
+        </select>
+      </GeoField>
 
       {/* Comune */}
-      <div className="flex flex-col gap-2 relative">
-        <label className="ps-2 text-black">Comune</label>
+      <GeoField
+        label="Comune"
+        onAdd={() => admin.openModal("comune", geo.selectedProvinciaId)}
+        disabledAdd={geo.selectedProvinciaId === ""}
+      >
+        <input
+          type="text"
+          value={geo.searchComune}
+          onChange={(e) => {
+            geo.setSearchComune(e.target.value);
+            geo.setSelectedComuneId(""); // Se ricomincia a scrivere, resetta la selezione
+          }}
+          placeholder={
+            geo.allComuni.length > 0
+              ? "Inizia a scrivere il comune..."
+              : "Seleziona prima una provincia"
+          }
+          disabled={geo.selectedProvinciaId === ""}
+          className="w-full py-2 px-3 bg-white border-2 border-black rounded-xl disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400"
+        />
 
-        <div className="flex gap-2">
-          <div className="relative grow">
-            <input
-              type="text"
-              value={logic.searchComune}
-              onChange={(e) => {
-                logic.setSearchComune(e.target.value);
-                logic.setSelectedComuneId(""); // Se ricomincia a scrivere, resetta la selezione
-              }}
-              placeholder={
-                logic.allComuni.length > 0
-                  ? "Inizia a scrivere il comune..."
-                  : "Seleziona prima una provincia"
-              }
-              disabled={logic.allComuni.length === 0}
-              className="w-full py-2 px-3 bg-white border-2 border-black rounded-xl disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400"
-            />
-
-            {/* Menu a discesa dei risultati */}
-            {logic.filteredComuni.length > 0 && !logic.selectedComuneId && (
-              <ul className="absolute z-1001 w-full bg-white border-2 border-black rounded-xl mt-1 max-h-60 overflow-y-auto shadow-xl">
-                {logic.filteredComuni.map((c) => (
-                  <li
-                    key={c.id}
-                    onClick={() => {
-                      logic.setSearchComune(c.nome);
-                      logic.setSelectedComuneId(c.id);
-                      logic.handleComuneChange(c.id); // Funzione per caricare le zone
-                      console.log(c.nome);
-                    }}
-                    className="px-4 py-2 hover:bg-blue-100 cursor-pointer border-b last:border-none border-gray-100"
-                  >
-                    {c.nome}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/* Bottone "+" per aggiungere comune */}
-          <button
-            type="button"
-            disabled={logic.modalConfig.parentId === undefined}
-            onClick={() =>
-              logic.setModalConfig((prev) => ({
-                ...prev,
-                isOpen: true,
-                type: "comune",
-              }))
-            }
-            className="w-10 h-10 border-2 border-black rounded-xl hover:bg-gray-300 transition-colors cursor-pointer"
-          >
-            +
-          </button>
-        </div>
-
-        {/* Campo nascosto per inviare l'ID al server tramite FormData */}
-        <input type="hidden" name="comuneId" value={logic.selectedComuneId} />
-      </div>
+        {/* Menu a discesa dei risultati */}
+        {geo.filteredComuni.length > 0 && !geo.selectedComuneId && (
+          <ul className="absolute z-1001 w-full bg-white border-2 border-black rounded-xl mt-1 max-h-60 overflow-y-auto shadow-xl">
+            {geo.filteredComuni.map((c) => (
+              <li
+                key={c.id}
+                onClick={() => {
+                  geo.setSearchComune(c.nome);
+                  geo.setSelectedComuneId(c.id);
+                  geo.handleComuneChange(c.id); // Funzione per caricare le zone
+                  console.log(c.nome);
+                }}
+                className="px-4 py-2 hover:bg-blue-100 cursor-pointer border-b last:border-none border-gray-100"
+              >
+                {c.nome}
+              </li>
+            ))}
+          </ul>
+        )}
+      </GeoField>
 
       {/* Zona */}
-      <div className="flex flex-col gap-2 relative">
-        <label className="ps-2 text-black">Zona / Quartiere</label>
-
+      <GeoField
+        label="Zona"
+        onAdd={() => admin.openModal("zona", geo.selectedComuneId)}
+        disabledAdd={geo.selectedComuneId === ""}
+      >
         <div className="flex gap-2">
           <div className="relative grow">
             {/* Se il comune ha zone, mostriamo l'input di ricerca */}
-            {logic.allZone.length > 0 ? (
+            {geo.allZone.length > 0 ? (
               <>
                 <input
                   type="text"
                   className="w-full py-2 px-3 border-2 border-black rounded-xl outline-none"
                   placeholder="Inizia a scrivere la zona..."
-                  value={logic.searchZona}
+                  value={geo.searchZona}
                   onChange={(e) => {
-                    logic.setSearchZona(e.target.value);
-                    logic.setSelectedZonaId(""); // Se l'utente ricomincia a scrivere, resettiamo l'ID
+                    geo.setSearchZona(e.target.value);
+                    geo.setSelectedZonaId(""); // Se l'utente ricomincia a scrivere, resettiamo l'ID
                   }}
                 />
 
                 {/* Menu Suggerimenti */}
-                {logic.filteredZone.length > 0 && (
+                {geo.filteredZone.length > 0 && (
                   <ul className="absolute z-100 w-full bg-white border-2 border-black rounded-xl mt-1 max-h-48 overflow-y-auto shadow-2xl">
-                    {logic.filteredZone.map((z) => (
+                    {geo.filteredZone.map((z) => (
                       <li
                         key={z.id}
                         className="px-4 py-2 hover:bg-blue-50 cursor-pointer border-b last:border-none"
                         onClick={() => {
-                          logic.setSearchZona(z.nome);
-                          logic.setSelectedZonaId(z.id);
+                          geo.setSearchZona(z.nome);
+                          geo.setSelectedZonaId(z.id);
                         }}
                       >
                         {z.nome}
@@ -190,36 +161,17 @@ export default function GeoSection({
                 disabled
                 className="w-full py-2 px-3 border-2 border-gray-200 bg-gray-50 rounded-xl italic text-gray-400 cursor-not-allowed"
                 value={
-                  !logic.selectedComuneId
+                  !geo.selectedComuneId
                     ? "Seleziona prima un comune"
-                    : logic.checkedZona
+                    : geo.checkedZona
                       ? "Caricamento zone in corso..."
                       : "Nessuna zona censita per questo comune"
                 }
               />
             )}
           </div>
-
-          {/* Bottone per aggiungere una zona mancante */}
-          <button
-            type="button"
-            disabled={logic.modalConfig.parentId === undefined}
-            onClick={() =>
-              logic.setModalConfig((prev) => ({
-                ...prev,
-                isOpen: true,
-                type: "zona",
-              }))
-            }
-            className="w-10 h-10 border-2 border-black rounded-xl hover:bg-gray-300 transition-colors cursor-pointer"
-          >
-            +
-          </button>
         </div>
-
-        {/* L'ID che verrà inviato effettivamente al server */}
-        <input type="hidden" name="zonaId" value={logic.selectedZonaId} />
-      </div>
-    </>
+      </GeoField>
+    </div>
   );
 }

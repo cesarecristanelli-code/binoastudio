@@ -36,6 +36,7 @@ export default function useGeoData() {
         loadRegioni();
     }, []);
 
+    // Cambia Regione --> Carica Province
     // L'utente seleziona la regione:
     const handleRegioneChange = useCallback(async (regioneId: string) => {
         setSelectedRegioneId(regioneId) // Salvo l'id della regione selezionata
@@ -57,6 +58,7 @@ export default function useGeoData() {
         }
     }, [])
 
+    // Cambia Provincia --> Carica Comuni
     // L'utente seleziona una provincia:
     const handleProvinciaChange = useCallback(async (provinciaId: string) => {
         setSelecteProvinciaId(provinciaId);
@@ -84,14 +86,14 @@ export default function useGeoData() {
         );
     }, [searchComune, allComuni, selectedComuneId]);
 
-    // Funzioni per la ZONA
+    // Cambia Comune --> Carica Zone
+    // L'utente seleziona un comune:
     const handleComuneChange = useCallback(async (comuneId: string) => {
         setSelectedComuneId(comuneId);
 
         setAllZone([]);
         setSearchZona("");
         setSelectedZonaId("");
-        // setModalConfig((prev) => ({ ...prev, parentId: comuneId }));
 
         if (!comuneId) return;
 
@@ -111,4 +113,18 @@ export default function useGeoData() {
             z.nome.toLowerCase().includes(searchZona.toLowerCase()),
         );
     }, [searchZona, allZone, selectedZonaId]);
+
+    return {
+        // VARIABILI e FUNZIONI di STATO
+        regioni, setRegioni, selectedRegioneId, setSelectedRegioneId, //Regione
+        province, setProvince, selectedProvinciaId, setSelecteProvinciaId, //Provincia
+        allComuni, setAllComuni, selectedComuneId, setSelectedComuneId, searchComune, setSearchComune, //Comune
+        allZone, setAllZone, selectedZonaId, setSelectedZonaId, searchZona, setSearchZona, checkedZona, setCheckedZona, //Zona
+
+        // HANDLERS
+        handleRegioneChange, handleProvinciaChange, handleComuneChange,
+
+        // LISTE FILTRATE
+        filteredComuni, filteredZone
+    }
 }
