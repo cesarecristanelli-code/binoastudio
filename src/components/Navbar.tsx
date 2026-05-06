@@ -88,7 +88,7 @@ export default function Navbar() {
             height={97}
             priority
             className={`${logoClasses}`}
-            style={{height: "auto"}}
+            style={{ height: "auto" }}
           />
         </Link>
 

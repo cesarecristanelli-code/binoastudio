@@ -34,12 +34,12 @@ export default function ImmobileMap({ lat, lng }: ImmobileMapProps) {
   const position: [number, number] = [lat, lng];
 
   return (
-    <div className="w-full h-100 rounded-2xl overflow-hidden border border-slate-200 shadow-sm z-0">
+    <div className="w-full h-100 rounded-2xl overflow-hidden border border-slate-200 shadow-sm relative z-0">
       <MapContainer
         center={position}
         zoom={16}
         scrollWheelZoom={false}
-        className="h-full w-full"
+        className="h-full w-full z-0"
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
