@@ -77,7 +77,7 @@ enum TipoImmobile {
   COMMERCIALE
 }
 
-// 
+// ===============================
 
 model User {
   id        String    @id @default(cuid())
@@ -193,6 +193,7 @@ model ImmagineImmobile {
   immobileId String
   immobile   Immobile @relation(fields: [immobileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   url        String   @unique
+  key        String   @unique
   isCover    Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt

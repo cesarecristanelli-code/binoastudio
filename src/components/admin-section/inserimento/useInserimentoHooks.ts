@@ -2,13 +2,16 @@ import useGeoData from "./hooks/useGeoData";
 import useGeoAdmin from "./hooks/useGeoAdmin";
 import useMediaManager from "./hooks/useMediaManager";
 import useGeolocation from "./hooks/useGeolocation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUploadThing } from "@/lib/uploadthing";
-import { insertImmobile } from "@/actions/immobiliActions";
+import { deleteImmobile, insertImmobile, updateImmobile } from "@/actions/immobiliActions";
 import { Regione, Provincia, Comune, Zona } from "@/generated/prisma/client";
+import { ImmobileFullForm } from "@/types/inserimentoHooks.types";
+import { useRouter } from "next/navigation";
 
-export default function useInserimentoHooks() {
+export default function useInserimentoHooks(initialData?: ImmobileFullForm) {
     const { startUpload } = useUploadThing("imageUploader");
+    const router = useRouter();
 
     const [status, setStatus] = useState<{ success: boolean | null, message: string }>({
         success: null,
@@ -16,20 +19,55 @@ export default function useInserimentoHooks() {
     })
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-    const geo = useGeoData();
+
+    const [form, setForm] = useState<Partial<ImmobileFullForm>>(
+        initialData ?? {}
+    )
+
+    useEffect(() => {
+        if (initialData) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setForm(initialData);
+        }
+    }, [initialData])
+
+    const updateField = <K extends keyof ImmobileFullForm>(
+        name: K,
+        value: ImmobileFullForm[K]
+    ) => {
+        setForm((prev) => ({ ...prev, [name]: value }))
+    }
+
+    const geo = useGeoData({
+        comuneId: form.comuneId,
+        zonaId: form.zonaId
+    });
     const admin = useGeoAdmin();
     const media = useMediaManager();
-    const map = useGeolocation();
+    const map = useGeolocation({
+        lat: form.lat,
+        lng: form.lng,
+        address: form.indirizzo
+    });
+
+    useEffect(() => {
+        if (initialData?.immagini) {
+            const urls = initialData.immagini.map(img => img.url);
+            media.setOldImages(urls)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [initialData])
+
+
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
         const formElement = e.currentTarget as HTMLFormElement;
-
-
         const formData = new FormData(e.currentTarget);
+        const isUpdate = !!initialData?.id;
 
-        formData.append("regioneId", geo.selectedComuneId);
+        formData.append("regioneId", geo.selectedRegioneId);
         formData.append("provinciaId", geo.selectedProvinciaId);
         formData.append("comuneId", geo.selectedComuneId);
         formData.append("zonaId", geo.selectedZonaId);
@@ -37,28 +75,46 @@ export default function useInserimentoHooks() {
         formData.append("lng", map.coords.lng.toString());
 
         try {
-            const uploadRes = await startUpload(media.files);
-            console.log("UploadRes: ", uploadRes);
 
-            if (!uploadRes) {
-                console.log("Errore durante il caricamento delle immagini")
-                setIsSubmitting(false);
-                throw new Error("Errore durante il caricamento delle immagini");
+            if (isUpdate) {
+                media.oldImages.forEach((url) => formData.append("oldImmagini", url))
             }
 
-            const finalUrls: string[] = uploadRes.map((f) => f.ufsUrl);
-            const fileKeys = uploadRes.map((f) => f.key);
-            console.log("Final URLS: ", finalUrls);
+            if (media.files.length > 0) {
+                const uploadRes = await startUpload(media.files);
+                console.log("UploadRes: ", uploadRes);
 
-            finalUrls.forEach((url) => formData.append("immagini", url));
-            fileKeys.forEach((key) => formData.append("fileKeys", key));
+                if (!uploadRes) {
+                    console.log("Errore durante il caricamento delle immagini")
+                    throw new Error("Errore durante il caricamento delle immagini");
+                }
 
-            const response = await insertImmobile(formData);
+                const finalUrls: string[] = uploadRes.map((f) => f.ufsUrl);
+                const fileKeys = uploadRes.map((f) => f.key);
+                console.log("Final URLS: ", finalUrls);
+
+                finalUrls.forEach((url) => formData.append("immagini", url));
+                fileKeys.forEach((key) => formData.append("fileKeys", key));
+            }
+
+            const response = isUpdate
+                ? await updateImmobile(initialData!.id, formData)
+                : await insertImmobile(formData)
 
             if (response.success) {
-                setStatus({ success: true, message: "Immobile inserito con successo" })
+                const msg = isUpdate ? "Immobile aggiornato!" : "Immobile inserito!";
+                setStatus({ success: true, message: `${msg} \n Reindirizzamento...` })
                 media.clearMedia();
-                formElement.reset();
+
+                if (!isUpdate) {
+                    formElement.reset();
+                    setForm({});
+                }
+
+                setTimeout(() => {
+                    router.push("/vendita");
+                    router.refresh();
+                }, 2000)
             } else {
                 console.log("Errore durante il submit: ", response.message);
                 throw new Error(response.message);
@@ -79,8 +135,29 @@ export default function useInserimentoHooks() {
         if (type === "zona") geo.setAllZone(prev => [...prev, newItem]);
     };
 
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
+    // Funzione per cancellare l'immobile
+    const handleDelete = async (id: string) => {
+        if (!confirm("Sei sicuro di voler eliminare questo immobile? L'azione è irreversibile.")) return
+
+        setIsDeleting(true);
+        const res = await deleteImmobile(id);
+
+        if (res.success) {
+            alert(res.message);
+        } else {
+            alert("Errore: " + res.message)
+        }
+
+        setIsDeleting(false)
+    };
+
     return {
         geo, admin, media, map,
-        handleSubmit, handleAdminSuccess
+        status, setStatus,
+        isSubmitting, setIsSubmitting,
+        isDeleting, setIsDeleting,
+        form, setForm,
+        updateField, handleSubmit, handleAdminSuccess, handleDelete
     }
 }

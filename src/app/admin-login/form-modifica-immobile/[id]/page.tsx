@@ -1,7 +1,7 @@
-import { getImmobile } from "@/actions/immobiliActions";
 import { notFound } from "next/navigation";
 import { requireAuth } from "@/actions/auth";
-import FormAggiornamento from "@/components/admin-section/FormAggiornamento";
+import FormImmobile from "@/components/admin-section/inserimento/FormImmobile";
+import prisma from "@/lib/prisma";
 
 export default async function UpdateForm({
   params,
@@ -21,13 +21,27 @@ export default async function UpdateForm({
     );
   }
 
-  const immobile = await getImmobile(id);
+  const immobile = await prisma.immobile.findUnique({
+    where: {
+      id: id,
+    },
+    include: {
+      comune: true,
+      zona: true,
+      immagini: true,
+    },
+  });
 
   if (!immobile) return notFound();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { createdAt, updatedAt, prezzo, ...sinthImmobile } = immobile;
+
+  const initialData = { ...sinthImmobile, prezzo: Number(prezzo) };
+
   return (
     <section className="flex w-full items-center justify-center my-32">
-      <FormAggiornamento immobile={immobile} />
+      <FormImmobile initialData={initialData} />
     </section>
   );
 }

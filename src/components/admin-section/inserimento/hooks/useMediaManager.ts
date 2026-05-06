@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 
 
 export default function useMediaManager() {
+    const [oldImages, setOldImages] = useState<string[]>([]);
     // Stato per i file reali da inviare a Uploadthing
     const [files, setFiles] = useState<File[]>([]);
     // Stato per le preview delle immagini
@@ -28,24 +29,32 @@ export default function useMediaManager() {
         e.target.value = "";
     }
 
+    const removeOldImage = useCallback(((url: string) => {
+        setOldImages((prev) => prev.filter((i) => i !== url))
+    }), [])
+
     const removeFile = useCallback((index: number) => {
         setPreviews((prev) => {
             const newPreviews = [...prev];
             URL.revokeObjectURL(newPreviews[index]);
             return newPreviews.filter((_, i) => i !== index)
         })
+
+        setFiles((prev) => prev.filter((_, i) => i !== index))
     }, [])
 
     const clearMedia = useCallback(() => {
         previews.forEach((p) => URL.revokeObjectURL(p));
         setPreviews([]);
         setFiles([]);
+        setOldImages([]);
     }, [previews]);
 
     return {
         files, setFiles,
         previews, setPreviews,
-        handleFileChange, removeFile, clearMedia
+        oldImages, setOldImages,
+        handleFileChange, removeFile, clearMedia, removeOldImage
     }
 
 }

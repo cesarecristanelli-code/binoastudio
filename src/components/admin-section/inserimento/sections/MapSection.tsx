@@ -2,7 +2,7 @@ import { Geo, Map } from "@/types/inserimentoHooks.types";
 import dynamic from "next/dynamic";
 
 const MapPicker = dynamic(
-  () => import("@/components/admin-section/inserimento/MapPicker"),
+  () => import("@/components/admin-section/inserimento/sections/MapPicker"),
   {
     ssr: false,
     loading: () => (
@@ -13,7 +13,15 @@ const MapPicker = dynamic(
   },
 );
 
-export default function MapSection(map: Map, geo: Geo) {
+export default function MapSection({
+  map,
+  geo,
+  onVerify,
+}: {
+  map: Map;
+  geo: Geo;
+  onVerify: () => void;
+}) {
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor="indirizzo" className="ps-2 text-black">
@@ -33,9 +41,7 @@ export default function MapSection(map: Map, geo: Geo) {
         />
         <button
           type="button"
-          onClick={() =>
-            map.handleVerifyAddress(map.address, geo.selectedComuneId)
-          }
+          onClick={onVerify}
           disabled={map.isGeocoding || geo.selectedComuneId === ""}
           className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
         >
@@ -48,7 +54,7 @@ export default function MapSection(map: Map, geo: Geo) {
         <MapPicker
           lat={map.coords.lat}
           lng={map.coords.lng}
-          onChange={() => map.handleMapChange}
+          onChange={map.handleMapChange}
         />
         <p className="text-[10px] text-gray-500 mt-1 italic">
           Coordinate attuali: {map.coords.lat.toFixed(5)},{" "}

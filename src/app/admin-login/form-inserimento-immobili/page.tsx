@@ -1,4 +1,4 @@
-import FormInserimento from "@/components/admin-section/inserimento/FormInserimento";
+import FormImmobile from "@/components/admin-section/inserimento/FormImmobile";
 import { requireAuth } from "@/actions/auth";
 
 export default async function InsertPropertyPage() {
@@ -6,7 +6,7 @@ export default async function InsertPropertyPage() {
 
   return (
     <section className="flex items-center justify-center py-80">
-      <FormInserimento />
+      <FormImmobile />
     </section>
   );
 }

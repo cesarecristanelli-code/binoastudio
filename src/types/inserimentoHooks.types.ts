@@ -1,4 +1,5 @@
-import { Regione, Provincia, Comune, Zona } from "@/generated/prisma/client";
+import { ComuneSubset, ProvinciaSubset, ZonaSubset } from "@/actions/geoActions";
+import { Regione, Provincia, Comune, Zona, Prisma } from "@/generated/prisma/client";
 
 export interface Geo {
     regioni: Regione[],
@@ -6,20 +7,20 @@ export interface Geo {
     selectedRegioneId: string,
     setSelectedRegioneId: (id: string) => void,
 
-    province: Provincia[],
-    setProvince: (province: Provincia[]) => void,
+    province: ProvinciaSubset[],
+    setProvince: (province: ProvinciaSubset[]) => void,
     selectedProvinciaId: string,
     setSelectedProvinciaId: (id: string) => void,
 
-    allComuni: Comune[],
-    setAllComuni: (comuni: Comune[]) => void,
+    allComuni: ComuneSubset[],
+    setAllComuni: (comuni: ComuneSubset[]) => void,
     selectedComuneId: string,
     setSelectedComuneId: (id: string) => void,
     searchComune: string,
     setSearchComune: (search: string) => void,
 
-    allZone: Zona[],
-    setAllZone: (comuni: Zona[]) => void,
+    allZone: ZonaSubset[],
+    setAllZone: (comuni: ZonaSubset[]) => void,
     selectedZonaId: string,
     setSelectedZonaId: (id: string) => void,
     searchZona: string,
@@ -31,8 +32,8 @@ export interface Geo {
     handleProvinciaChange: (provinciaId: string) => void,
     handleComuneChange: (comuneId: string) => void,
 
-    filteredComuni: Comune[],
-    filteredZone: Zona[]
+    filteredComuni: ComuneSubset[],
+    filteredZone: ZonaSubset[]
 }
 
 export interface Admin {
@@ -67,14 +68,17 @@ export interface Admin {
 }
 
 export interface Media {
+    oldImages: string[],
+    setOldImages: (img: string[]) => void,
     files: File[],
-    setFiles: (filse: File[]) => void,
+    setFiles: (files: File[]) => void,
     previews: string[],
     setPreviews: (prev: string[]) => void,
 
     handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
 
     removeFile: (index: number) => void,
+    removeOldImage: (url: string) => void,
     clearMedia: () => void
 }
 
@@ -82,10 +86,29 @@ export interface Map {
     coords: { lat: number, lng: number },
     setCoords: (coords: { lat: number, lng: number }) => void,
     isGeocoding: boolean,
-    setGeocoding: (p: boolean) => void,
+    setIsGeocoding: (p: boolean) => void,
     address: string,
     setAddress: (add: string) => void,
 
-    handleVerifyAddress: (indirizzo: string, selectedComuneId: string) => { lat: number, lng: number } | void,
-    handleMapChange: (lat: number, lng: number) => void
+    handleVerifyAddress: (indirizzo: string, selectedComuneId: string) => Promise<{ lat: number, lng: number } | void>,
+    handleMapChange: (lat: number, lng: number) => void,
+    hydrateMap: (add: string, lat: number, lng: number) => void,
 }
+
+// A. TIPO DB: Quello che arriva dalla query Prisma
+export type ImmobileWithRelations = Prisma.ImmobileGetPayload<{
+    include: { immagini: true; comune: true; zona: true };
+}>;
+
+type Prettify<T> = {
+    [K in keyof T]: T[K];
+} & {};
+
+// B. TIPO FORM: Quello che serve allo stato dello useImmobileHooks
+// Trasformiamo i campi problematici (Decimal -> number, Immagine -> string)
+export type ImmobileFullForm = Prettify<Omit<
+    ImmobileWithRelations,
+    "createdAt" | "updatedAt" | "prezzo"
+> & {
+    prezzo: number; // Lo gestiamo come numero per l'input
+}>;

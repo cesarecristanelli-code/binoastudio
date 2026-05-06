@@ -6,8 +6,9 @@ import prisma from "@/lib/prisma";
 import { Prisma, Immobile, ImmagineImmobile } from "@/generated/prisma/client";
 import { Result, ImmobileExtended } from "@/types/actions.types";
 import { UTApi } from "uploadthing/server";
-import { generateSlug } from "@/lib/utils";
+import { generateResult, generateSlug } from "@/lib/utils";
 import { immobiliSchema } from "@/lib/schemas/immobili";
+import { revalidatePath } from "next/cache";
 
 const utapi = new UTApi();
 
@@ -66,6 +67,7 @@ export async function insertImmobile(formData: FormData): Promise<Result<null>> 
         immagini: {
           create: immagini.map((url, index) => ({
             url: url,
+            key: fileKeys[index],
             isCover: index === 0,
           })),
         },
@@ -143,133 +145,99 @@ export async function updateImmobile(
 ): Promise<Result<null>> {
   await requireAuth();
 
-  const nome = formData.get("nome") as string;
-  const prezzo = formData.get("prezzo") as string;
-  const indirizzo = formData.get("indirizzo") as string;
-  const metratura = formData.get("metratura") as string;
-  const numeroBagni = formData.get("numeroBagni") as string;
-  const numeroLocali = formData.get("numeroLocali") as string;
-  const descrizione = formData.get("descrizione") as string;
-  const nuoviUrls = formData.getAll("immagini") as string[];
+  const rawData = Object.fromEntries(formData.entries());
+  const oldImmagini = formData.getAll("oldImmagini") as string[];
+  const newImmagini = formData.getAll("immagini") as string[];
+  const newKeys = formData.getAll("fileKeys") as string[];
+
+  const allImmagini = [...oldImmagini, ...newImmagini]
+
+  const dataToValidate = { ...rawData, immagini: allImmagini };
 
   try {
-    const validazione = immobiliSchema.safeParse({
-      nome: nome,
-      prezzo: Number(prezzo),
-      indirizzo: indirizzo,
-      metratura: Number(metratura),
-      numeroBagni: Number(numeroBagni),
-      numeroLocali: Number(numeroLocali),
-      descrizione: descrizione,
-      immagini: nuoviUrls,
-    });
+    const currentImmobile = await getImmobile(immobileId);
+
+    if (!currentImmobile) return generateResult(false, "Immobile non trovato");
+
+    console.log(dataToValidate)
+    const validazione = immobiliSchema.safeParse(dataToValidate);
 
     if (!validazione.success) {
-      console.log(
-        "Errore validazione dati: ",
-        validazione.error.issues.map((i) => i.message).join(", "),
-      );
-      return { success: false, message: "Errore nell'inserimento dei dati" };
-    }
-    const nuovoSlug = validazione.data.nome.toLowerCase().split(" ").join("-");
-
-    const immobilePrecedente = await getImmobile(immobileId);
-
-    if (!immobilePrecedente)
-      return { success: false, message: "Immobile non trovato" };
-
-    const immaginiDaEliminare = immobilePrecedente.immagini.filter(
-      (imgVecchia: { url: string }) => !validazione.data.immagini.includes(imgVecchia.url),
-    );
-
-    if (immaginiDaEliminare.length > 0) {
-      const keys = immaginiDaEliminare.map((img: { url: string }) => {
-        const parts = img.url.split("/");
-        return parts[parts.length - 1];
-      });
-
-      await utapi.deleteFiles(keys);
+      console.log("Errore durane la validazione dei dati: ", prettifyError(validazione.error))
+      throw new Error("Dati non validi")
     }
 
-    const response = await prisma.immobile.update({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { regioneId, provinciaId, immagini, ...immobileData } = validazione.data;
+    console.log("Dati per prisma: ", immobileData);
+
+    const immaginiDaEliminare = currentImmobile.immagini.filter((dbImg) => {
+      return !oldImmagini.includes(dbImg.url)
+    })
+
+    await prisma.immobile.update({
       where: {
         id: immobileId,
       },
       data: {
-        nome: validazione.data.nome,
-        prezzo: validazione.data.prezzo,
-        indirizzo: validazione.data.indirizzo,
-        metratura: validazione.data.metratura,
-        numeroBagni: validazione.data.numeroBagni,
-        numeroLocali: validazione.data.numeroLocali,
-        descrizione: validazione.data.descrizione,
-        slug: nuovoSlug,
+        ...immobileData,
         immagini: {
           deleteMany: {},
-          create: validazione.data.immagini.map((url, index) => ({
-            url: url,
-            isCover: index === 0,
-          })),
-        },
-      },
-    });
+          create: [
+            ...currentImmobile.immagini
+              .filter((img) => !immaginiDaEliminare.some(d => d.id === img.id))
+              .map((img) => ({ url: img.url, key: img.key, isCover: img.isCover })),
+            ...newImmagini.map((url, index) => ({
+              url: url,
+              key: newKeys[index],
+            }))
+          ]
+        }
+      }
+    })
 
-    if (!response) {
-      return {
-        success: false,
-        message: "Errore interno al server durante l'aggiornamento",
-      };
+    if (immaginiDaEliminare.length > 0) {
+      const keysToDelete = immaginiDaEliminare.map((img) => img.key);
+      await utapi.deleteFiles(keysToDelete);
     }
 
-    return { success: true, message: "Immobile aggiornato", data: null };
+    revalidatePath("/vendita");
+
+    return generateResult(true, "Immobile aggiornato", null, null);
+
   } catch (error) {
-    if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === "P2002"
-    ) {
-      return {
-        success: false,
-        message: "Esiste già un immobile con questo nome",
-      };
-    }
+    if (newKeys.length > 0) await utapi.deleteFiles(newKeys);
 
-    return {
-      success: false,
-      message:
-        error instanceof Error
-          ? error.message
-          : "Errore durante l'aggiornamento",
-    };
+    console.error("Errore nell'update: ", error);
+    return generateResult(false, "Errore durante l'aggiornamento", error);
   }
 }
 
-// === DELETE ===
+// ==== DELETE ====
 export async function deleteImmobile(immobileId: string): Promise<Result<null>> {
   await requireAuth();
 
   try {
     const immobile = await getImmobile(immobileId);
 
-    if (!immobile) return { success: false, message: "Immobile non trovato" };
+    if (!immobile) return generateResult(false, "Immobile non trovato");
 
-    const keys = immobile.immagini.map((img) => {
-      const parts = img.url.split("/");
-      return parts[parts.length - 1];
-    });
+    const fileKeys = immobile.immagini.map((img) => img.key);
 
-    await utapi.deleteFiles(keys);
+    if (fileKeys.length > 0) {
+      await utapi.deleteFiles(fileKeys);
+    }
 
     await prisma.immobile.delete({
-      where: {
-        id: immobileId,
-      },
-    });
+      where: { id: immobileId }
+    })
 
-    return { success: true, message: "Immobile eliminato", data: null };
+    revalidatePath("/vendita");
+
+    return generateResult(true, "Immobile eliminato", null, null)
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Errore sconosciuto";
-    console.log("Errore durante l'eliminazione: ", errorMessage);
-    return { success: false, message: errorMessage };
+    const errorMessage = error instanceof Error ? error.message : error;
+    console.error("Errore durante la cancellazione: ", errorMessage);
+    return generateResult(false, "Errore durante la cancellazione: ", errorMessage)
   }
 }

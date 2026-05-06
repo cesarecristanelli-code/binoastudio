@@ -1,4 +1,13 @@
-import { Admin, Geo } from "@/types/inserimentoHooks.types";
+import { Admin, Geo, ImmobileFullForm } from "@/types/inserimentoHooks.types";
+
+interface GeoSectionProps {
+  geo: Geo;
+  admin: Admin;
+  updateField: <K extends keyof ImmobileFullForm>(
+    name: K,
+    value: ImmobileFullForm[K],
+  ) => void;
+}
 
 const GeoField = ({
   label,
@@ -27,7 +36,11 @@ const GeoField = ({
   </div>
 );
 
-export default function GeoSection({ geo, admin }: { geo: Geo; admin: Admin }) {
+export default function GeoSection({
+  geo,
+  admin,
+  updateField,
+}: GeoSectionProps) {
   return (
     <div className="grid grid-cols-1 gap-4">
       {/* Regione */}
@@ -38,7 +51,12 @@ export default function GeoSection({ geo, admin }: { geo: Geo; admin: Admin }) {
       >
         <select
           name="regioneId"
-          onChange={(e) => geo.handleRegioneChange(e.target.value)}
+          value={geo.selectedRegioneId}
+          onChange={(e) => {
+            geo.handleRegioneChange(e.target.value);
+            updateField("comuneId", "");
+            updateField("zonaId", "");
+          }}
           className="w-72 py-2 px-3 bg-white border-2 border-black rounded-xl"
         >
           <option value="">Seleziona Regione</option>
@@ -59,7 +77,12 @@ export default function GeoSection({ geo, admin }: { geo: Geo; admin: Admin }) {
         <select
           name="provinciaId"
           disabled={geo.selectedRegioneId === ""}
-          onChange={(e) => geo.handleProvinciaChange(e.target.value)}
+          value={geo.selectedProvinciaId}
+          onChange={(e) => {
+            geo.handleProvinciaChange(e.target.value);
+            updateField("comuneId", "");
+            updateField("zonaId", "");
+          }}
           className="w-72 py-2 px-3 bg-white border-2 border-black rounded-xl disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400"
         >
           <option value="">Seleziona Provincia</option>
@@ -103,6 +126,9 @@ export default function GeoSection({ geo, admin }: { geo: Geo; admin: Admin }) {
                   geo.setSearchComune(c.nome);
                   geo.setSelectedComuneId(c.id);
                   geo.handleComuneChange(c.id); // Funzione per caricare le zone
+
+                  updateField("comuneId", c.id);
+                  updateField("zonaId", "");
                   console.log(c.nome);
                 }}
                 className="px-4 py-2 hover:bg-blue-100 cursor-pointer border-b last:border-none border-gray-100"
@@ -120,57 +146,55 @@ export default function GeoSection({ geo, admin }: { geo: Geo; admin: Admin }) {
         onAdd={() => admin.openModal("zona", geo.selectedComuneId)}
         disabledAdd={geo.selectedComuneId === ""}
       >
-        <div className="flex gap-2">
-          <div className="relative grow">
-            {/* Se il comune ha zone, mostriamo l'input di ricerca */}
-            {geo.allZone.length > 0 ? (
-              <>
-                <input
-                  type="text"
-                  className="w-full py-2 px-3 border-2 border-black rounded-xl outline-none"
-                  placeholder="Inizia a scrivere la zona..."
-                  value={geo.searchZona}
-                  onChange={(e) => {
-                    geo.setSearchZona(e.target.value);
-                    geo.setSelectedZonaId(""); // Se l'utente ricomincia a scrivere, resettiamo l'ID
-                  }}
-                />
+        {/* Se il comune ha zone, mostriamo l'input di ricerca */}
+        {geo.allZone.length > 0 ? (
+          <>
+            <input
+              type="text"
+              className="w-full py-2 px-3 border-2 border-black rounded-xl outline-none"
+              placeholder="Inizia a scrivere la zona..."
+              value={geo.searchZona}
+              onChange={(e) => {
+                geo.setSearchZona(e.target.value);
+                geo.setSelectedZonaId(""); // Se l'utente ricomincia a scrivere, resettiamo l'ID
+              }}
+            />
 
-                {/* Menu Suggerimenti */}
-                {geo.filteredZone.length > 0 && (
-                  <ul className="absolute z-100 w-full bg-white border-2 border-black rounded-xl mt-1 max-h-48 overflow-y-auto shadow-2xl">
-                    {geo.filteredZone.map((z) => (
-                      <li
-                        key={z.id}
-                        className="px-4 py-2 hover:bg-blue-50 cursor-pointer border-b last:border-none"
-                        onClick={() => {
-                          geo.setSearchZona(z.nome);
-                          geo.setSelectedZonaId(z.id);
-                        }}
-                      >
-                        {z.nome}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </>
-            ) : (
-              /* Se il comune NON ha zone (o non è selezionato), mostriamo un input disabilitato parlante */
-              <input
-                type="text"
-                disabled
-                className="w-full py-2 px-3 border-2 border-gray-200 bg-gray-50 rounded-xl italic text-gray-400 cursor-not-allowed"
-                value={
-                  !geo.selectedComuneId
-                    ? "Seleziona prima un comune"
-                    : geo.checkedZona
-                      ? "Caricamento zone in corso..."
-                      : "Nessuna zona censita per questo comune"
-                }
-              />
+            {/* Menu Suggerimenti */}
+            {geo.filteredZone.length > 0 && (
+              <ul className="absolute z-100 w-full bg-white border-2 border-black rounded-xl mt-1 max-h-48 overflow-y-auto shadow-2xl">
+                {geo.filteredZone.map((z) => (
+                  <li
+                    key={z.id}
+                    className="px-4 py-2 hover:bg-blue-50 cursor-pointer border-b last:border-none"
+                    onClick={() => {
+                      geo.setSearchZona(z.nome);
+                      geo.setSelectedZonaId(z.id);
+
+                      updateField("zonaId", z.id);
+                    }}
+                  >
+                    {z.nome}
+                  </li>
+                ))}
+              </ul>
             )}
-          </div>
-        </div>
+          </>
+        ) : (
+          /* Se il comune NON ha zone (o non è selezionato), mostriamo un input disabilitato parlante */
+          <input
+            type="text"
+            disabled
+            className="w-full py-2 px-3 border-2 border-gray-200 bg-gray-50 rounded-xl italic text-gray-400 cursor-not-allowed"
+            value={
+              !geo.selectedComuneId
+                ? "Seleziona prima un comune"
+                : geo.checkedZona
+                  ? "Caricamento zone in corso..."
+                  : "Nessuna zona censita per questo comune"
+            }
+          />
+        )}
       </GeoField>
     </div>
   );

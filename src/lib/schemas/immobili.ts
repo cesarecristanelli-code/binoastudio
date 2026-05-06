@@ -14,7 +14,7 @@ export const immobiliSchema = z.object({
     // questi invece finiscono nel model Immobile
     comuneId: z.string().trim().min(1, "Selezione un comune"),
     zonaId: z.preprocess(
-        (val) => (val === "" ? null : val), // Se è una stringa vuota divente null
+        (val) => (val === "" ? null : val), // Se è una stringa vuota diventa null
         z.string().trim().nullable().optional()
     ),
 

@@ -72,7 +72,7 @@ export async function getProvinciaByComune(comuneId: string): Promise<Result<Com
 }
 
 
-export async function getComuneByProvincia(provinciaId: string): Promise<Result<ComuneSubset[]>> {
+export async function getComuniByProvincia(provinciaId: string): Promise<Result<ComuneSubset[]>> {
     try {
         const response = await prisma.comune.findMany({
             where: {
@@ -93,7 +93,7 @@ export async function getComuneByProvincia(provinciaId: string): Promise<Result<
     }
 }
 
-export async function getZonaByComune(comuneId: string): Promise<Result<ZonaSubset[]>> {
+export async function getZoneByComune(comuneId: string): Promise<Result<ZonaSubset[]>> {
     try {
         const response = await prisma.zona.findMany({
             where: {
@@ -115,6 +115,45 @@ export async function getZonaByComune(comuneId: string): Promise<Result<ZonaSubs
         return generateResult(true, "Zone recuperate con successo", null, response);
     } catch (error) {
         return generateResult(false, "Errore durante il recupero delle zone", error);
+    }
+}
+
+export async function getGeoHyerarchy(comuneId: string): Promise<Result<{
+    regioneId: string,
+    provinciaId: string,
+    comuneId: string,
+    comuneNome: string
+}>> {
+    if (!comuneId) return generateResult(false, "ID comune non valido");
+
+    try {
+        const resultComune = await prisma.comune.findUnique({
+            where: {
+                id: comuneId
+            },
+            include: {
+                provincia: true
+            }
+        });
+
+        if (!resultComune) {
+            return generateResult(false, "Comune non trovato nel DB")
+        }
+
+        if (!resultComune.provincia) {
+            return generateResult(false, "Provincia non trovata nel DB")
+        }
+
+        return generateResult(true, "Gerarchia comune trovata", null, {
+            regioneId: resultComune.provincia.regioneId,
+            provinciaId: resultComune.provinciaId,
+            comuneId: resultComune.id,
+            comuneNome: resultComune.nome
+        })
+
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "Errore sconosciuto"
+        return generateResult(false, "Errore durante la ricerca della gerargchia: ", errorMessage)
     }
 }
 
