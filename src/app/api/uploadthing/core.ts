@@ -21,4 +21,6 @@ export const ourFileRouter = {
     }),
 } satisfies UTFileRouter;
 
+console.log("Token check:", process.env.UPLOADTHING_TOKEN ? "Presente" : "ASSENTE");
+
 export type OurFileRouter = typeof ourFileRouter;
