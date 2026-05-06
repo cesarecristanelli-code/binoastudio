@@ -20,3 +20,17 @@ export function generateSlug(nome: string): string {
         .replace(/[\s_-]+/g, '-')  // Sostituisce spazi e underscore con un singolo -
         .replace(/^-+|-+$/g, '');  // Rimuove trattini all'inizio/fine
 }
+
+/**
+ * Trasforma stringhe tipo "NUOVA_COSTRUZIONE" in "Nuova costruzione"
+ */
+export function formatEnum(value: string | null | undefined): string {
+    if (!value) return "N/D";
+
+    // 1. Sostituisce i trattini bassi con spazi
+    // 2. Trasforma tutto in minuscolo
+    const lower = value.replace(/_/g, " ").toLowerCase();
+
+    // 3. Rende maiuscola solo la prima lettera della stringa
+    return lower.charAt(0).toUpperCase() + lower.slice(1);
+}

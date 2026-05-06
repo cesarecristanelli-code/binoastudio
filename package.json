@@ -17,6 +17,8 @@
     "@uploadthing/react": "^7.3.3",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.1",
+    "embla-carousel-autoplay": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.36.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.0.1",
