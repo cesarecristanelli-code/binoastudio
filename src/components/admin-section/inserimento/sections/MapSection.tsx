@@ -24,12 +24,13 @@ export default function MapSection({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor="indirizzo" className="ps-2 text-black">
+      <label htmlFor="indirizzo" className="ps-2 text-black required">
         Indirizzo
       </label>
       <div className="flex gap-2">
         <input
           required
+          aria-required="true"
           type="text"
           name="indirizzo"
           id="indirizzo"

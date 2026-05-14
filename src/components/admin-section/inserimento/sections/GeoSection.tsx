@@ -14,14 +14,18 @@ const GeoField = ({
   children,
   onAdd,
   disabledAdd,
+  required,
 }: {
   label: string;
   children: React.ReactNode;
   onAdd: () => void;
   disabledAdd: boolean;
+  required?: boolean;
 }) => (
   <div className="flex flex-col gap-2">
-    <label className="ps-2 text-black font-medium">{label}</label>
+    <label className={`ps-2 text-black font-medium ${required && "required"}`}>
+      {label}
+    </label>
     <div className="flex gap-2">
       <div className="relative grow">{children}</div>
       <button
@@ -48,9 +52,11 @@ export default function GeoSection({
         label="Regione"
         onAdd={() => admin.openModal("regione")}
         disabledAdd={false}
+        required
       >
         <select
           name="regioneId"
+          aria-required="true"
           value={geo.selectedRegioneId}
           onChange={(e) => {
             geo.handleRegioneChange(e.target.value);
@@ -71,6 +77,8 @@ export default function GeoSection({
       {/* Provincia */}
       <GeoField
         label="Provincia"
+        aria-required="true"
+        required
         onAdd={() => admin.openModal("provincia", geo.selectedRegioneId)}
         disabledAdd={geo.selectedProvinciaId === ""}
       >
@@ -97,8 +105,10 @@ export default function GeoSection({
       {/* Comune */}
       <GeoField
         label="Comune"
+        aria-required="true"
         onAdd={() => admin.openModal("comune", geo.selectedProvinciaId)}
         disabledAdd={geo.selectedProvinciaId === ""}
+        required
       >
         <input
           type="text"

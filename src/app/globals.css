@@ -53,3 +53,9 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+.required::after {
+  content: " *";
+  color: #e53e3e; /* Un rosso visibile ma non aggressivo */
+  font-weight: bold;
+}

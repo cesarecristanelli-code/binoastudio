@@ -16,6 +16,7 @@ interface FieldProps {
   children: React.ReactNode;
   suffix?: string;
   className?: string;
+  required?: boolean;
 }
 
 // Helper per gli input standard
@@ -24,9 +25,12 @@ export const Field = ({
   children,
   suffix,
   className = "",
+  required = false,
 }: FieldProps) => (
   <div className={`flex flex-col gap-1.5 ${className}`}>
-    <label className="ps-2 text-sm font-semibold text-gray-700 uppercase">
+    <label
+      className={`ps-2 text-sm font-semibold text-gray-700 uppercase ${required && "required"}`}
+    >
       {label}
     </label>
     <div className="flex">
@@ -58,7 +62,7 @@ export function EnumSelect<T extends Record<string, string>>({
     <div className={`flex flex-col gap-1.5 ${className}`}>
       <label
         htmlFor={name}
-        className="ps-2 text-sm font-semibold text-gray-700 uppercase"
+        className={`ps-2 text-sm font-semibold text-gray-700 uppercase ${required && "required"} `}
       >
         {label}
       </label>
@@ -66,6 +70,7 @@ export function EnumSelect<T extends Record<string, string>>({
         id={name}
         name={name}
         required={required}
+        aria-required={required}
         value={value || ""}
         onChange={(e) => onChange?.(e.target.value)}
         className="py-2 px-3 bg-white border-2 border-black rounded-xl focus:ring-2 focus:ring-blue-500 outline-none uppercase"

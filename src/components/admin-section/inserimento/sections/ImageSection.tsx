@@ -19,7 +19,8 @@ export default function ImageSection({ media }: { media: Media }) {
           htmlFor="file-upload"
           className="cursor-pointer text-blue-600 underline"
         >
-          Clicca qui per selezionare le foto
+          Clicca qui per selezionare le foto{" "}
+          <span className="text-red-500">*</span>
         </label>
         <p className="text-xs text-gray-500 mt-1">
           Verranno caricate solo al momento del salvataggio

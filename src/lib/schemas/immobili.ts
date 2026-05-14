@@ -59,8 +59,8 @@ export const immobiliSchema = z.object({
     numeroTerrazzi: z.coerce.number().int().nonnegative().default(0),
     numeroBalconi: z.coerce.number().int().nonnegative().default(0),
 
-    riscaldamento: z.enum(Riscaldamento),
-    raffrescamento: z.enum(Raffrescamento),
+    riscaldamento: z.enum(Riscaldamento).default("AUTONOMO"),
+    raffrescamento: z.enum(Raffrescamento).default("ASSENTE"),
 
 
     stato: z.enum(StatoImmobile),

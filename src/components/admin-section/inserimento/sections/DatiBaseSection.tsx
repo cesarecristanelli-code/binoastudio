@@ -14,9 +14,10 @@ export default function DatiBaseSection({
 
       {/* RIGA 1: Nome (occupa più spazio) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Field label="Nome Immobile" className="md:col-span-2">
+        <Field label="Nome Immobile" className="md:col-span-2" required>
           <input
             required
+            aria-required="true"
             name="nome"
             type="text"
             value={formData?.nome || ""}
@@ -38,9 +39,10 @@ export default function DatiBaseSection({
 
       {/* RIGA 2: Economia e Contratto */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Field label="Prezzo" suffix="€">
+        <Field label="Prezzo" suffix="€" required>
           <input
             required
+            aria-required="true"
             name="prezzo"
             type="number"
             value={formData?.prezzo ?? ""}
@@ -77,14 +79,16 @@ export default function DatiBaseSection({
           onChange={(val) => updateField("contratto", val as Contratto)}
           enumObject={Contratto}
           required
+          aria-required="true"
         />
       </div>
 
       {/* RIGA 3: Caratteristiche Fisiche */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Field label="Metratura" suffix="m²">
+        <Field label="Metratura" suffix="m²" required>
           <input
             required
+            aria-required="true"
             name="metratura"
             value={formData?.metratura || ""}
             onChange={(e) =>
@@ -98,8 +102,10 @@ export default function DatiBaseSection({
           />
         </Field>
 
-        <Field label="Anno Costruzione">
+        <Field label="Anno Costruzione" required>
           <input
+            required
+            aria-required="true"
             name="annoCostruzione"
             type="number"
             value={formData?.annoCostruzione || ""}
@@ -114,9 +120,10 @@ export default function DatiBaseSection({
           />
         </Field>
 
-        <Field label="Locali">
+        <Field label="Locali" required>
           <input
             required
+            aria-required="true"
             name="numeroLocali"
             type="number"
             value={formData?.numeroLocali || ""}
@@ -130,9 +137,10 @@ export default function DatiBaseSection({
           />
         </Field>
 
-        <Field label="Bagni">
+        <Field label="Bagni" required>
           <input
             required
+            aria-required="true"
             name="numeroBagni"
             type="number"
             value={formData?.numeroBagni || ""}
