@@ -1,0 +1,75 @@
+{
+  "Navbar": {
+    "aboutUs": {
+      "title": "About Us",
+      "dropdown": {
+        "binoa": "Binòa",
+        "motto": "Motto",
+        "vision": "Vision",
+        "mission": "Mission"
+      }
+    },
+    "whatWeDo": {
+      "title": "What We Do",
+      "dropdown": {
+        "realEstate": "Real Estate Sales",
+        "projectManagement": "Project Management",
+        "design": "Design & Planning"
+      }
+    },
+    "buttons": {
+      "realEstate": "Real Estate Sales"
+    },
+    "links": {
+      "contacts": "Contacts"
+    }
+  },
+
+  "Homepage": {
+    "aboutUsSection": {
+      "title": "ABOUT US",
+      "introduction": "BINÒA was born from the convergence of Andrea's experience as a senior architect and Pietro's energy as a real estate agent. We blend two generations and complementary skills to overcome the limits of our time. Guided by the motto \"We manage values\", we follow a strategic path that evolves from secure sales to project management. We combine technical rigor and human care to ensure solid and transparent agreements.",
+      "team": {
+        "andrea": "Andrea Cristanelli is the technical soul of BINÒA. A senior architect with thirty years of experience, he has coordinated major projects and integrated systems adhering to ISO 9001 quality standards. His career, built upon the principles of project management, is expressed today in a human dimension, placing his extensive expertise at the service of integrity. At BINÒA, Andrea ensures every property is a safe and protected project.",
+        "pietro": "Pietro Bonetto is the dynamic soul of BINÒA. With a classical education and extensive experience in real estate brokerage, he turns every connection into a valuable opportunity. Specializing in property search and relationship management, he brings the energy of a new generation and a distinct communicative sensitivity to the project. At BINÒA, he is the operational face who listens to people's needs and translates them into concrete choices."
+      },
+      "coreValues": {
+        "motto": {
+          "title": "WE MANAGE VALUES",
+          "description": "For BINÒA, every project is first and foremost a meeting between people. We merge the principles of architecture with deep listening to protect both human capital and our clients' peace of mind."
+        },
+        "mission": {
+          "title": "WE TAKE CARE OF PROPERTIES",
+          "description": "We operate through a structured path, integrating urban analysis and relationship marketing to ensure comprehensive management. We guide people with honesty and competence, placing the protection and enhancement of the project or sale at the core of every action we take."
+        },
+        "vision": {
+          "title": "WE MANAGE PROPERTIES COMPREHENSIVELY",
+          "description": "We look to the future by evolving as strategic partners for real estate developments. Our vision is to govern the entire life cycle of the building, bridging any technical or bureaucratic gaps to bring lives and homes together."
+        }
+      }
+    },
+    "whatWeDoSection": {
+      "title": "WHAT WE DO",
+      "services": {
+        "realEstate": {
+          "title": "REAL ESTATE SALES",
+          "description": "We offer a brokerage service aimed at achieving a \"secure sale\". We combine market research with technical expertise. We guide clients with transparency, turning negotiations into solid agreements."
+        },
+        "projectManagement": {
+          "title": "PROJECT MANAGEMENT",
+          "description": "We act as strategic partners for businesses and investors. We manage complexity through a methodical approach based on ISO project management standards. From planning technical and economic processes to managing marketing and off-plan sales during construction, we relieve clients and contractors of critical technical and operational challenges, ensuring efficiency and quality to turn development areas into concrete realities."
+        },
+        "design": {
+          "title": "DESIGN & CONSTRUCTION MANAGEMENT",
+          "description": "We transform ideas into spaces through comprehensive design that merges aesthetics and engineering. We also oversee construction sites, with a particular focus on the environment. We support the client from the initial concept to the final handover, ensuring that every intervention—from renovations to major works—is technically sound and protected."
+        }
+      }
+    }
+  },
+
+  "Footer": {
+    "by": "by",
+    "headquarters": "Registered Office",
+    "privacy": "Privacy Policy"
+  }
+}

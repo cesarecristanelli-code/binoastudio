@@ -264,6 +264,7 @@ export async function insertZona(nome: string, comuneId: string, cap?: string): 
         if (!slugComune) return generateResult(false, "Comune non trovato", null);
 
         const baseSlug = generateSlug(nomePulito);
+        console.log(`Slug generato: ${baseSlug}-in-${slugComune.slug}`)
 
         const response = await prisma.zona.create({
             data: {
@@ -277,6 +278,8 @@ export async function insertZona(nome: string, comuneId: string, cap?: string): 
         return generateResult(true, "Zona inserita correttamente", null, response);
 
     } catch (error) {
-        return generateResult(false, "Errore durante l'inserimento della zona", error);
+        const errorMessage = error instanceof Error ? error.message : error;
+        console.log(`Errore durante l'inserimento della zona.\nMessaggio di errore: ${errorMessage}.\nErrore completo: ${error}`)
+        return generateResult(false, "Errore durante l'inserimento della zona", errorMessage);
     }
 }

@@ -35,10 +35,7 @@ export default function DettagliImmobile({ immobile }: Props) {
         {/* VISIBILI SOLO SE ESPANSO */}
         {isExpanded && (
           <>
-            <DetailRow
-              label="ID Contratto"
-              value={immobile.id.slice(-8).toUpperCase()}
-            />
+            <DetailRow label="Totale piani" value={immobile.totalePiani || 1} />
             <DetailRow label="Tipologia" value={immobile.tipo} />
             <DetailRow
               label="Anno di costruzione"

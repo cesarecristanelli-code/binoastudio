@@ -75,7 +75,10 @@ export default function Modale({
           <div className="flex gap-2 mt-2">
             <button
               type="button"
-              onClick={() => handleSaveNewItem(onSuccess)}
+              onClick={(e) => {
+                e.preventDefault();
+                handleSaveNewItem(onSuccess);
+              }}
               className="grow py-2 bg-green-400 border-2 border-black font-bold rounded-lg hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
             >
               SALVA
