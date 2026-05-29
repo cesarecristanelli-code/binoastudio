@@ -70,7 +70,7 @@ export default function Navbar() {
   // 2. Setto il bg dinamico in base a che sia in cima alla pagina o si stia scrollando
   // - Se si è nella HomePage: logica scrilling (trasparente -> solida)
   // - Se non si è nella HomePage: navbar semre solida
-  const isHomePage = pathname === "/";
+  const isHomePage = pathname === "/it" || pathname === "/en";
   const navbarBg = isHomePage
     ? isScrolled
       ? "bg-[rgb(250,248,245)] shadow-md border-b border-gray-100" //se si è nella Home e si ha scrollato più di 50px
