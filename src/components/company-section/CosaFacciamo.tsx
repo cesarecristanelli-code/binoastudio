@@ -4,45 +4,36 @@ import { Fragment } from "react";
 import Title from "./BodyTitle";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import { SectionType } from "@/types/bodysection.types";
+import { useTranslations } from "next-intl";
 // import Form from "./FormCommenti";
 
 export default function CosaFacciamo() {
+  const t = useTranslations("Homepage.whatWeDoSection");
   const sections: SectionType[] = [
     {
       id: 1,
-      title: "COMPRAVENDITA IMMOBILIARE",
+      title: t("services.realEstate.title"),
       imagePath: "/compravendita-immagine.jpg",
       idSection: "compravendita-immobiliare",
-      children: (
-        <>
-          Offriamo un servizio di intermediazione che ha come obiettivo una <b>“vendita sicura”</b>. 
-          Uniamo la ricerca <i>commerciale</i> agli aspetti <i>tecnici</i>. Accompagniamo i clienti con trasparenza, trasformando la trattativa in un&apos;intesa solida.
-        </>
-      ),
+      children: t("services.realEstate.description"),
       reverse: false,
       divClasses: "mt-28 mb-16",
     },
     {
       id: 2,
-      title: "GESTIONE PROGETTI",
+      title: t("services.projectManagement.title"),
       imagePath: "/gestione-immagine.jpg",
       idSection: "gestione-progetti",
-      children: `Ci proponiamo come partner strategici per imprese e investitori. 
-      Gestiamo la complessità, con un approccio metodico che si fonda sulle norme ISO del project management. 
-      Dalla pianificazione dei processi tecnici ed economici oltre a quelli legati al marketing e alla compravendita in corso di costruzione, 
-      solleviamo committenti e imprese da aspetti critici sia tecnici che operativi, garantendo efficienza e qualità per trasformare le aree di sviluppo in realtà concrete.`,
+      children: t("services.projectManagement.description"),
       reverse: true,
       divClasses: "my-28",
     },
     {
       id: 3,
-      title: "PROGETTAZIONE",
+      title: t("services.design.title"),
       imagePath: "/progettazione-immagine.jpg",
       idSection: "progettazione",
-      children: `Trasformiamo le idee in spazi attraverso una progettazione integrale che unisce estetica e ingegnerizzazione. 
-      Ci occupiamo anche dei cantieri, con una particolare attenzione all'ambiente. 
-      Supportiamo il cliente dal concept iniziale fino alla firma finale, assicurando che ogni intervento, dalla ristrutturazione alla grande opera, 
-      sia tecnicamente solido e protetto.`,
+      children: t("services.design.description"),
       reverse: false,
       divClasses: "my-28",
     },
@@ -53,7 +44,7 @@ export default function CosaFacciamo() {
       className="max-w-7xl mx-auto space-y-40 py-28 rounded-b-2xl shadow-2xl"
       style={{ backgroundColor: "#3C3833" }}
     >
-      <Title number="02" title="Cosa facciamo" titleColor="#E5E0D8" />
+      <Title number="02" title={t("title")} titleColor="#E5E0D8" />
 
       {sections.map((s) => (
         <Fragment key={s.id}>

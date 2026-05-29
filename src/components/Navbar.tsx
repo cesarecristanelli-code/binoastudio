@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 interface NavlinkType {
   name: string;
@@ -12,6 +14,8 @@ interface NavlinkType {
 }
 
 export default function Navbar() {
+  const t = useTranslations("Navbar");
+
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isChiSiamoOpen, setIsChiSiamoOpen] = useState<boolean>(false);
@@ -22,9 +26,15 @@ export default function Navbar() {
     useState<boolean>(false);
 
   const cosaFacciamoLinks: NavlinkType[] = [
-    { name: "Compravendita Immobiliare", href: "/#compravendita-immobiliare" },
-    { name: "Gestione Progetti", href: "/#gestione-progetti" },
-    { name: "Progettazione", href: "/#progettazione" },
+    {
+      name: t("whatWeDo.dropdown.realEstate"),
+      href: "/#compravendita-immobiliare",
+    },
+    {
+      name: t("whatWeDo.dropdown.projectManagement"),
+      href: "/#gestione-progetti",
+    },
+    { name: t("whatWeDo.dropdown.design"), href: "/#progettazione" },
   ];
 
   const chiSiamoLinks: NavlinkType[] = [
@@ -110,7 +120,7 @@ export default function Navbar() {
               aria-haspopup={true}
               className={`flex items-center gap-1 font-medium tracking-wide transition-colors ${textColor} hover:opacity-70 p-1`}
             >
-              Chi siamo
+              {t("aboutUs.title")}
               <ChevronDownIcon
                 className={`w-4 h-4 transition-transform duration-200 ${isChiSiamoOpen && "rotate-180"}`}
               />
@@ -146,7 +156,7 @@ export default function Navbar() {
               aria-haspopup={true}
               className={`flex items-center gap-1 font-medium tracking-wide transition-colors ${textColor} hover:opacity-70`}
             >
-              Cosa Facciamo
+              {t("whatWeDo.title")}
               <ChevronDownIcon
                 className={`w-4 h-4 transition-transform duration-200 ${isCosaFacciamoOpen && "rotate-180"}`}
               />
@@ -174,7 +184,7 @@ export default function Navbar() {
                   : "bg-[#3C3833] text-white hover:bg-[#3C3833]/80" // Pulsante su bianco
               }`}
             >
-              Compravendita Immobiliare
+              {t("buttons.realEstate")}
             </button>
           </Link>
 
@@ -182,11 +192,12 @@ export default function Navbar() {
             <span
               className={`font-medium tracking-wide transition-colors ${textColor} hover:opacity-70`}
             >
-              Contatti
+              {t("links.contacts")}
             </span>
           </Link>
-
-          {/* <Link href="/login" className={`${isHomePage && !isScrolled ? "text-white" : "text-black"} text-sm`}>Login</Link> */}
+          <div className="ms-2">
+            <LanguageSwitcher />
+          </div>
         </div>
 
         {/* Mobile menu icon */}
@@ -244,7 +255,7 @@ export default function Navbar() {
               onClick={() => setIsMobileChiSiamoOpen(!isMobileChiSiamoOpen)}
               className="flex items-center justify-between text-2xl font-semibold text-black"
             >
-              Chi Siamo
+              {t("aboutUs.title")}
               <ChevronDownIcon
                 className={`w-6 h-6 transition-transform ${isMobileChiSiamoOpen ? "rotate-180" : ""}`}
               />
@@ -273,7 +284,7 @@ export default function Navbar() {
               }
               className="flex items-center justify-between text-2xl font-semibold text-black"
             >
-              Cosa Facciamo
+              {t("whatWeDo.title")}
               <ChevronDownIcon
                 className={`w-6 h-6 transition-transform ${isMobileCosaFacciamoOpen ? "rotate-180" : ""}`}
               />
@@ -300,7 +311,7 @@ export default function Navbar() {
             onClick={() => setIsOpen(false)}
             className="text-2xl font-semibold text-black"
           >
-            Compravendita Immobiliare
+            {t("buttons.realEstate")}
           </Link>
 
           <div className="h-px bg-gray-200 my-4" />
@@ -311,7 +322,7 @@ export default function Navbar() {
             onClick={() => setIsOpen(false)}
             className="bg-[#3C3833] text-white text-center py-4 rounded-full text-lg font-bold shadow-lg"
           >
-            Contatti
+            {t("links.contacts")}
           </Link>
         </div>
       </div>

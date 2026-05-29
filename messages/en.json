@@ -67,6 +67,19 @@
     }
   },
 
+  "VenditaPage": {
+    "metaTitle": "Properties for Sale",
+    "metaDescription": "Discover all residential and commercial properties for sale at Binòa Studio.",
+    "heading": "Our Properties for Sale",
+    "emptyPageText": "No listings found"
+  },
+  "PrivacyPage": {
+    "metaTitle": "Privacy Policy",
+    "metaDescription": "Privacy policy and personal data processing information for Binòa Studio.",
+    "heading": "Privacy Policy",
+    "privacyText": "The website binoastudio.com is an informational showcase. We do not collect personal data through profiling cookies. Any data voluntarily sent via email will be processed in compliance with the GDPR by Pietro Bonetto, solely for the purpose of providing the requested information."
+  },
+
   "Footer": {
     "by": "by",
     "headquarters": "Registered Office",

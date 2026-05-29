@@ -19,8 +19,6 @@ export default function Section({
     textColor = "#332F2C",
   } = style;
 
-  
-
   return (
     <section
       className={`flex flex-col ${reverse ? "md:flex-row-reverse xl:-me-17" : "md:flex-row xl:-ms-17"} items-center py-8 md:py-12 gap-0 md:gap- min-h-[60vh] scroll-mt-20 md:scroll-mt-36`}
@@ -58,7 +56,6 @@ export default function Section({
             rounded-xl ${reverse ? "md:rounded-s-xl md:rounded-e-lg md:-me-10" : "md:rounded-e-xl md:rounded-s-lg md:-ms-2"}
         `}
       >
-
         {subtitle && (
           <h3
             style={{ color: titleColor }}
@@ -69,12 +66,15 @@ export default function Section({
         )}
         <h2
           style={{ color: titleColor }}
-          className={`text-3xl md:text-4xl mb-4 tracking-wide`}
+          className={`text-3xl md:text-4xl mb-4 tracking-wide uppercase`}
         >
           {title}
         </h2>
-        
-        <div className={`leading-relaxed max-w-md`} style={{ color: textColor }}>
+
+        <div
+          className={`leading-relaxed max-w-md`}
+          style={{ color: textColor }}
+        >
           {children}
         </div>
       </motion.div>

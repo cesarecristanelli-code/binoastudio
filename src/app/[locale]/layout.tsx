@@ -1,39 +1,19 @@
 import type { Metadata } from "next";
 import { Albert_Sans } from "next/font/google";
 import "./globals.css";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 import Footer from "@/components/Footer";
-import { ourFileRouter } from "./api/uploadthing/core";
+import { ourFileRouter } from "../api/uploadthing/core";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
-
-/* const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-}); */
-
-/* const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
-  weight: ["200", "400", "600", "700"],
-}) */
+import { getMessages } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
 
 const albert = Albert_Sans({
   variable: "--font-albertsans",
   subsets: ["latin"],
   weight: ["200", "400", "600", "700"],
 });
-
-/* const marcellus = Marcellus({
-  variable: "--font-marcellus",
-  subsets: ["latin"],
-  weight: ["400"],
-}); */
 
 // Questi dati finiscono direttamente nell'head dell'html
 export const metadata: Metadata = {
@@ -48,21 +28,29 @@ export const metadata: Metadata = {
   description: "We manage values",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }>) {
+  const { locale } = await params;
+
+  const messages = await getMessages();
+
   return (
-    <html lang="it" suppressHydrationWarning data-scroll-behavior="smooth">
+    <html lang={locale} suppressHydrationWarning data-scroll-behavior="smooth">
       <body
         className={`${albert.variable} antialiased flex flex-col min-h-screen`}
       >
         <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-        <Navbar />
-        <main className="grow">{children}</main>
+        <NextIntlClientProvider messages={messages}>
+          <Navbar />
+          <main className="grow">{children}</main>
 
-        <Footer />
+          <Footer />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

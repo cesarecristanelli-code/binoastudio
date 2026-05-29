@@ -1,7 +1,10 @@
+import { useTranslations } from "next-intl";
 import Section from "./BodySection";
 import { SectionType } from "@/types/bodysection.types";
 
 export default function CVSection() {
+  const t = useTranslations("Homepage.aboutUsSection.team");
+
   const sections: SectionType[] = [
     {
       id: 1,
@@ -10,10 +13,7 @@ export default function CVSection() {
       imagePosition: "object-top",
       idSection: "andrea",
       reverse: true,
-      children: `Andrea Cristanelli è l'anima tecnica di BINÒA. 
-       Architetto senior con trent'anni di esperienza, ha coordinato grandi opere e sistemi integrati alla qualità ISO 9001. 
-       La sua carriera, fondata sulle regole del project management, si esprime oggi in una dimensione umana, mettendo l'ampia competenza al servizio dell'integrità. 
-       In BINÒA, Andrea rende ogni immobile un progetto sicuro e protetto.`,
+      children: t("andrea"),
       divClasses: "mt-16 mb-10",
     },
     {
@@ -23,10 +23,7 @@ export default function CVSection() {
       imagePosition: "object-top",
       idSection: "pietro",
       reverse: false,
-      children: `Pietro Bonetto è l'anima dinamica di BINÒA. 
-       Con una formazione classica e un'esperienza maturata nell'intermediazione immobiliare, trasforma ogni contatto in un'opportunità di valore. 
-       Specializzato nella ricerca di immobili e nella gestione della relazione, porta nel progetto l'energia della nuova generazione e una spiccata sensibilità comunicativa. 
-       In BINÒA è il volto operativo che ascolta i bisogni delle persone per tradurli in scelte concrete.`,
+      children: t("pietro"),
       divClasses: "mb-16 mt-10",
     },
   ];

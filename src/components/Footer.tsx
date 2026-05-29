@@ -1,7 +1,9 @@
 import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function Footer() {
+  const t = useTranslations("Footer");
   return (
     <section
       className={`mt-auto bg-black/70 text-xs md:text-lg text-gray-200 flex flex-col justify-center items-center pt-16 pb-10 px-5 border border-gray-800 leading-relaxed`}
@@ -9,17 +11,18 @@ export default function Footer() {
     >
       <div className="md:hidden text-center mb-3">
         <p className="font-light mb-2">&copy; 2026 Binòastudio.</p>
-        <p className="font-light">Binòa - di Pietro Bonetto</p>
+        <p className="font-light">Binòa - {t("by")} Pietro Bonetto</p>
         <p className="font-light">P.IVA: IT04658490232 | REA: VR-438596</p>
         <p className="font-light">
-          Sede: Via Amerigo Vespucci 2a, 37068 Vigasio (VR)
+          {t("headquarters")}: Via Amerigo Vespucci 2a, 37068 Vigasio (VR)
         </p>
       </div>
       <div className="hidden md:flex flex-col text-center">
         <p className="font-light">&copy; 2026 Binòastudio.</p>
         <p className="font-light pb-3">
-          Binòa - di Pietro Bonetto | P.IVA: IT04658490232 | REA: VR-438596 |
-          Sede: Via Amerigo Vespucci 2, 37068 Vigasio (VR)
+          Binòa - {t("by")} Pietro Bonetto | P.IVA: IT04658490232 | REA:
+          VR-438596 | {t("headquarters")}: Via Amerigo Vespucci 2, 37068 Vigasio
+          (VR)
         </p>
       </div>
       <p className="font-light">

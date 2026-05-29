@@ -67,6 +67,19 @@
     }
   },
 
+  "VenditaPage": {
+    "metaTitle": "Immobili in Vendita",
+    "metaDescription": "Scopri tutti gli immobili residenziali e commerciali in vendita su Binòa Studio.",
+    "heading": "I Nostri Immobili in Vendita",
+    "emptyPageText": "Nessun immobile trovato"
+  },
+  "PrivacyPage": {
+    "metaTitle": "Privacy Policy",
+    "metaDescription": "Informativa sulla privacy e sul trattamento dei dati personali di Binòa Studio.",
+    "heading": "Informativa sulla Privacy",
+    "privacyText": "Il sito binoastudio.com è una vetrina informativa. Non raccogliamo dati personali tramite cookie di profilazione. I dati inviati spontaneamente via email saranno trattati nel rispetto del GDPR da Pietro Bonetto al solo scopo di fornire le informazioni richieste."
+  },
+
   "Footer": {
     "by": "di",
     "headquarters": "Sede",

@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { getLocale } from "next-intl/server";
 
 const loginSchema = z.object({
   username: z.string().min(1, "Inserire username"),
@@ -121,7 +122,10 @@ export async function requireAuth(): Promise<
 > {
   const session = await getSession();
 
-  if (!session) redirect("/");
+  if (!session) {
+    const locale = await getLocale();
+    redirect(`/${locale}/admin-login`);
+  }
 
   return session;
 }
