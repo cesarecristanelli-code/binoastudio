@@ -67,7 +67,7 @@ export default function CosaFacciamo() {
                   href="/vendita"
                   className="group ml-4 text-xs inline-flex items-center gap-2 font-semibold uppercase tracking-widest px-6 py-2.5 rounded-full transition-all duration-300 cursor-pointer bg-white text-black hover:bg-gray-200"
                 >
-                  Vai al catalogo
+                  {t("services.realEstate.button")}
                   <ArrowRightIcon className="w-4 h-4 transition-transform duration-300 ease-out group-hover:translate-x-1" />
                 </Link>
               </div>

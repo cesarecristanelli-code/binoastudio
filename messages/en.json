@@ -53,7 +53,8 @@
       "services": {
         "realEstate": {
           "title": "REAL ESTATE SALES",
-          "description": "We offer a brokerage service aimed at achieving a \"secure sale\". We combine market research with technical expertise. We guide clients with transparency, turning negotiations into solid agreements."
+          "description": "We offer a brokerage service aimed at achieving a \"secure sale\". We combine market research with technical expertise. We guide clients with transparency, turning negotiations into solid agreements.",
+          "button": "View Catalogue"
         },
         "projectManagement": {
           "title": "PROJECT MANAGEMENT",
