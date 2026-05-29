@@ -324,6 +324,9 @@ export default function Navbar() {
           >
             {t("links.contacts")}
           </Link>
+          <div className="w-full flex justify-center h-10">
+            <LanguageSwitcher />
+          </div>
         </div>
       </div>
     </nav>
