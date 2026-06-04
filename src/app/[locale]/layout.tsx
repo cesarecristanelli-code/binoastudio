@@ -15,6 +15,24 @@ const albert = Albert_Sans({
   weight: ["200", "400", "600", "700"],
 });
 
+if (typeof window !== "undefined") {
+  (async () => {
+    if (!globalThis.Intl || !("DisplayNames" in globalThis.Intl)) {
+      // @ts-expect-error formatjs does not expose native types for polyfill files
+      await import("@formatjs/intl-displaynames/polyfill");
+      // @ts-expect-error formatjs does not expose native types for polyfill files
+      await import("@formatjs/intl-displaynames/locale-data/it");
+      // @ts-expect-error formatjs does not expose native types for polyfill files
+      await import("@formatjs/intl-displaynames/locale-data/en");
+    }
+
+    if (!globalThis.Intl || !("Locale" in globalThis.Intl)) {
+      // @ts-expect-error formatjs does not expose native types for polyfill files
+      await import("@formatjs/intl-locale/polyfill");
+    }
+  })();
+}
+
 // Questi dati finiscono direttamente nell'head dell'html
 export const metadata: Metadata = {
   title: {
@@ -38,6 +56,8 @@ export default async function RootLayout({
   const { locale } = await params;
 
   const messages = await getMessages();
+
+  // Esegui questo controllo solo lato client prima di caricare il resto
 
   return (
     <html lang={locale} suppressHydrationWarning data-scroll-behavior="smooth">
