@@ -25,6 +25,8 @@ export default function Navbar() {
   const [isMobileCosaFacciamoOpen, setIsMobileCosaFacciamoOpen] =
     useState<boolean>(false);
 
+  const pathname = usePathname();
+
   const cosaFacciamoLinks: NavlinkType[] = [
     {
       name: t("whatWeDo.dropdown.realEstate"),
@@ -43,8 +45,6 @@ export default function Navbar() {
     { name: "Vision", href: "/#vision" },
     { name: "Mission", href: "/#mission" },
   ];
-
-  const pathname = usePathname();
 
   useEffect(() => {
     const handleScrolling = () => {
