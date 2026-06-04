@@ -1,9 +1,8 @@
 "use client";
 
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { usePathname } from "next/navigation";
+import { usePathname, Link } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -70,7 +69,7 @@ export default function Navbar() {
   // 2. Setto il bg dinamico in base a che sia in cima alla pagina o si stia scrollando
   // - Se si è nella HomePage: logica scrilling (trasparente -> solida)
   // - Se non si è nella HomePage: navbar semre solida
-  const isHomePage = pathname === "/it" || pathname === "/en";
+  const isHomePage = pathname === "/";
   const navbarBg = isHomePage
     ? isScrolled
       ? "bg-[rgb(250,248,245)] shadow-md border-b border-gray-100" //se si è nella Home e si ha scrollato più di 50px
@@ -176,7 +175,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          <Link href="/vendita">
+          {/* <Link href="/vendita">
             <button
               className={`ml-4 text-xs font-semibold uppercase tracking-widest px-6 py-2.5 rounded-full transition-all duration-300 cursor-pointer ${
                 isHomePage && !isScrolled
@@ -186,7 +185,7 @@ export default function Navbar() {
             >
               {t("buttons.realEstate")}
             </button>
-          </Link>
+          </Link> */}
 
           <Link href="#footer">
             <span
@@ -306,13 +305,13 @@ export default function Navbar() {
           </div>
 
           {/* Link Semplice: Vendita */}
-          <Link
+          {/* <Link
             href="/#compravendita-immobiliare"
             onClick={() => setIsOpen(false)}
             className="text-2xl font-semibold text-black"
           >
             {t("buttons.realEstate")}
-          </Link>
+          </Link> */}
 
           <div className="h-px bg-gray-200 my-4" />
 
