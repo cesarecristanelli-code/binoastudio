@@ -12,9 +12,9 @@
     "whatWeDo": {
       "title": "What We Do",
       "dropdown": {
-        "realEstate": "Real Estate Sales",
+        "realEstate": "Real Estate",
         "projectManagement": "Project Management",
-        "design": "Design & Planning"
+        "design": "Design"
       }
     },
     "buttons": {
