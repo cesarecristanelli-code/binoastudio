@@ -44,6 +44,14 @@ export const metadata: Metadata = {
     siteName: "Binòa Studio", // Nome che compare quando condividi il link su WhatsApp/Social
   },
   description: "We manage values",
+  alternates: {
+    canonical: "https://www.binoastudio.com/it",
+    languages: {
+      it: "https://www.binoastudio.com/it",
+      en: "https://www.binoastudio.com/en",
+      "x-default": "https://www.binoastudio.com/it", // Consigliato se l'italiano è la lingua principale
+    },
+  },
 };
 
 export default async function RootLayout({
