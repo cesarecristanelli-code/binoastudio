@@ -28,7 +28,7 @@
   "Homepage": {
     "aboutUsSection": {
       "title": "CHI SIAMO",
-      "introduction": "BINÒA nasce dall'incontro tra l'esperienza di Andrea, architetto senior, e l'energia di Pietro, agente immobiliare. Mettiamo a confronto competenze e prospettive di due generazioni diverse per affrontare le sfide del mercato odierno/attuale.",
+      "introduction": "BINÒA nasce dall'incontro tra l'esperienza di Andrea, architetto senior, e l'energia di Pietro, agente immobiliare. Mettiamo a confronto competenze e prospettive di due generazioni diverse per affrontare le sfide del mercato.",
       "team": {
         "andrea": "Andrea Cristanelli è l'anima tecnica di BINÒA. Architetto senior con oltre 25 anni di esperienza, ha coordinato grandi opere e sistemi integrati alla qualità ISO 9001. La sua carriera, fondata sulle regole del project management, si esprime oggi in una dimensione umana, mettendo l'ampia competenza al servizio dell'integrità. In BINÒA, Andrea rende ogni immobile un progetto sicuro e protetto.",
         "pietro": "Pietro Bonetto è l'anima dinamica di BINÒA. Con una formazione classica e un'esperienza maturata nell'intermediazione immobiliare, trasforma ogni contatto in un'opportunità di valore. Specializzato nella ricerca di immobili e nella gestione della relazione, porta nel progetto l'energia della nuova generazione e una spiccata sensibilità comunicativa. In BINÒA è il volto operativo che ascolta i bisogni delle persone per tradurli in scelte concrete."
@@ -61,7 +61,7 @@
           "description": "Ci proponiamo come partner strategici per imprese e investitori. Gestiamo la complessità, con un approccio metodico che si fonda sulle norme ISO del project management. Dalla pianificazione dei processi tecnici ed economici oltre a quelli legati al marketing e alla compravendita in corso di costruzione, solleviamo committenti e imprese da aspetti critici sia tecnici che operativi, garantendo efficienza e qualità per trasformare le aree di sviluppo in realtà concrete."
         },
         "design": {
-          "title": "PROGETTAZIONE E DIREZIONE LAVORI",
+          "title": "PROGETTAZIONE",
           "description": "Trasformiamo le idee in spazi attraverso una progettazione integrale che unisce estetica e ingegnerizzazione. Ci occupiamo anche dei cantieri, con una particolare attenzione all’ambiente. Supportiamo il cliente dal concept iniziale fino alla firma finale, assicurando che ogni intervento, dalla ristrutturazione alla grande opera, sia tecnicamente solido e protetto."
         }
       }
