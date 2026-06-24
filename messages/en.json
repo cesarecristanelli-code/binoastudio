@@ -12,7 +12,7 @@
     "whatWeDo": {
       "title": "What We Do",
       "dropdown": {
-        "realEstate": "Real Estate",
+        "realEstate": "Property Development",
         "projectManagement": "Project Management",
         "design": "Design"
       }
@@ -52,8 +52,8 @@
       "title": "WHAT WE DO",
       "services": {
         "realEstate": {
-          "title": "REAL ESTATE",
-          "description": "We offer a brokerage service aimed at achieving a \"secure sale\". We combine market research with technical expertise. We guide clients with transparency, turning negotiations into solid agreements.",
+          "title": "PROPERTY DEVELOPMENT",
+          "description": "We structure real estate transactions to transform areas and properties into premium investments. We guide clients through the secure buying and selling of real estate, combining market research with technical precision.",
           "button": "View Catalogue"
         },
         "projectManagement": {

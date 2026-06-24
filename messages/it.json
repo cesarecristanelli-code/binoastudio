@@ -12,7 +12,7 @@
     "whatWeDo": {
       "title": "Cosa facciamo",
       "dropdown": {
-        "realEstate": "Compravendita Immobiliare",
+        "realEstate": "Sviluppo & Vendita",
         "projectManagement": "Gestione Progetti",
         "design": "Progettazione"
       }
@@ -52,8 +52,8 @@
       "title": "COSA FACCIAMO",
       "services": {
         "realEstate": {
-          "title": "COMPRAVENDITA IMMOBILIARE",
-          "description": "Offriamo un servizio di intermediazione che ha come obiettivo una “vendita sicura”. Uniamo la ricerca commerciale agli aspetti tecnici. Accompagniamo i clienti con trasparenza, trasformando la trattativa in un'intesa solida",
+          "title": "SVILUPPO & VENDITA",
+          "description": "Strutturiamo operazioni immobiliari per trasformare aree e proprietà in investimenti di pregio. Guidiamo i clienti nella compravendita protetta di immobili, unendo la ricerca commerciale al rigore tecnico.",
           "button": "Vai al catalogo"
         },
         "projectManagement": {
