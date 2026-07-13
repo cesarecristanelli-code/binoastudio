@@ -175,17 +175,14 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* <Link href="/vendita">
-            <button
-              className={`ml-4 text-xs font-semibold uppercase tracking-widest px-6 py-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                isHomePage && !isScrolled
-                  ? "bg-white text-black hover:bg-gray-200" // Pulsante su trasparente
-                  : "bg-[#3C3833] text-white hover:bg-[#3C3833]/80" // Pulsante su bianco
-              }`}
+          {/* MODIFICA: Inserimento link Desktop "News" tra Cosa Facciamo e Contatti */}
+          <Link href="/#news">
+            <span
+              className={`font-medium tracking-wide transition-colors ${textColor} hover:opacity-70`}
             >
-              {t("buttons.realEstate")}
-            </button>
-          </Link> */}
+              {t("links.news")}
+            </span>
+          </Link>
 
           <Link href="#footer">
             <span
@@ -304,14 +301,14 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Link Semplice: Vendita */}
-          {/* <Link
-            href="/#compravendita-immobiliare"
+          {/* MODIFICA: Inserimento link Mobile "News" tra l'accordion "Cosa Facciamo" e il divisore/Contatti */}
+          <Link
+            href="/#news"
             onClick={() => setIsOpen(false)}
-            className="text-2xl font-semibold text-black"
+            className="text-2xl font-semibold text-black text-left"
           >
-            {t("buttons.realEstate")}
-          </Link> */}
+            {t("links.news")}
+          </Link>
 
           <div className="h-px bg-gray-200 my-4" />
 

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 const magazineIssues = [
   {
@@ -25,10 +26,12 @@ export default function BinoazinePreviews() {
   // Trova l'oggetto della rivista attualmente attiva
   const activeIssue = magazineIssues.find((issue) => issue.id === activeId);
 
+  const t = useTranslations("Binoazine");
+
   return (
     <section className="relative px-6 md:px-20 mb-32">
       <h2 className="text-center text-3xl md:text-4xl font-semibold uppercase tracking-wider mb-16 text-[#3C3833]">
-        Sfoglia le anteprime
+        {t("previwsTitle")}
       </h2>
 
       {/* Griglia/Fila orizzontale delle anteprime normali */}

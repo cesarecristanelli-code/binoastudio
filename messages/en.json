@@ -21,6 +21,7 @@
       "realEstate": "Real Estate Sales"
     },
     "links": {
+      "news": "News",
       "contacts": "Contacts"
     }
   },
@@ -47,6 +48,10 @@
           "description": "We look to the future by evolving as strategic partners for real estate developments. Our vision is to govern the entire life cycle of the building, bridging any technical or bureaucratic gaps to bring lives and homes together."
         }
       }
+    },
+    "binoazineBanner": {
+      "news": "New",
+      "description": "Binòazine is the editorial space where we define the scope and identity of our firm. A visual and conceptual manifesto through which we guide the reader along the Route."
     },
     "whatWeDoSection": {
       "title": "WHAT WE DO",
@@ -85,5 +90,16 @@
     "by": "by",
     "headquarters": "Registered Office",
     "privacy": "Privacy Policy"
+  },
+
+  "Binoazine": {
+    "mainContent": "Binoazine is the editorial space where architecture converges with the real estate market. A visual and conceptual manifesto of the core principles that guide Binòa Studio: value enhancement, aesthetics, and functionality.",
+    "subContent": "Within these virtual pages, we explore current trends, share the insights behind our development projects, and offer our vision on the future of living. Browse through our editions to discover a new perspective on interpreting spaces.",
+    "previwsTitle": "Browse the previews",
+    "binoazineForm": {
+      "title": "Join our mailing list",
+      "content": "Stay updated on our latest publications. Provide your details to receive each new issue of Binòazine complimentary and directly to your inbox.",
+      "button": "Receive the next issue"
+    }
   }
 }

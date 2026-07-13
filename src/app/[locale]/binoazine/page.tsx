@@ -1,8 +1,10 @@
 "use client";
 import BinoazinePreviews from "@/components/binoazione-section/BinoazinePreviews";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 export default function BinoazinePage() {
+  const t = useTranslations("Binoazine");
   return (
     <main className="min-h-screen bg-[#F5F4F0] text-[#3C3833] pt-32 pb-20">
       {/* 1. SEZIONE TITOLO CENTRATO CON EFFETTO PROFONDITÀ */}
@@ -29,17 +31,10 @@ export default function BinoazinePage() {
       <section className="px-6 md:px-20 mb-32 text-center ">
         <div className="max-w-4xl mx-auto">
           <p className="text-xl md:text-2xl leading-relaxed text-[#5A554E] mb-8">
-            Binoazine è lo spazio editoriale dove l&apos;architettura incontra
-            il mercato immobiliare. Un manifesto visivo e concettuale dei
-            principi che guidano Binòa Studio: valorizzazione, estetica e
-            funzionalità.
+            {t("mainContent")}
           </p>
           <p className="text-lg md:text-xl leading-relaxed text-[#5A554E]">
-            In queste pagine virtuali esploriamo i trend del momento,
-            raccontiamo i retroscena dei nostri progetti di sviluppo e
-            condividiamo la nostra visione sul futuro dell&apos;abitare. Sfoglia
-            le nostre edizioni per scoprire un nuovo modo di interpretare gli
-            spazi.
+            {t("subContent")}
           </p>
         </div>
       </section>
@@ -53,13 +48,10 @@ export default function BinoazinePage() {
           {/* Testi del Form (Ingranditi) */}
           <div className="w-full max-w-3xl">
             <h3 className="text-3xl md:text-4xl font-medium uppercase tracking-widest mb-4">
-              Iscriviti alla Lista
+              {t("binoazineForm.title")}
             </h3>
             <p className="text-base md:text-lg text-gray-300 leading-relaxed">
-              Non perderti le nostre pubblicazioni. Lascia i tuoi dati e ti
-              invieremo ogni nuovo numero di Binoazine direttamente nella tua
-              casella di posta, non appena sarà disponibile. Nessun costo, solo
-              ispirazione.
+              {t("binoazineForm.content")}
             </p>
           </div>
 
@@ -87,7 +79,7 @@ export default function BinoazinePage() {
                 type="submit"
                 className="group mx-auto text-sm md:text-base inline-flex items-center gap-2 font-semibold uppercase tracking-widest px-10 py-4 rounded-full transition-all duration-300 cursor-pointer bg-white text-black hover:bg-gray-200 w-fit mt-4"
               >
-                Ricevi il prossimo numero
+                {t("binoazineForm.button")}
                 <svg
                   className="w-4 h-4 transition-transform duration-300 ease-out group-hover:translate-x-1"
                   fill="none"

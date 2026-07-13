@@ -21,6 +21,7 @@
       "realEstate": "Compravendita Immobiliare"
     },
     "links": {
+      "news": "News",
       "contacts": "Contatti"
     }
   },
@@ -47,6 +48,10 @@
           "description": "Guardiamo al futuro evolvendo come partner strategici per sviluppi immobiliari. La nostra visione è governare l'intero ciclo di vita dell'edificio, colmando ogni distanza tecnica o burocratica per unire vite e dimore."
         }
       }
+    },
+    "binoazineBanner": {
+      "news": "Novità",
+      "description": "Binòazine è lo spazio editoriale dove definiamo il perimetro e l'identità del nostro studio. Un manifesto visivo e concettuale attraverso il quale accompagniamo il lettore lungo la Rotta."
     },
     "whatWeDoSection": {
       "title": "COSA FACCIAMO",
@@ -85,5 +90,16 @@
     "by": "di",
     "headquarters": "Sede",
     "privacy": "Privacy Policy"
+  },
+
+  "Binoazine": {
+    "mainContent": "Binoazine è lo spazio editoriale dove l'architettura incontra il mercato immobiliare. Un manifesto visivo e concettuale dei principi che guidano Binòa Studio: valorizzazione, estetica e funzionalità.",
+    "subContent": "In queste pagine virtuali esploriamo i trend del momento, raccontiamo i retroscena dei nostri progetti di sviluppo e condividiamo la nostra visione sul futuro dell'abitare. Sfoglia le nostre edizioni per scoprire un nuovo modo di interpretare gli spazi.",
+    "previwsTitle": "Sfoglia le anteprime",
+    "binoazineForm": {
+      "title": "Iscriviti alla lista",
+      "content": "Non perderti le nostre pubblicazioni. Lascia i tuoi dati e ti invieremo gratuitamente ogni nuovo numero di Binòazine direttamente nella tua casella di posta.",
+      "button": "Ricevi il prossimo numero"
+    }
   }
 }
