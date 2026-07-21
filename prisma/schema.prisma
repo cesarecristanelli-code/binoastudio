@@ -200,3 +200,26 @@ model ImmagineImmobile {
 
   @@index([immobileId, isCover])
 }
+
+model NewsletterSubscriber {
+  id           String   @id @default(cuid())
+  nome         String?
+  email        String   @unique
+  isSubscribed Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([email])
+}
+
+model Magazine {
+  id          String   @id @default(cuid())
+  titolo      String
+  descrizione String?  @db.Text
+  numero      Int      @unique // Es. 1, 2, 3...
+  pdfUrl      String   @unique // URL del file PDF gestito su S3 / Uploadthing / Cloudinary
+  coverUrl    String? // Copertina in formato immagine per la preview
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

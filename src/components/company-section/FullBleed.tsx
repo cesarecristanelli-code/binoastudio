@@ -46,7 +46,7 @@ export default function BinoazineBanner() {
           href="/binoazine"
           className="group ml-4 text-base inline-flex items-center gap-2 font-bold uppercase tracking-widest px-6 py-2.5 rounded-full transition-all duration-300 cursor-pointer bg-white text-black hover:bg-gray-200"
         >
-          Sfoglia le anteprima per scoprirla
+          {t("link")}
         </Link>
       </div>
     </section>

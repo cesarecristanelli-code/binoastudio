@@ -51,7 +51,8 @@
     },
     "binoazineBanner": {
       "news": "New",
-      "description": "Binòazine is the editorial space where we define the scope and identity of our firm. A visual and conceptual manifesto through which we guide the reader along the Route."
+      "description": "Binoazine is the editorial space where architecture converges with the real estate market. A visual and conceptual manifesto of the core principles that guide Binòa Studio: value enhancement, aesthetics, and functionality.",
+      "link": "Browse the previews to discover it"
     },
     "whatWeDoSection": {
       "title": "WHAT WE DO",
@@ -94,7 +95,6 @@
 
   "Binoazine": {
     "mainContent": "Binoazine is the editorial space where architecture converges with the real estate market. A visual and conceptual manifesto of the core principles that guide Binòa Studio: value enhancement, aesthetics, and functionality.",
-    "subContent": "Within these virtual pages, we explore current trends, share the insights behind our development projects, and offer our vision on the future of living. Browse through our editions to discover a new perspective on interpreting spaces.",
     "previwsTitle": "Browse the previews",
     "binoazineForm": {
       "title": "Join our mailing list",
