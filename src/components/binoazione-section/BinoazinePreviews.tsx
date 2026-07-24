@@ -95,7 +95,8 @@ export default function BinoazinePreviews({
             </motion.div>
 
             <p className="mt-4 text-sm font-medium uppercase tracking-wide text-center">
-              Issue {issue.numero < 10 ? `0${issue.numero}` : issue.numero} -{" "}
+              Binòa<span className="italic">zine</span> #
+              {issue.numero < 10 ? `0${issue.numero}` : issue.numero} -{" "}
               {issue.titolo}
             </p>
           </div>

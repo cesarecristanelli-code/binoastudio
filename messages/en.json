@@ -12,7 +12,7 @@
     "whatWeDo": {
       "title": "What We Do",
       "dropdown": {
-        "realEstate": "Property Development",
+        "realEstate": "Property Development & Sales",
         "projectManagement": "Project Management",
         "design": "Design"
       }
@@ -51,7 +51,7 @@
     },
     "binoazineBanner": {
       "news": "New",
-      "description": "Binoazine is the editorial space where architecture converges with the real estate market. A visual and conceptual manifesto of the core principles that guide Binòa Studio: value enhancement, aesthetics, and functionality.",
+      "description": "Binòazine is the editorial space where we define the scope and identity of our studio. A visual and conceptual manifesto through which we guide the reader along the Route.",
       "link": "Browse the previews to discover it"
     },
     "whatWeDoSection": {
@@ -94,8 +94,8 @@
   },
 
   "Binoazine": {
-    "mainContent": "Binoazine is the editorial space where architecture converges with the real estate market. A visual and conceptual manifesto of the core principles that guide Binòa Studio: value enhancement, aesthetics, and functionality.",
-    "previwsTitle": "Browse the previews",
+    "mainContent": "Binòazine is the editorial space where we define the scope and identity of our studio. A visual and conceptual manifesto through which we guide the reader along the Route.",
+    "previwsTitle": "Explore the previews",
     "binoazineForm": {
       "title": "Join our mailing list",
       "content": "Stay updated on our latest publications. Provide your details to receive each new issue of Binòazine complimentary and directly to your inbox.",

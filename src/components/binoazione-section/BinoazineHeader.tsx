@@ -23,7 +23,7 @@ export default function BinoazineHeader({
           </span>
 
           <h1 className="relative text-5xl md:text-7xl font-arvo font-normal tracking-[0.2em] uppercase pt-10">
-            Binòazine
+            Binòa<span className="italic">zine</span>
           </h1>
         </motion.div>
       </section>
