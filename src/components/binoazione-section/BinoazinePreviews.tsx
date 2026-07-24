@@ -1,32 +1,60 @@
 "use client";
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { Magazine } from "@/generated/prisma/client";
+import dynamic from "next/dynamic";
 
-const magazineIssues = [
-  {
-    id: 1,
-    src: "/magazine-cover-1.png",
-    alt: "Binoazine Numero 1",
-    label: "Issue 01 - The Genesis",
-  },
-  {
-    id: 2,
-    src: "/magazine-cover-2.png",
-    alt: "Binoazine Numero 2",
-    label: "Issue 02 - Urban Spaces",
-  },
-];
+// Disabilita SSR per il visualizzatore PDF (evita l'errore DOMMatrix su Node.js)
+const PdfViewer = dynamic(() => import("./PdfViewer"), {
+  ssr: false,
+  loading: () => (
+    <div className="text-sm font-medium text-[#5A554E] animate-pulse py-12 text-center">
+      Loading preview...
+    </div>
+  ),
+});
 
-export default function BinoazinePreviews() {
-  // Stato per tracciare quale rivista è stata cliccata ed è espansa
-  const [activeId, setActiveId] = useState<number | null>(null);
+export default function BinoazinePreviews({
+  magazines,
+}: {
+  magazines: Magazine[];
+}) {
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [numPages, setNumPages] = useState<number | null>(null);
+  const [pageNumber, setPageNumber] = useState<number>(1);
 
-  // Trova l'oggetto della rivista attualmente attiva
-  const activeIssue = magazineIssues.find((issue) => issue.id === activeId);
-
+  const activeIssue = magazines.find((issue) => issue.id === activeId);
   const t = useTranslations("Binoazine");
+
+  const handleOpen = (id: string) => {
+    setActiveId(id);
+    setPageNumber(1);
+    setNumPages(null);
+  };
+
+  const handleClose = () => {
+    setActiveId(null);
+    setPageNumber(1);
+  };
+
+  const nextPage = () => {
+    if (numPages && pageNumber < numPages) {
+      setPageNumber((prev) => prev + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (pageNumber > 1) {
+      setPageNumber((prev) => prev - 1);
+    }
+  };
+
+  if (!magazines || magazines.length === 0) {
+    return null;
+  }
 
   return (
     <section className="relative px-6 md:px-20 mb-32">
@@ -34,80 +62,72 @@ export default function BinoazinePreviews() {
         {t("previwsTitle")}
       </h2>
 
-      {/* Griglia/Fila orizzontale delle anteprime normali */}
-      <div className="flex gap-8 overflow-x-auto pb-10 snap-x hide-scrollbar max-w-7xl mx-auto">
-        {magazineIssues.map((issue) => (
+      {/* Griglia delle anteprime (centrata se ci sono 1 o 2 elementi) */}
+      <div
+        className={`flex gap-8 overflow-x-auto pb-10 snap-x hide-scrollbar max-w-7xl mx-auto ${
+          magazines.length <= 2 ? "justify-center" : "justify-start"
+        }`}
+      >
+        {magazines.map((issue) => (
           <div
             key={issue.id}
             className="min-w-85 sm:min-w-120 md:min-w-145 snap-center shrink-0 relative group cursor-pointer"
-            onClick={() => setActiveId(issue.id)}
+            onClick={() => handleOpen(issue.id)}
           >
-            {/* Il layoutId permette a Framer Motion di capire da dove far partire l'effetto lente */}
             <motion.div
               layoutId={`card-container-${issue.id}`}
-              className="relative aspect-1200/720 w-full bg-gray-200 overflow-hidden shadow-md rounded-xl"
+              className="relative aspect-1200/720 w-full bg-gray-200 overflow-hidden shadow-md rounded-xl flex items-center justify-center"
               onContextMenu={(e) => e.preventDefault()}
               transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
             >
-              <Image
-                src={issue.src}
-                alt={issue.alt}
-                fill
-                sizes="(max-w-768px) 100vw, 580px"
-                className="object-cover pointer-events-none select-none"
-              />
+              {issue.coverUrl ? (
+                <Image
+                  src={issue.coverUrl}
+                  alt={issue.titolo}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 580px"
+                  className="object-cover pointer-events-none select-none"
+                />
+              ) : (
+                <PdfViewer file={issue.pdfUrl} pageNumber={1} width={500} />
+              )}
+
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
             </motion.div>
+
             <p className="mt-4 text-sm font-medium uppercase tracking-wide text-center">
-              {issue.label}
+              Issue {issue.numero < 10 ? `0${issue.numero}` : issue.numero} -{" "}
+              {issue.titolo}
             </p>
           </div>
         ))}
       </div>
 
-      {/* VISTA ESPANSA (Innescata con AnimatePresence per gestire lo smontaggio) */}
+      {/* VISTA ESPANSA RIDOTTA CON CAROSELLO ORIZZONTALE */}
       <AnimatePresence>
         {activeIssue && (
-          <div className="absolute inset-0 z-30 flex items-center justify-center px-4 md:px-10">
-            {/* Sfondo oscurato che copre SOLO la sezione preview */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setActiveId(null)}
-              className="absolute inset-0 bg-[#F5F4F0]/95 backdrop-blur-xs cursor-zoom-out"
+              onClick={handleClose}
+              className="absolute inset-0 bg-black/60 backdrop-blur-xs cursor-pointer"
             />
 
-            {/* Immagine Ingrandita con effetto lente (stesso layoutId di quella piccola) */}
             <motion.div
               layoutId={`card-container-${activeIssue.id}`}
-              className="relative w-full max-w-6xl aspect-1200/720 bg-gray-200 shadow-2xl rounded-2xl overflow-hidden z-40"
-              onContextMenu={(e) => e.preventDefault()}
-              transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
+              className="relative w-full max-w-2xl md:max-w-3xl bg-[#F5F4F0] shadow-2xl rounded-2xl overflow-hidden z-10 flex flex-col items-center p-6 md:p-8"
+              transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
+              onClick={(e) => e.stopPropagation()}
             >
-              <Image
-                src={activeIssue.src}
-                alt={activeIssue.alt}
-                fill
-                sizes="100vw"
-                priority
-                className="object-cover pointer-events-none select-none"
-              />
-
-              {/* Pulsante X di chiusura posizionato in alto a destra dell'immagine */}
-              <motion.button
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ delay: 0.2 }}
-                onClick={(e) => {
-                  e.stopPropagation(); // Evita che il click passi allo sfondo
-                  setActiveId(null);
-                }}
-                className="absolute top-4 right-4 md:top-6 md:right-6 bg-[#3C3833]/80 hover:bg-[#3C3833] text-white p-3 rounded-full transition-colors duration-200 shadow-lg group/btn focus:outline-none"
+              <button
+                onClick={handleClose}
+                className="absolute top-4 right-4 bg-[#3C3833]/80 hover:bg-[#3C3833] text-[#F5F4F0] p-2.5 rounded-full transition-colors z-20 focus:outline-none"
                 aria-label="Chiudi anteprima"
               >
                 <svg
-                  className="w-5 h-5 transition-transform duration-200 group-hover/btn:scale-110"
+                  className="w-5 h-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -119,7 +139,76 @@ export default function BinoazinePreviews() {
                     d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
-              </motion.button>
+              </button>
+
+              <div className="relative w-full flex items-center justify-center min-h-95 max-h-[60vh] overflow-hidden my-2">
+                {pageNumber > 1 && (
+                  <button
+                    onClick={prevPage}
+                    className="absolute left-2 z-20 bg-[#3C3833]/80 hover:bg-[#3C3833] text-[#F5F4F0] p-3 rounded-full shadow-lg transition-transform hover:scale-105"
+                    aria-label="Pagina precedente"
+                  >
+                    <svg
+                      className="w-6 h-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                  </button>
+                )}
+
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={pageNumber}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <PdfViewer
+                      file={activeIssue.pdfUrl}
+                      pageNumber={pageNumber}
+                      height={500}
+                      onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+
+                {numPages && pageNumber < numPages && (
+                  <button
+                    onClick={nextPage}
+                    className="absolute right-2 z-20 bg-[#3C3833]/80 hover:bg-[#3C3833] text-[#F5F4F0] p-3 rounded-full shadow-lg transition-transform hover:scale-105"
+                    aria-label="Pagina successiva"
+                  >
+                    <svg
+                      className="w-6 h-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+                )}
+              </div>
+
+              {numPages && (
+                <div className="mt-4 text-xs font-semibold uppercase tracking-widest text-[#3C3833]/80 bg-[#3C3833]/10 px-4 py-1.5 rounded-full">
+                  P. {pageNumber} / {numPages}
+                </div>
+              )}
             </motion.div>
           </div>
         )}
