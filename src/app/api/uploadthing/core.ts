@@ -19,6 +19,19 @@ export const ourFileRouter = {
       console.log("Url del file caricato: ", file.ufsUrl);
       return { url: file.ufsUrl };
     }),
+
+  pdfUploader: f({ pdf: { maxFileSize: "32MB", maxFileCount: 1 } })
+    .middleware(async () => {
+      const session = await requireAuth();
+      if (!session) throw new Error("Devi essere loggato!");
+
+      return { userId: session.userId };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("Upload PDF per utente: ", metadata.userId);
+      console.log("Url del PDF caricato: ", file.ufsUrl);
+      return { url: file.ufsUrl };
+    }),
 } satisfies UTFileRouter;
 
 console.log("Token check:", process.env.UPLOADTHING_TOKEN ? "Presente" : "ASSENTE");

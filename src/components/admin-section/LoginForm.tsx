@@ -20,7 +20,7 @@ export default function LoginForm() {
 
       if (response.success) {
         router.refresh();
-        router.push("/admin-login/form-inserimento-immobili");
+        router.push("/admin-login/landingpage");
       } else {
         setError(response.message || "Errore");
       }

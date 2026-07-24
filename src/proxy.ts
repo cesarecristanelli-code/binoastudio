@@ -25,7 +25,7 @@ export function proxy(request: NextRequest) {
 
   if (isLoginPage && token) {
     return NextResponse.redirect(
-      new URL(`/${locale}/admin-login/form-inserimento-immobili`, request.url),
+      new URL(`/${locale}/admin-login/landingpage`, request.url),
     );
   }
 

@@ -7,7 +7,6 @@ import { useTranslations } from "next-intl";
 import { Magazine } from "@/generated/prisma/client";
 import dynamic from "next/dynamic";
 
-// Disabilita SSR per il visualizzatore PDF (evita l'errore DOMMatrix su Node.js)
 const PdfViewer = dynamic(() => import("./PdfViewer"), {
   ssr: false,
   loading: () => (
@@ -62,7 +61,7 @@ export default function BinoazinePreviews({
         {t("previwsTitle")}
       </h2>
 
-      {/* Griglia delle anteprime (centrata se ci sono 1 o 2 elementi) */}
+      {/* Griglia anteprime (centrata se pochi elementi) */}
       <div
         className={`flex gap-8 overflow-x-auto pb-10 snap-x hide-scrollbar max-w-7xl mx-auto ${
           magazines.length <= 2 ? "justify-center" : "justify-start"
@@ -103,7 +102,7 @@ export default function BinoazinePreviews({
         ))}
       </div>
 
-      {/* VISTA ESPANSA RIDOTTA CON CAROSELLO ORIZZONTALE */}
+      {/* MODALE ESPANSO CON CAROSELLO VELOCE */}
       <AnimatePresence>
         {activeIssue && (
           <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
@@ -121,6 +120,7 @@ export default function BinoazinePreviews({
               transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Bottone Chiudi */}
               <button
                 onClick={handleClose}
                 className="absolute top-4 right-4 bg-[#3C3833]/80 hover:bg-[#3C3833] text-[#F5F4F0] p-2.5 rounded-full transition-colors z-20 focus:outline-none"
@@ -141,7 +141,9 @@ export default function BinoazinePreviews({
                 </svg>
               </button>
 
+              {/* Area Viewer PDF */}
               <div className="relative w-full flex items-center justify-center min-h-95 max-h-[60vh] overflow-hidden my-2">
+                {/* Freccia Sinistra */}
                 {pageNumber > 1 && (
                   <button
                     onClick={prevPage}
@@ -164,23 +166,15 @@ export default function BinoazinePreviews({
                   </button>
                 )}
 
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={pageNumber}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <PdfViewer
-                      file={activeIssue.pdfUrl}
-                      pageNumber={pageNumber}
-                      height={500}
-                      onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-                    />
-                  </motion.div>
-                </AnimatePresence>
+                {/* Il documento rimane aperto, cambia solo la pagina istantaneamente */}
+                <PdfViewer
+                  file={activeIssue.pdfUrl}
+                  pageNumber={pageNumber}
+                  height={500}
+                  onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+                />
 
+                {/* Freccia Destra */}
                 {numPages && pageNumber < numPages && (
                   <button
                     onClick={nextPage}
@@ -204,6 +198,7 @@ export default function BinoazinePreviews({
                 )}
               </div>
 
+              {/* Indicatore Pagina */}
               {numPages && (
                 <div className="mt-4 text-xs font-semibold uppercase tracking-widest text-[#3C3833]/80 bg-[#3C3833]/10 px-4 py-1.5 rounded-full">
                   P. {pageNumber} / {numPages}

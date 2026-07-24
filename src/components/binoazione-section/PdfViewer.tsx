@@ -2,7 +2,6 @@
 
 import { Document, Page, pdfjs } from "react-pdf";
 
-// Configurazione Worker PDF.js
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface PdfViewerProps {
@@ -24,9 +23,9 @@ export default function PdfViewer({
     <Document
       file={file}
       onLoadSuccess={onLoadSuccess}
-      className="flex justify-center items-center overflow-hidden shadow-lg rounded-lg"
+      className="flex justify-center items-center overflow-hidden"
       loading={
-        <div className="text-sm font-medium text-[#5A554E] animate-pulse py-12 text-center">
+        <div className="text-sm font-medium text-[#5A554E] animate-pulse py-16 text-center">
           Loading PDF...
         </div>
       }
@@ -37,7 +36,7 @@ export default function PdfViewer({
         width={width}
         renderTextLayer={false}
         renderAnnotationLayer={false}
-        className="rounded-lg overflow-hidden"
+        className="rounded-lg overflow-hidden shadow-lg"
       />
     </Document>
   );
