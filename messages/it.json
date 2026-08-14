@@ -52,7 +52,7 @@
     "binoazineBanner": {
       "news": "Novità",
       "description": "Binòazine è lo spazio editoriale dove definiamo il perimetro e l'identità del nostro studio. Un manifesto visivo e concettuale attraverso il quale accompagniamo il lettore lungo la Rotta.",
-      "link": "Sfoglia le anteprime per scoprirla"
+      "link": "Scopri di più"
     },
     "whatWeDoSection": {
       "title": "COSA FACCIAMO",
@@ -97,9 +97,8 @@
     "mainContent": "Binòazine è lo spazio editoriale dove definiamo il perimetro e l'identità del nostro studio. Un manifesto visivo e concettuale attraverso il quale accompagniamo il lettore lungo la Rotta.",
     "previwsTitle": "Sfoglia le anteprime",
     "binoazineForm": {
-      "title": "Iscriviti alla lista",
-      "content": "Non perderti le nostre pubblicazioni. Lascia i tuoi dati e ti invieremo gratuitamente ogni nuovo numero di Binòazine direttamente nella tua casella di posta.",
-      "button": "Ricevi il prossimo numero"
+      "content": "Non perderti le nostre pubblicazioni!\nLascia i tuoi dati e ti invieremo gratuitamente ogni nuovo numero di Binòazine direttamente nella tua casella di posta.",
+      "button": "Iscriviti"
     }
   }
 }

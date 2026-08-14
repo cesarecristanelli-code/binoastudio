@@ -1,74 +1,110 @@
-// src/emails/MagazineEmail.tsx
+import {
+  Body,
+  Button,
+  Container,
+  Head,
+  Heading,
+  Hr,
+  Html,
+  Link,
+  Preview,
+  Section,
+  Text,
+} from "@react-email/components";
 import * as React from "react";
 
 interface MagazineEmailProps {
-  numero: number;
-  titolo: string;
-  pdfUrl: string;
+  numero?: number;
+  titolo?: string;
+  pdfUrl?: string;
 }
 
 export const MagazineEmail = ({
-  numero,
-  titolo,
-  pdfUrl,
+  numero = 1,
+  titolo = "Il nuovo numero dell'immobiliare",
+  pdfUrl = "https://example.com/magazine.pdf",
 }: MagazineEmailProps) => {
   const formattedIssue = numero < 10 ? `0${numero}` : `${numero}`;
 
   return (
-    <div style={mainContainerStyle}>
-      <div style={contentCardStyle}>
-        {/* Header / Brand */}
-        <p style={brandTagStyle}>Binòazine — Newsletter</p>
+    <Html>
+      <Head>
+        <meta name="color-scheme" content="light dark" />
+        <meta name="supported-color-schemes" content="light dark" />
+        {/* Supporto Dark Mode */}
+        <style>{`
+          @media (prefers-color-scheme: dark) {
+            .bg-main { background-color: #11100e !important; }
+            .bg-container { background-color: #1f1d1a !important; border: 1px solid #3c3833 !important; }
+            .text-primary { color: #f5f4f0 !important; }
+            .text-secondary { color: #d1cdcd !important; }
+            .text-muted { color: #a39e93 !important; }
+            .btn-primary { background-color: #f5f4f0 !important; color: #11100e !important; }
+            .hr-border { border-color: #3c3833 !important; }
+            .link-color { color: #f5f4f0 !important; }
+          }
+        `}</style>
+      </Head>
+      <Preview>
+        Binòazine Issue {formattedIssue}: {titolo}
+      </Preview>
+      <Body style={mainContainerStyle} className="bg-main">
+        <Container style={contentCardStyle} className="bg-container">
+          {/* Header / Brand */}
+          <Text style={brandTagStyle} className="text-muted">
+            Binòazine — Newsletter
+          </Text>
 
-        {/* Titolo e Numero */}
-        <h1 style={headingStyle}>Issue {formattedIssue}</h1>
-        <h2 style={subHeadingStyle}>{titolo}</h2>
+          {/* Titolo e Numero */}
+          <Heading style={headingStyle} className="text-primary">
+            Binòazine {formattedIssue}
+          </Heading>
+          <Heading as="h2" style={subHeadingStyle} className="text-secondary">
+            {titolo}
+          </Heading>
 
-        <hr style={dividerStyle} />
+          <Hr style={dividerStyle} className="hr-border" />
 
-        {/* Messaggio principale */}
-        <p style={paragraphStyle}>
-          È disponibile il nuovo numero della nostra rivista!
-        </p>
-        <p style={paragraphStyle}>
-          Puoi scaricare il file PDF completo direttamente sul tuo dispositivo
-          cliccando sul pulsante qui sotto:
-        </p>
+          {/* Messaggio principale */}
+          <Text style={paragraphStyle} className="text-primary">
+            È disponibile il nuovo numero della nostra rivista!
+          </Text>
+          <Text style={paragraphStyle} className="text-primary">
+            Puoi scaricare il file PDF completo direttamente sul tuo dispositivo
+            cliccando sul pulsante qui sotto:
+          </Text>
 
-        {/* Pulsante Download Diretto */}
-        <div style={buttonWrapperStyle}>
-          <a
-            href={pdfUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={buttonStyle}
-          >
-            Scarica il PDF (Issue {formattedIssue})
-          </a>
-        </div>
+          {/* Pulsante Download Diretto */}
+          <Section style={buttonWrapperStyle}>
+            <Button style={buttonStyle} href={pdfUrl} className="btn-primary">
+              Scarica il PDF (Binòazine {formattedIssue})
+            </Button>
+          </Section>
 
-        {/* Fallback Link per sicurezza */}
-        <p style={footerTextStyle}>
-          Se il pulsante non funziona, copia e incolla questo link nel tuo
-          browser:
-          <br />
-          <a href={pdfUrl} style={linkStyle}>
-            {pdfUrl}
-          </a>
-        </p>
-      </div>
-    </div>
+          {/* Fallback Link per sicurezza */}
+          <Text style={footerTextStyle} className="text-muted">
+            Se il pulsante non funziona, copia e incolla questo link nel tuo
+            browser:
+            <br />
+            <Link href={pdfUrl} style={linkStyle} className="link-color">
+              {pdfUrl}
+            </Link>
+          </Text>
+        </Container>
+      </Body>
+    </Html>
   );
 };
 
-// --- Stili inline ottimizzati per i client di posta ---
+export default MagazineEmail;
+
+// --- Stili inline per i client di posta ---
 
 const mainContainerStyle: React.CSSProperties = {
   backgroundColor: "#F5F4F0",
   fontFamily:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
   padding: "40px 20px",
-  color: "#3C3833",
 };
 
 const contentCardStyle: React.CSSProperties = {
@@ -86,7 +122,7 @@ const brandTagStyle: React.CSSProperties = {
   letterSpacing: "1.5px",
   textTransform: "uppercase",
   color: "#8C857B",
-  marginBottom: "16px",
+  margin: "0 0 16px 0",
 };
 
 const headingStyle: React.CSSProperties = {
@@ -106,8 +142,7 @@ const subHeadingStyle: React.CSSProperties = {
 };
 
 const dividerStyle: React.CSSProperties = {
-  border: "none",
-  borderTop: "1px solid #EAE8E3",
+  borderColor: "#EAE8E3",
   margin: "24px 0",
 };
 
@@ -139,7 +174,7 @@ const footerTextStyle: React.CSSProperties = {
   fontSize: "12px",
   color: "#8C857B",
   lineHeight: "1.5",
-  marginTop: "32px",
+  margin: "32px 0 0 0",
   borderTop: "1px solid #EAE8E3",
   paddingTop: "20px",
 };
