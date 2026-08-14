@@ -59,7 +59,7 @@ export async function createNewMagazineEmail(data: CreateMagazineInput): Promise
         // 3. Invia la mail usando il componente React
         if (emails.length > 0) {
             await resend.emails.send({
-                from: "Binòazine <andrea@binoastudio.com>",
+                from: process.env.SENDER_EMAIL || "Binòazine <newsletter@binoastudio.com>",
                 to: "cesare.cristanelli@gmail.com",
                 bcc: emails, // Tutela la privacy degli iscritti
                 subject: `È uscito il nuovo numero di Binòazine: ${data.titolo}!`,

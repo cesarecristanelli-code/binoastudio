@@ -34,3 +34,4 @@ export function formatEnum(value: string | null | undefined): string {
     // 3. Rende maiuscola solo la prima lettera della stringa
     return lower.charAt(0).toUpperCase() + lower.slice(1);
 }
+
