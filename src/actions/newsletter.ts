@@ -9,12 +9,11 @@ import prisma from "@/lib/prisma";
 import { CreateEmailResponseSuccess } from "resend";
 import { render } from "@react-email/render";
 import { createElement } from "react";
-import MagazineEmail from "@/components/binoazione-section/newsletter/emails/MagazineEmail";
 
 export async function sendWelcomeEmail(email: string, nome: string): Promise<Result<CreateEmailResponseSuccess>> {
 
     // 1. Renderizziamo il componente React in stringa HTML
-    const emailHtml = await render(createElement(WelcomeEmail, { nome }));
+    const emailHtml = await render(createElement(WelcomeEmail, { nome: nome, pdfUrl: "https://hjn88qj8d6.ufs.sh/f/03v8dNmaKnZ62dtOg47Sqv4Cpk5YwjXyHsZKUQ3NWgL9mteI" }));
     const { data, error } = await resend.emails.send({
         from: process.env.SENDER_EMAIL || "Binòazine <newsletter@binoastudio.com>",
         to: [email],
@@ -66,22 +65,6 @@ export async function subscribeNewsletter(formData: FormData): Promise<Result<nu
             console.error("Iscrizione completata, ma non è stato possibile inviare la mail di benvenuto")
             return generateResult(true, "Iscrizione completata, ma non è stato possibile inviare la mail di benvenuto", null, null);
         }
-
-        // SOLUZIONE TEMPORANEA FINCHE' C'E' UN SOLO NUMERO 
-        // ------------------
-        const magazineEmailHtml = await render(createElement(MagazineEmail, { numero: 1, titolo: "Manifesti", pdfUrl: "https://example.com/magazine.pdf" }));
-        const { error } = await resend.emails.send({
-            from: process.env.SENDER_EMAIL || "Binòazine <newsletter@binoastudio.com>",
-            to: email,
-            subject: `È uscito il nuovo numero di Binòazine: Manifesto`,
-            html: magazineEmailHtml
-        })
-
-        if (!error) {
-            console.error("Iscrizione completata, ma non è stato possibile inviare la mail del primo numero")
-            return generateResult(true, "Iscrizione completata", error, null);
-        }
-        // -------------------
 
         return generateResult(true, "Iscrizone alla newsletter completata", null, null);
 

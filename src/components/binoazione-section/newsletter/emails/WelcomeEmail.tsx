@@ -17,7 +17,10 @@ interface WelcomeNewsletterEmailProps {
   pdfUrl?: string;
 }
 
-export const WelcomeEmail = ({ nome, pdfUrl }: WelcomeNewsletterEmailProps) => {
+export const WelcomeEmail = ({
+  nome = "Cesare",
+  pdfUrl = "https://hjn88qj8d6.ufs.sh/f/03v8dNmaKnZ62dtOg47Sqv4Cpk5YwjXyHsZKUQ3NWgL9mteI",
+}: WelcomeNewsletterEmailProps) => {
   return (
     <Html>
       <Head>
@@ -50,14 +53,12 @@ export const WelcomeEmail = ({ nome, pdfUrl }: WelcomeNewsletterEmailProps) => {
           </Text>
 
           <Text style={text} className="text-primary">
-            Grazie per esserti iscritto alla newsletter di{" "}
-            <strong>Binòazine</strong>, la rivista di riferimento per
-            l&apos;immobiliare.
+            Grazie per l&apos;iscrizione.
           </Text>
 
           <Text style={text} className="text-primary">
-            Da oggi riceverai i nuovi numeri e aggiornamenti direttamente nella
-            tua casella di posta.
+            Riceverà i nuovi numeri e gli ultimi aggiornamenti direttamente
+            nella sua casella di posta.
           </Text>
 
           {pdfUrl && (
@@ -71,8 +72,7 @@ export const WelcomeEmail = ({ nome, pdfUrl }: WelcomeNewsletterEmailProps) => {
           <Hr style={hr} className="hr-border" />
 
           <Text style={footer} className="text-muted">
-            Se non hai richiesto tu questa iscrizione, puoi ignorare questa
-            email.
+            Iscrizione non richiesta? Ignori questo messaggio.
           </Text>
         </Container>
       </Body>

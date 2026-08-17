@@ -52,7 +52,7 @@
     "binoazineBanner": {
       "news": "New",
       "description": "Binòazine is the editorial space where we define the scope and identity of our studio. A visual and conceptual manifesto through which we guide the reader along the Route.",
-      "link": "Learn More"
+      "link": "Discover"
     },
     "whatWeDoSection": {
       "title": "WHAT WE DO",
@@ -95,10 +95,10 @@
 
   "Binoazine": {
     "mainContent": "Binòazine is the editorial space where we define the scope and identity of our studio. A visual and conceptual manifesto through which we guide the reader along the Route.",
-    "previwsTitle": "Explore the previews",
+    "previwsTitle": "Preview",
     "binoazineForm": {
-      "content": "Stay updated on our latest publications!\nProvide your details to receive each new issue of Binòazine complimentary and directly to your inbox.",
-      "button": "Subscribe"
+      "content": "Don't miss our publications.\nLeave your name and email, and we will send new issues and the latest updates directly to your inbox.",
+      "button": "Join us"
     }
   }
 }

@@ -57,7 +57,7 @@ export const MagazineEmail = ({
 
           {/* Titolo e Numero */}
           <Heading style={headingStyle} className="text-primary">
-            Binòazine {formattedIssue}
+            Binòazine#{formattedIssue}
           </Heading>
           <Heading as="h2" style={subHeadingStyle} className="text-secondary">
             {titolo}
@@ -65,14 +65,10 @@ export const MagazineEmail = ({
 
           <Hr style={dividerStyle} className="hr-border" />
 
-          {/* Messaggio principale */}
-          <Text style={paragraphStyle} className="text-primary">
-            È disponibile il nuovo numero della nostra rivista!
-          </Text>
-          <Text style={paragraphStyle} className="text-primary">
-            Puoi scaricare il file PDF completo direttamente sul tuo dispositivo
-            cliccando sul pulsante qui sotto:
-          </Text>
+          {/* Testo d'impatto centrale */}
+          <Heading as="h3" style={bannerTextStyle} className="text-primary">
+            COLLEZIONA LA RIVISTA
+          </Heading>
 
           {/* Pulsante Download Diretto */}
           <Section style={buttonWrapperStyle}>
@@ -83,8 +79,7 @@ export const MagazineEmail = ({
 
           {/* Fallback Link per sicurezza */}
           <Text style={footerTextStyle} className="text-muted">
-            Se il pulsante non funziona, copia e incolla questo link nel tuo
-            browser:
+            Link alternativo:
             <br />
             <Link href={pdfUrl} style={linkStyle} className="link-color">
               {pdfUrl}
@@ -146,16 +141,19 @@ const dividerStyle: React.CSSProperties = {
   margin: "24px 0",
 };
 
-const paragraphStyle: React.CSSProperties = {
-  fontSize: "15px",
-  lineHeight: "1.6",
+const bannerTextStyle: React.CSSProperties = {
+  fontSize: "22px",
+  fontWeight: 800,
+  textAlign: "center" as const,
+  textTransform: "uppercase",
+  letterSpacing: "2px",
   color: "#3C3833",
-  margin: "0 0 16px 0",
+  margin: "28px 0 8px 0",
 };
 
 const buttonWrapperStyle: React.CSSProperties = {
   textAlign: "center" as const,
-  margin: "32px 0",
+  margin: "28px 0 32px 0",
 };
 
 const buttonStyle: React.CSSProperties = {
