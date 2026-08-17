@@ -48,28 +48,71 @@ export async function createNewMagazineEmail(data: CreateMagazineInput): Promise
             },
         });
 
-        // 2. Recupera tutti gli iscritti alla newsletter
+        // 2. Recupera tutti gli iscritti attivi con la loro lingua preferita
         const subscribers = await prisma.newsletterSubscriber.findMany({
-            select: { email: true },
+            where: { isSubscribed: true },
+            select: { email: true, lang: true },
         });
 
-        const emails = subscribers.map((sub) => sub.email);
-        const emailHtml = await render(createElement(MagazineEmail, { numero: Number(data.numero), titolo: data.titolo, pdfUrl: data.pdfUrl }));
+        // Separa gli indirizzi email in base alla lingua ("it" ed "en")
+        const itEmails = subscribers.filter((sub) => sub.lang === "it").map((sub) => sub.email);
+        const enEmails = subscribers.filter((sub) => sub.lang === "en").map((sub) => sub.email);
 
-        // 3. Invia la mail usando il componente React
-        if (emails.length > 0) {
-            await resend.emails.send({
-                from: process.env.SENDER_EMAIL || "Binòazine <newsletter@binoastudio.com>",
-                to: "cesare.cristanelli@gmail.com",
-                bcc: emails, // Tutela la privacy degli iscritti
-                subject: `È uscito il nuovo numero di Binòazine: ${data.titolo}!`,
-                html: emailHtml
-            });
+        const senderEmail = process.env.SENDER_EMAIL || "Binòazine <newsletter@binoastudio.com>";
+        const numeroFormatted = Number(data.numero);
+
+        const emailPromises = [];
+
+        // 3. Invio per gli iscritti in ITALIANO
+        if (itEmails.length > 0) {
+            const emailHtmlIt = await render(
+                createElement(MagazineEmail, {
+                    numero: numeroFormatted,
+                    titolo: data.titolo,
+                    pdfUrl: data.pdfUrl,
+                    lang: "it",
+                })
+            );
+
+            emailPromises.push(
+                resend.emails.send({
+                    from: senderEmail,
+                    to: "cesare.cristanelli@gmail.com",
+                    bcc: itEmails,
+                    subject: `È uscito il nuovo numero di Binòazine: ${data.titolo}!`,
+                    html: emailHtmlIt,
+                })
+            );
         }
 
-        return generateResult(true, "Magazine inserito e Email inviata", null, newMagazine);
+        // 4. Invio per gli iscritti in INGLESE
+        if (enEmails.length > 0) {
+            const emailHtmlEn = await render(
+                createElement(MagazineEmail, {
+                    numero: numeroFormatted,
+                    titolo: data.titolo,
+                    pdfUrl: data.pdfUrl,
+                    lang: "en",
+                })
+            );
+
+            emailPromises.push(
+                resend.emails.send({
+                    from: senderEmail,
+                    to: "cesare.cristanelli@gmail.com",
+                    bcc: enEmails,
+                    subject: `The new Binòazine issue is out: ${data.titolo}!`,
+                    html: emailHtmlEn,
+                })
+            );
+        }
+
+        // Esegue i due invii in parallelo
+        await Promise.all(emailPromises);
+
+        return generateResult(true, "Magazine inserito ed Email inviate nelle rispettive lingue", null, newMagazine);
     } catch (error) {
         console.error("Errore durante la creazione del magazine:", error);
-        return generateResult(false, "Errore dal server", error)
+        return generateResult(false, "Errore dal server", error);
     }
 }

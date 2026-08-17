@@ -13,18 +13,35 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
+const translations = {
+  it: {
+    mainBody: "Il nuovo numero è online!",
+    button: "Colleziona la rivista",
+    link: "Link alternativo:",
+  },
+  en: {
+    mainBody: "The new issue is now online!",
+    button: "Collect the issue",
+    link: "Direct link:",
+  },
+};
+
 interface MagazineEmailProps {
   numero?: number;
   titolo?: string;
   pdfUrl?: string;
+  lang: "it" | "en";
 }
 
 export const MagazineEmail = ({
   numero = 1,
-  titolo = "Il nuovo numero dell'immobiliare",
+  titolo = "Manifesto",
   pdfUrl = "https://example.com/magazine.pdf",
+  lang = "it",
 }: MagazineEmailProps) => {
   const formattedIssue = numero < 10 ? `0${numero}` : `${numero}`;
+
+  const t = translations[lang] || "it";
 
   return (
     <Html>
@@ -65,21 +82,21 @@ export const MagazineEmail = ({
 
           <Hr style={dividerStyle} className="hr-border" />
 
-          {/* Testo d'impatto centrale */}
+          {/* Testo centrale */}
           <Heading as="h3" style={bannerTextStyle} className="text-primary">
-            COLLEZIONA LA RIVISTA
+            {t.mainBody}
           </Heading>
 
-          {/* Pulsante Download Diretto */}
+          {/* Pulsante Call to Action */}
           <Section style={buttonWrapperStyle}>
             <Button style={buttonStyle} href={pdfUrl} className="btn-primary">
-              Scarica il PDF (Binòazine {formattedIssue})
+              {t.button}
             </Button>
           </Section>
 
           {/* Fallback Link per sicurezza */}
           <Text style={footerTextStyle} className="text-muted">
-            Link alternativo:
+            {t.link}
             <br />
             <Link href={pdfUrl} style={linkStyle} className="link-color">
               {pdfUrl}
@@ -142,18 +159,16 @@ const dividerStyle: React.CSSProperties = {
 };
 
 const bannerTextStyle: React.CSSProperties = {
-  fontSize: "22px",
-  fontWeight: 800,
+  fontSize: "20px",
+  fontWeight: 600,
   textAlign: "center" as const,
-  textTransform: "uppercase",
-  letterSpacing: "2px",
   color: "#3C3833",
   margin: "28px 0 8px 0",
 };
 
 const buttonWrapperStyle: React.CSSProperties = {
   textAlign: "center" as const,
-  margin: "28px 0 32px 0",
+  margin: "24px 0 32px 0",
 };
 
 const buttonStyle: React.CSSProperties = {
@@ -161,11 +176,12 @@ const buttonStyle: React.CSSProperties = {
   color: "#FFFFFF",
   padding: "14px 28px",
   borderRadius: "8px",
-  fontWeight: 600,
+  fontWeight: 700,
   fontSize: "14px",
   textDecoration: "none",
   display: "inline-block",
-  letterSpacing: "0.5px",
+  letterSpacing: "1px",
+  textTransform: "uppercase",
 };
 
 const footerTextStyle: React.CSSProperties = {

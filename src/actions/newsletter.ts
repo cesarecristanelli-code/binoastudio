@@ -10,14 +10,31 @@ import { CreateEmailResponseSuccess } from "resend";
 import { render } from "@react-email/render";
 import { createElement } from "react";
 
-export async function sendWelcomeEmail(email: string, nome: string): Promise<Result<CreateEmailResponseSuccess>> {
+// Fallback URL nel caso in cui non sia presente alcun magazine nel database
+const DEFAULT_PDF_URL = "https://hjn88qj8d6.ufs.sh/f/03v8dNmaKnZ62dtOg47Sqv4Cpk5YwjXyHsZKUQ3NWgL9mteI";
 
-    // 1. Renderizziamo il componente React in stringa HTML
-    const emailHtml = await render(createElement(WelcomeEmail, { nome: nome, pdfUrl: "https://hjn88qj8d6.ufs.sh/f/03v8dNmaKnZ62dtOg47Sqv4Cpk5YwjXyHsZKUQ3NWgL9mteI" }));
+export async function sendWelcomeEmail(
+    email: string,
+    nome: string,
+    pdfUrl: string,
+    lang: "it" | "en" = "it"
+): Promise<Result<CreateEmailResponseSuccess>> {
+
+    // Cambia "subject" a sconda della lingua
+    const subject = lang === "it" ? "Benvenuto su Binòazine!" : "Welcome to Binòazine!";
+
+    // 1. Renderizziamo il componente React in stringa HTML ()
+    const emailHtml = await render(
+        createElement(WelcomeEmail, {
+            nome: nome,
+            pdfUrl: pdfUrl,
+            lang: lang
+        })
+    );
     const { data, error } = await resend.emails.send({
         from: process.env.SENDER_EMAIL || "Binòazine <newsletter@binoastudio.com>",
         to: [email],
-        subject: "Benvenuto su Binoazine!",
+        subject: subject,
         html: emailHtml,
     });
 
@@ -32,7 +49,8 @@ export async function sendWelcomeEmail(email: string, nome: string): Promise<Res
 export async function subscribeNewsletter(formData: FormData): Promise<Result<null>> {
     const rawData = {
         nome: formData.get("nome"),
-        email: formData.get("email")
+        email: formData.get("email"),
+        lang: formData.get("lang") || "it",
     };
 
 
@@ -43,23 +61,37 @@ export async function subscribeNewsletter(formData: FormData): Promise<Result<nu
         return generateResult(false, "Dati form non validi");
     }
 
-    const { nome, email } = validated.data;
+    const { nome, email, lang } = validated.data;
 
     try {
+        // 1. Salva o aggiorna l'iscritto nel DB
         await prisma.newsletterSubscriber.upsert({
             where: { email },
             update: {
                 nome,
+                lang,
                 isSubscribed: true,
             },
             create: {
                 nome,
                 email,
+                lang,
                 isSubscribed: true,
             },
         });
 
-        const sendWelcomeRes = await sendWelcomeEmail(email, nome);
+        // 2. Recupera l'ultimo numero del magazine pubblicato
+        const latestMagazine = await prisma.magazine.findFirst({
+            orderBy: {
+                numero: "desc",
+            },
+        });
+
+        // Usa il pdfUrl dell'ultimo magazine se esiste, altrimenti usa il fallback
+        const pdfUrl = latestMagazine?.pdfUrl || DEFAULT_PDF_URL;
+
+        // 3. Invia la mail di benvenuto passando il link al PDF
+        const sendWelcomeRes = await sendWelcomeEmail(email, nome, pdfUrl, lang as "it" | "en");
 
         if (!sendWelcomeRes.success) {
             console.error("Iscrizione completata, ma non è stato possibile inviare la mail di benvenuto")

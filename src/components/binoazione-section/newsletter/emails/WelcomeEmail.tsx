@@ -12,15 +12,39 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
+const translations = {
+  it: {
+    preview: "Benvenuto in Binòazine - Il tuo primo numero ti aspetta!",
+    welcome: "Benvenuto",
+    thanks: "Grazie per l'iscrizione.",
+    mainBody:
+      "Riceverà i nuovi numeri e gli ultimi aggiornamenti direttamente nella sua casella di posta.",
+    button: "Scarica l'ultimo numero (PDF)",
+    unsubscription: "Iscrizione non richiesta? Ignori questo messaggio.",
+  },
+  en: {
+    preview: "Welcome to Binòazine - Your first issue awaits!",
+    welcome: "Welcome",
+    thanks: "Thank you for subscribing.",
+    mainBody: "You'll receive new issues and updates directly in your inbox.",
+    button: "Download the latest issue (PDF)",
+    unsubscription: "Not you? Just ignore this email.",
+  },
+};
+
 interface WelcomeNewsletterEmailProps {
   nome: string;
   pdfUrl?: string;
+  lang: "it" | "en";
 }
 
 export const WelcomeEmail = ({
   nome = "Cesare",
   pdfUrl = "https://hjn88qj8d6.ufs.sh/f/03v8dNmaKnZ62dtOg47Sqv4Cpk5YwjXyHsZKUQ3NWgL9mteI",
+  lang = "it",
 }: WelcomeNewsletterEmailProps) => {
+  const t = translations[lang] || translations.it;
+
   return (
     <Html>
       <Head>
@@ -38,9 +62,7 @@ export const WelcomeEmail = ({
           }
         `}</style>
       </Head>
-      <Preview>
-        Benvenuto in Binòazine - Il tuo primo numero ti aspetta!
-      </Preview>
+      <Preview>{t.preview}</Preview>
       <Body style={main} className="bg-main">
         <Container style={container} className="bg-container">
           {/* Titolo Brand al posto del logo */}
@@ -49,22 +71,21 @@ export const WelcomeEmail = ({
           </Heading>
 
           <Text style={text} className="text-primary">
-            Ciao <strong>{nome}</strong>,
+            {t.welcome} <strong>{nome}</strong>,
           </Text>
 
           <Text style={text} className="text-primary">
-            Grazie per l&apos;iscrizione.
+            {t.thanks}
           </Text>
 
           <Text style={text} className="text-primary">
-            Riceverà i nuovi numeri e gli ultimi aggiornamenti direttamente
-            nella sua casella di posta.
+            {t.mainBody}
           </Text>
 
           {pdfUrl && (
             <Section style={btnContainer}>
               <Button style={button} href={pdfUrl} className="btn-primary">
-                Scarica l&apos;ultimo numero (PDF)
+                {t.button}
               </Button>
             </Section>
           )}
@@ -72,7 +93,7 @@ export const WelcomeEmail = ({
           <Hr style={hr} className="hr-border" />
 
           <Text style={footer} className="text-muted">
-            Iscrizione non richiesta? Ignori questo messaggio.
+            {t.unsubscription}
           </Text>
         </Container>
       </Body>

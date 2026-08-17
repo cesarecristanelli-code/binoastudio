@@ -2,10 +2,14 @@
 
 import { subscribeNewsletter } from "@/actions/newsletter";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 
 export default function NewsletterForm() {
   const t = useTranslations("Binoazine");
+
+  const params = useParams();
+  const currentLang = (params?.lang as string) || "it";
 
   const [isPending, setIsPending] = useState(false);
   const [feedback, setFeedback] = useState<{
@@ -61,6 +65,9 @@ export default function NewsletterForm() {
         {/* Input e Bottone */}
         <div className="w-full max-w-2xl">
           <form className="flex flex-col gap-8 w-full" onSubmit={handleSubmit}>
+            {/* Campo nascosto per passare il parametro  lang */}
+            <input type="hidden" name="lang" value={currentLang} />
+
             <input
               type="text"
               placeholder="Nome"
