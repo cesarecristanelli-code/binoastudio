@@ -18,15 +18,20 @@ const translations = {
     mainBody: "Il nuovo numero è online!",
     button: "Colleziona la rivista",
     link: "Link alternativo:",
+    unsubscribeText: "Non vuoi più ricevere le nostre email?",
+    unsubscribeLink: "Disiscriviti dalla newsletter",
   },
   en: {
     mainBody: "The new issue is now online!",
     button: "Collect the issue",
     link: "Direct link:",
+    unsubscribeText: "No longer wish to receive these emails?",
+    unsubscribeLink: "Unsubscribe from newsletter",
   },
 };
 
 interface MagazineEmailProps {
+  email: string;
   numero?: number;
   titolo?: string;
   pdfUrl?: string;
@@ -34,6 +39,7 @@ interface MagazineEmailProps {
 }
 
 export const MagazineEmail = ({
+  email = "cesare.cristanelli@gmail.com",
   numero = 1,
   titolo = "Manifesto",
   pdfUrl = "https://example.com/magazine.pdf",
@@ -42,6 +48,9 @@ export const MagazineEmail = ({
   const formattedIssue = numero < 10 ? `0${numero}` : `${numero}`;
 
   const t = translations[lang] || "it";
+
+  const appUrl = process.env.PUBLIC_SITE_URL || "https://binoastudio.com";
+  const unsubscribeLink = `${appUrl}/${lang}/unsubscribe?email=${encodeURIComponent(email)}`;
 
   return (
     <Html>
@@ -100,6 +109,20 @@ export const MagazineEmail = ({
             <br />
             <Link href={pdfUrl} style={linkStyle} className="link-color">
               {pdfUrl}
+            </Link>
+          </Text>
+
+          <Hr style={dividerStyle} className="hr-border" />
+
+          {/* Spazio Disiscrizione */}
+          <Text style={unsubscribeTextStyle} className="text-muted">
+            {t.unsubscribeText}{" "}
+            <Link
+              href={unsubscribeLink}
+              style={unsubscribeLinkStyle}
+              className="link-color"
+            >
+              {t.unsubscribeLink}
             </Link>
           </Text>
         </Container>
@@ -196,4 +219,19 @@ const footerTextStyle: React.CSSProperties = {
 const linkStyle: React.CSSProperties = {
   color: "#3C3833",
   wordBreak: "break-all",
+};
+
+const unsubscribeTextStyle: React.CSSProperties = {
+  fontSize: "12px",
+  color: "#8C857B",
+  lineHeight: "1.5",
+  textAlign: "center" as const,
+  margin: "12px 0 0 0",
+};
+
+const unsubscribeLinkStyle = {
+  color: "#3C3833", // Colore scuro del brand per farlo risaltare rispetto al testo del footer
+  fontWeight: "600", // In risalto (Semibold)
+  textDecoration: "underline", // Sottolineato
+  cursor: "pointer",
 };

@@ -100,5 +100,16 @@
       "content": "Non perderti le nostre pubblicazioni.\nLasci il suo nome e la sua email e invieremo i nuovi numeri e gli ultimi aggiornamenti direttamente nella sua casella di posta.",
       "button": "Unisciti a noi"
     }
+  },
+
+  "Unsubscribe": {
+    "title": "Disiscrizione Newsletter",
+    "description": "Sei sicuro di non voler più ricevere le ultime uscite di Binòazine?",
+    "emailLabel": "Stai disiscrivendo l'indirizzo:",
+    "buttonText": "Conferma Disiscrizione",
+    "submitting": "Elaborazione in corso...",
+    "successMsg": "Ti sei disiscritto con successo. Non riceverai più le nostre email.",
+    "errorMissingEmail": "Nessun indirizzo email specificato nel link.",
+    "alreadyUnsubscribed": "Risulti già disiscritto dai nostri sistemi."
   }
 }

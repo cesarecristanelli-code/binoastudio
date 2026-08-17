@@ -27,6 +27,7 @@ export async function sendWelcomeEmail(
     const emailHtml = await render(
         createElement(WelcomeEmail, {
             nome: nome,
+            email: email,
             pdfUrl: pdfUrl,
             lang: lang
         })
@@ -106,4 +107,39 @@ export async function subscribeNewsletter(formData: FormData): Promise<Result<nu
         return generateResult(false, "Errore durante l'iscrione alla newsletter", errorMessage);
     }
 
+}
+
+export async function unsubscribeNewsletter(email: string): Promise<Result<null>> {
+    if (!email || !email.includes("@")) {
+        console.error("Indirizzo email non valido");
+        generateResult(false, "Indirizzo email non valido");
+    }
+
+    try {
+        const subscriber = await prisma.newsletterSubscriber.findUnique({
+            where: { email }
+        });
+
+        if (!subscriber) {
+            console.error("Indirizzo email non trovato nei nostri sistemi")
+            generateResult(false, "Indirizzo email non trovato nei nostri sistemi");
+        }
+
+        if (!subscriber?.isSubscribed) {
+            console.error(`L'iscritto ${email} è già disiscritto dalla newsletter`)
+            generateResult(false, "Sei già disiscritto dalla newsletter");
+        }
+
+        await prisma.newsletterSubscriber.update({
+            where: { email },
+            data: { isSubscribed: false }
+        })
+
+        return generateResult(true, "Disisrizione completata con success", null, null);
+
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : error;
+        console.error(`Errore durante disicrizione alla newsletter di ${email}: ${errorMessage}`);
+        return generateResult(false, "Errore durante disiscrizione alla newsletter", errorMessage);
+    }
 }

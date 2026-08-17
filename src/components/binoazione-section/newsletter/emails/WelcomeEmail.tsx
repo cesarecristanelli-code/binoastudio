@@ -6,6 +6,7 @@ import {
   Heading,
   Hr,
   Html,
+  Link,
   Preview,
   Section,
   Text,
@@ -20,7 +21,7 @@ const translations = {
     mainBody:
       "Riceverà i nuovi numeri e gli ultimi aggiornamenti direttamente nella sua casella di posta.",
     button: "Scarica l'ultimo numero (PDF)",
-    unsubscription: "Iscrizione non richiesta? Ignori questo messaggio.",
+    unsubscription: "Iscrizione non richiesta? Disiscriviti",
   },
   en: {
     preview: "Welcome to Binòazine - Your first issue awaits!",
@@ -28,22 +29,27 @@ const translations = {
     thanks: "Thank you for subscribing.",
     mainBody: "You'll receive new issues and updates directly in your inbox.",
     button: "Download the latest issue (PDF)",
-    unsubscription: "Not you? Just ignore this email.",
+    unsubscription: "Not you? Unsubscribe",
   },
 };
 
 interface WelcomeNewsletterEmailProps {
   nome: string;
+  email: string;
   pdfUrl?: string;
   lang: "it" | "en";
 }
 
 export const WelcomeEmail = ({
   nome = "Cesare",
+  email = "cesare.cristanelli@gmail.com",
   pdfUrl = "https://hjn88qj8d6.ufs.sh/f/03v8dNmaKnZ62dtOg47Sqv4Cpk5YwjXyHsZKUQ3NWgL9mteI",
   lang = "it",
 }: WelcomeNewsletterEmailProps) => {
   const t = translations[lang] || translations.it;
+
+  const appUrl = process.env.PUBLIC_SITE_URL || "https://binoastudio.com";
+  const unsubscribeLink = `${appUrl}/${lang}/unsubscribe?email=${encodeURIComponent(email)}`;
 
   return (
     <Html>
@@ -93,7 +99,14 @@ export const WelcomeEmail = ({
           <Hr style={hr} className="hr-border" />
 
           <Text style={footer} className="text-muted">
-            {t.unsubscription}
+            {t.unsubscription}{" "}
+            <Link
+              href={unsubscribeLink}
+              style={unsubscribeLinkStyle}
+              className="link-color"
+            >
+              {lang === "it" ? "qui." : "here."}
+            </Link>
           </Text>
         </Container>
       </Body>
@@ -140,6 +153,13 @@ const text = {
 const btnContainer = {
   textAlign: "center" as const,
   margin: "32px 0 24px 0",
+};
+
+const unsubscribeLinkStyle = {
+  color: "#3C3833", // Colore scuro del brand per farlo risaltare rispetto al testo del footer
+  fontWeight: "600", // In risalto (Semibold)
+  textDecoration: "underline", // Sottolineato
+  cursor: "pointer",
 };
 
 const button = {

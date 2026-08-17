@@ -100,5 +100,16 @@
       "content": "Don't miss our publications.\nLeave your name and email, and we will send new issues and the latest updates directly to your inbox.",
       "button": "Join us"
     }
+  },
+
+  "Unsubscribe": {
+    "title": "Unsubscribe from Newsletter",
+    "description": "Are you sure you no longer want to receive future issues of Binòazine?",
+    "emailLabel": "You are unsubscribing:",
+    "buttonText": "Confirm Unsubscribe",
+    "submitting": "Processing...",
+    "successMsg": "You have been successfully unsubscribed. You will no longer receive our emails.",
+    "errorMissingEmail": "No email address found in the link.",
+    "alreadyUnsubscribed": "You are already unsubscribed from our mailing list."
   }
 }
