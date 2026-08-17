@@ -16,7 +16,7 @@ import * as React from "react";
 const translations = {
   it: {
     mainBody: "Il nuovo numero è online!",
-    button: "Colleziona la rivista",
+    button: "Scarica la rivista",
     link: "Link alternativo:",
     unsubscribeText: "Non vuoi più ricevere le nostre email?",
     unsubscribeLink: "Disiscriviti dalla newsletter",

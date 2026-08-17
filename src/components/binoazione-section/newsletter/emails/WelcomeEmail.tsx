@@ -16,19 +16,19 @@ import * as React from "react";
 const translations = {
   it: {
     preview: "Benvenuto in Binòazine - Il tuo primo numero ti aspetta!",
-    welcome: "Benvenuto",
+    welcome: "Gentile",
     thanks: "Grazie per l'iscrizione.",
     mainBody:
       "Riceverà i nuovi numeri e gli ultimi aggiornamenti direttamente nella sua casella di posta.",
-    button: "Scarica l'ultimo numero (PDF)",
+    button: "Scarica l'ultimo numero",
     unsubscription: "Iscrizione non richiesta? Disiscriviti",
   },
   en: {
     preview: "Welcome to Binòazine - Your first issue awaits!",
-    welcome: "Welcome",
+    welcome: "Dear",
     thanks: "Thank you for subscribing.",
     mainBody: "You'll receive new issues and updates directly in your inbox.",
-    button: "Download the latest issue (PDF)",
+    button: "Download the latest issue",
     unsubscription: "Not you? Unsubscribe",
   },
 };
