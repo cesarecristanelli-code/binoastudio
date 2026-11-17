@@ -9,7 +9,7 @@ export default function CVSection() {
     {
       id: 1,
       title: "Andrea",
-      imagePath: "/andrea.jpg",
+      imagePath: "/chi-siamo/andrea.jpg",
       imagePosition: "object-top",
       idSection: "andrea",
       reverse: true,
@@ -19,7 +19,7 @@ export default function CVSection() {
     {
       id: 2,
       title: "Pietro",
-      imagePath: "/tyron.jpg",
+      imagePath: "/chi-siamo/tyron.jpg",
       imagePosition: "object-top",
       idSection: "pietro",
       reverse: false,
