@@ -1,4 +1,10 @@
-import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaLinkedin,
+  FaSpotify,
+  FaYoutube,
+} from "react-icons/fa";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
@@ -64,6 +70,25 @@ export default function Footer() {
           className="text-[#E5E0D8] hover:text-[#D1CBC0] transition-colors p-2 border border-[#E5E0D8]/20 rounded-full hover:bg-white/5 mx-auto"
         >
           <FaFacebook size={20} />
+        </a>
+        {/* Spotify (Podcast) */}
+        <a
+          href="https://open.spotify.com/show/3oxDC2SqBe2whIsePYlNnd?si=11076f67d80a450c"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#E5E0D8] hover:text-[#D1CBC0] transition-colors p-2 border border-[#E5E0D8]/20 rounded-full hover:bg-white/5 mx-auto"
+        >
+          <FaSpotify size={20} />
+        </a>
+
+        {/* YouTube */}
+        <a
+          href="https://www.youtube.com/@binoastudio"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#E5E0D8] hover:text-[#D1CBC0] transition-colors p-2 border border-[#E5E0D8]/20 rounded-full hover:bg-white/5 mx-auto"
+        >
+          <FaYoutube size={20} />
         </a>
       </div>
     </section>
