@@ -13,7 +13,7 @@ export default function CosaFacciamo() {
     {
       id: 1,
       title: t("services.realEstate.title"),
-      imagePath: "/compravendita-immagine.jpg",
+      imagePath: "/cosa-facciamo/compravendita-immagine.jpg",
       idSection: "compravendita-immobiliare",
       children: t("services.realEstate.description"),
       reverse: false,
@@ -22,7 +22,7 @@ export default function CosaFacciamo() {
     {
       id: 2,
       title: t("services.projectManagement.title"),
-      imagePath: "/gestione-immagine.jpg",
+      imagePath: "/cosa-facciamo/gestione-immagine.jpg",
       idSection: "gestione-progetti",
       children: t("services.projectManagement.description"),
       reverse: true,
@@ -31,7 +31,7 @@ export default function CosaFacciamo() {
     {
       id: 3,
       title: t("services.design.title"),
-      imagePath: "/progettazione-immagine.jpg",
+      imagePath: "/cosa-facciamo/progettazione-immagine.jpg",
       idSection: "progettazione",
       children: t("services.design.description"),
       reverse: false,

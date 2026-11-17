@@ -25,9 +25,9 @@ export default function Hero({ title, bgImage }: HeroProps) {
         <HeroTitle title={title} />
       </div>
       {/* Didascalia AI in basso a destra */}
-      <div className="absolute bottom-4 right-10 z-10 text-[10px] sm:text-xs text-gray-400/80 tracking-wide pointer-events-none">
+      {/* <div className="absolute bottom-4 right-10 z-10 text-[10px] sm:text-xs text-gray-400/80 tracking-wide pointer-events-none">
         Immagine illustrativa realizzata digitalmente.
-      </div>
+      </div> */}
     </section>
   );
 }
